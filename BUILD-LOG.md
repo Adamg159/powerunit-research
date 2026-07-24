@@ -75,6 +75,20 @@ return windows are open:
 - [ ] Wire a MAX31855, confirm sane room-temp reading and fault bits
 - [ ] SD module VCC from 5 V rail (never 3.3 V); drop SPI clock if writes are flaky
 
+## 2026-07-24 — Correction: IronOS flash fallback is invalid on both machines
+
+- The 07-23 entry's resolution ("if IronOS is ever wanted: flash from the laptop, older
+  Windows") doesn't hold — the laptop turns out to run the same Windows build as the
+  desktop (Windows 11 Pro, build 26200 / 25H2), so the bootloader's 24H2+ flashing
+  limitation applies to **both** machines. Discovered while setting up the laptop's
+  repo clone.
+- Valid paths if IronOS is ever actually wanted: boot a **Linux live USB** on either
+  machine and drag `TS101_EN.hex` onto the `TS101_DFU` drive from there (the failure is
+  a Windows copy-engine issue, per the Miniware forum), or borrow any pre-24H2 Windows
+  or macOS machine for five minutes.
+- No action for Phase 1 — stock v2.11 heats and regulates fine; this stays a
+  someday-item, now with an accurate map.
+
 ---
 
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
