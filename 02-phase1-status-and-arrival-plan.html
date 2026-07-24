@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hybrid RC power unit — phase 1 status &amp; arrival plan</title>
+<style>
+:root{
+  --paper:#F7F8F6; --ink:#212823; --muted:#5D6B62; --accent:#0B6E4F; --warm:#B35310;
+  --line:#D9E1DB; --card:#FFFFFF; --code:#EEF2EE;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#131816; --ink:#E3EAE4; --muted:#95A49A; --accent:#46BE93; --warm:#E08A4A; --line:#2A332E; --card:#1A211D; --code:#202823; }
+}
+html{background:var(--paper);}
+body{margin:0;color:var(--ink);font-family:Charter,Georgia,'Times New Roman',serif;line-height:1.65;font-size:17px;}
+.wrap{max-width:820px;margin:0 auto;padding:48px 24px 96px;}
+.eyebrow{font-family:'Segoe UI',system-ui,sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 14px;}
+h1{font-size:34px;line-height:1.2;margin:0 0 6px;text-wrap:balance;font-weight:700;}
+.subtitle{font-size:20px;color:var(--muted);margin:0 0 18px;text-wrap:balance;}
+.meta{font-family:'Segoe UI',system-ui,sans-serif;font-size:13.5px;color:var(--muted);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;margin:0 0 40px;}
+h2{font-size:23px;margin:52px 0 14px;font-weight:700;text-wrap:balance;}
+h2 .num{color:var(--accent);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;font-weight:600;letter-spacing:.06em;display:block;margin-bottom:2px;}
+p{margin:0 0 16px;}
+strong{font-weight:700;}
+.tablebox{overflow-x:auto;margin:20px 0 24px;border:1px solid var(--line);border-radius:6px;background:var(--card);}
+table{border-collapse:collapse;width:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13.5px;line-height:1.5;min-width:680px;}
+th{background:var(--code);text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);font-weight:600;white-space:nowrap;}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+td.cost{white-space:nowrap;font-variant-numeric:tabular-nums;}
+.tag{font-size:11.5px;font-weight:600;letter-spacing:.04em;padding:2px 8px;border-radius:10px;white-space:nowrap;}
+.tag-ordered{background:var(--accent);color:var(--paper);}
+.tag-deferred{background:transparent;color:var(--warm);border:1px solid var(--warm);}
+.tag-p2{background:transparent;color:var(--muted);border:1px solid var(--line);}
+.tag-owned{background:var(--code);color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">Hybrid RC power unit · document 2 of 3</p>
+<h1>Phase 1 status report and arrival plan</h1>
+<p class="subtitle">Companion to the feasibility assessment &amp; phased budget proposal</p>
+<p class="meta">Prepared by Adam &nbsp;·&nbsp; July 2026 &nbsp;·&nbsp; parts order placed 21 July 2026</p>
+
+<h2><span class="num">Section 1</span>Current status</h2>
+<p>Phase 1 purchasing has begun. The core engine order has been placed with EngineDIY and consisted of the SEMTO ST-NF2 (Toyan FS-L200AC) 7cc twin-cylinder four-stroke engine kit with the starter-kit bundle (~$290) and the manufacturer&rsquo;s gasoline/CDI spark-ignition conversion kit (~$113); both were in stock at time of order. The telemetry and control-electronics order has since been placed as well ($205 actual, itemized with prices in Section 4). The remaining purchases — starter/CDI battery, balance charger, washer thermocouples, consumables, and bench materials, estimated at $120–$160 — stay deferred until the engine arrives, because several purchase decisions depend on physically inspecting the delivered hardware. Nothing on the deferred list requires more than a few days&rsquo; shipping, so this ordering strategy costs no schedule time and eliminates the risk of buying incompatible parts.</p>
+
+<h2><span class="num">Section 2</span>Arrival inspection checklist</h2>
+<p>The following checks are performed at unboxing, before any assembly begins. They resolve every currently open purchasing question and protect the 30-day return window.</p>
+<div class="tablebox"><table>
+<tr><th>Check</th><th>Why it matters</th><th>Decision it unlocks</th></tr>
+<tr><td>Photograph all contents laid out, before assembly</td><td>Documents condition for any warranty/QC claim while the return window is open; first entry of the project build log</td><td>—</td></tr>
+<tr><td>Verify starter-kit bundle contents against the listing (fuel tank, glow igniter, base/stand, plugs, harness)</td><td>Confirms nothing is missing from the bundle as sold</td><td>Whether a stand or tank must be purchased; whether a support claim is needed</td></tr>
+<tr><td>Identify the connector type on the starter/ignition harness</td><td>The starter battery must match this connector; it cannot be known from the listing</td><td>Exact battery and adapter purchase</td></tr>
+<tr><td>Inventory included exhaust hardware</td><td>The engine ships with exhaust components; the $25 aftermarket silencer is an upgrade, not a requirement</td><td>Whether the silencer is purchased (fitment to ST-NF2 also to be confirmed with vendor)</td></tr>
+<tr><td>Inspect machined parts for visible defects; dry-fit major components per manual</td><td>Occasional QC issues are reported in reviews and are handled by vendor support</td><td>Whether a support/warranty contact is needed before assembly</td></tr>
+</table></div>
+
+<h2><span class="num">Section 3</span>Deferred purchases and decision rules</h2>
+<p>Each remaining item is listed with the specification and, where relevant, the arrival-dependent decision that finalizes it.</p>
+<div class="tablebox"><table>
+<tr><th>Item</th><th>Specification / guidance</th><th>Depends on</th></tr>
+<tr><td>Starter/CDI battery</td><td>2S 7.4V LiPo, 1200–2200 mAh, 25C or higher. Capacity barely matters at this duty cycle; burst current and connector do. Caution: PH2.0 JST-plugged packs are limited to a couple of amps continuous — adequate for the CDI, likely inadequate for starter current.</td><td>Harness connector (unboxing)</td></tr>
+<tr><td>Connector adapter assortment</td><td>JST / T-plug / XT60 assortment (~$10) as insurance</td><td>Optional; covers any harness</td></tr>
+<tr><td>Balance charger + LiPo safety bag</td><td>Any 2S-capable balance charger; safety bag is mandatory practice</td><td>None — buy anytime</td></tr>
+<tr><td>Exhaust silencer (conditional)</td><td>98mm dual-inlet unit, $24.99; quieter-exhaust upgrade only</td><td>Stock exhaust inventory + vendor fitment confirmation</td></tr>
+<tr><td>ESP32 instrumentation</td><td>Superseded by the full telemetry bill of materials in Section 4 — MAX31855 amplifiers (upgraded from MAX6675), per-cylinder thermocouples, SD logging, IMU, and EMI hardening</td><td>None — ordered</td></tr>
+<tr><td>Ground-strap materials</td><td>18–20 AWG silicone wire + ring terminals — pre-planned fix for the conversion kit&rsquo;s known missing high-voltage ground return</td><td>None — buy anytime</td></tr>
+<tr><td>Consumables</td><td>20–25% nitro fuel (1 qt, local hobby shop) for glow break-in; 2× spare F-type four-stroke glow plugs; after-run oil; lithium/solid grease for the cam box (required before first run); blue threadlocker</td><td>None — buy anytime</td></tr>
+<tr><td>Bench materials</td><td>3/4&Prime; plywood mounting board (flat, coplanar mounting per manual); M3 hex socket screw assortment; small ABC fire extinguisher at the bench</td><td>None — buy anytime</td></tr>
+<tr><td>Safety and hand tools</td><td>Safety glasses, nitrile gloves; quality 1.5–3mm metric hex drivers; digital calipers</td><td>Skip items already owned</td></tr>
+</table></div>
+
+<h2><span class="num">Section 4</span>Telemetry bill of materials</h2>
+<p>As-ordered record of the telemetry and control-electronics parts, updated with actual prices from the order placed 21 July 2026. Quantities reflect multi-pack listings chosen for working spares. Rows marked Deferred wait on the engine&rsquo;s arrival; rows marked Phase 2 are purchased with the Phase 2 budget.</p>
+<div class="tablebox"><table>
+<tr><th>Item</th><th>Qty</th><th>Specification and purpose</th><th>Actual cost</th></tr>
+<tr><td>ESP32 development board</td><td>3</td><td>AITRIP ESP-WROOM-32 DevKit, USB-C, CP2102, headers pre-soldered. Telemetry logger, future ignition controller, and one spare.</td><td class="cost"><span class="tag tag-ordered">$16.59</span></td></tr>
+<tr><td>MAX31855 thermocouple amplifier</td><td>2</td><td>MusRock SPI breakout, one per cylinder; cold-junction compensated, 0.25&nbsp;°C resolution, open/short-circuit fault detection.</td><td class="cost"><span class="tag tag-ordered">$15.98</span></td></tr>
+<tr><td>Hall-effect sensors</td><td>10</td><td>uxcell A3144. 5&nbsp;V supply, open-collector output pulled up to 3.3&nbsp;V from owned resistor stock. Unipolar — test each magnet&rsquo;s polarity and mark the working face before mounting.</td><td class="cost"><span class="tag tag-ordered">$7.01</span></td></tr>
+<tr><td>High-temperature magnets</td><td>50</td><td>Samarium-cobalt 5&nbsp;×&nbsp;2&nbsp;mm discs rated 350&nbsp;°C (chosen over N42SH neodymium, which tops out at 150&nbsp;°C). Brittle — slide into place, never snap onto steel.</td><td class="cost"><span class="tag tag-ordered">$13.98</span></td></tr>
+<tr><td>High-temperature epoxy</td><td>1</td><td>J-B Weld HighHeat two-part structural epoxy, 550&nbsp;°F rated, for magnet mounting. Scuff and degrease both faces; fillet around the magnet edge; full 24&nbsp;h cure before heat.</td><td class="cost"><span class="tag tag-ordered">$7.49</span></td></tr>
+<tr><td>IMU breakout</td><td>3</td><td>HiLetgo GY-521 MPU-6050 on I2C; logs the vibration baseline from the first start. Solder the headers — no friction fit on a vibration sensor.</td><td class="cost"><span class="tag tag-ordered">$11.79</span></td></tr>
+<tr><td>MicroSD SPI modules</td><td>3</td><td>WWZMDiB with AMS1117 regulator and level buffer, jumper wires included. Power VCC from the 5&nbsp;V rail, never 3.3&nbsp;V; drop SPI clock first if writes misbehave.</td><td class="cost"><span class="tag tag-ordered">$5.99</span></td></tr>
+<tr><td>MicroSD card</td><td>1</td><td>Lexar High-Performance 633x 32&nbsp;GB UHS-I with SD adapter (Staples first-party stock via Amazon). Verify genuine capacity with h2testw before first engine data.</td><td class="cost"><span class="tag tag-ordered">$15.11</span></td></tr>
+<tr><td>5&nbsp;V buck regulator</td><td>3</td><td>MP1584EN adjustable modules. Arrive at a random setpoint — dial each to 5.0&nbsp;V with a multimeter before anything connects.</td><td class="cost"><span class="tag tag-ordered">$6.90</span></td></tr>
+<tr><td>Electronics battery</td><td>2</td><td>URGENEX 2S 450&nbsp;mAh 30C with 1-to-2 USB charger. Powers telemetry only; JST/PH2.0 connectors are adequate at these currents. Not the starter battery.</td><td class="cost"><span class="tag tag-ordered">$26.99</span></td></tr>
+<tr><td>Shielded sensor cable</td><td>25&nbsp;ft</td><td>FIRMERST 22&nbsp;AWG 4-conductor, double shielded (foil + braid), UL2464. Drain lands at the star-ground point only. 22&nbsp;AWG substituted for 24 — electrically equivalent at signal currents.</td><td class="cost"><span class="tag tag-ordered">$14.44</span></td></tr>
+<tr><td>Ferrite suppression cores</td><td>24</td><td>JoTownCand snap-on kit, Ni-Zn, 3.5–13&nbsp;mm; 12 pieces in the small sizes that fit sensor leads. Clamp at the receiving end; loop thin cables through twice.</td><td class="cost"><span class="tag tag-ordered">$9.69</span></td></tr>
+<tr><td>Ceramic capacitors</td><td>100</td><td>InnoHHustle 0.1&nbsp;µF X7R, −55 to +125&nbsp;°C. Decoupling at every board&rsquo;s power pins.</td><td class="cost"><span class="tag tag-ordered">$5.49</span></td></tr>
+<tr><td>Electrolytic capacitor kit</td><td>240</td><td>ALLECIN 24-value assortment, 0.1–1000&nbsp;µF. Bulk capacitance at buck outputs; mount inside the enclosure, away from hot metal (85&nbsp;°C parts).</td><td class="cost"><span class="tag tag-ordered">$9.99</span></td></tr>
+<tr><td>1N4148 diodes</td><td>100</td><td>ASEMI high-speed switching diodes for input protection and flyback duty.</td><td class="cost"><span class="tag tag-ordered">$4.39</span></td></tr>
+<tr><td>TVS diodes</td><td>20 + 20</td><td>P6KE6.8CA (bidirectional, ~5.8&nbsp;V standoff) clamping the 5&nbsp;V sensor and supply lines; P6KE12CA (~10.2&nbsp;V standoff) clamping the 2S battery leads.</td><td class="cost"><span class="tag tag-ordered">$11.98</span></td></tr>
+<tr><td>Resistor stock</td><td>—</td><td>Already owned: metal-film 10, 100, 220, 330, 1&nbsp;k, 2&nbsp;k, 5.1&nbsp;k, 10&nbsp;k, 100&nbsp;k, 1&nbsp;M — covers pull-ups, opto LED limiting, gate drive, and dividers with no assortment purchase needed.</td><td class="cost"><span class="tag tag-owned">$0 owned</span></td></tr>
+<tr><td>Perfboard and headers</td><td>58&nbsp;pc</td><td>Double-sided plated-through-hole kit, 6 sizes, with 40-pin male/female headers and KF301 screw terminals. Largest boards carry the ESP32 plus sensor breakouts.</td><td class="cost"><span class="tag tag-ordered">$13.99</span></td></tr>
+<tr><td>Grommet kit</td><td>200&nbsp;pc</td><td>8-size rubber grommets: enclosure cable pass-throughs and vibration-isolation bushings under mounting screws.</td><td class="cost"><span class="tag tag-ordered">$6.99</span></td></tr>
+<tr><td>Home soldering setup</td><td>1&nbsp;lot</td><td>Miniware TS101 iron with BC2 tip (verify genuine via IronOS updater on arrival); 65&nbsp;W USB-C PD supply; weighted holder with brass tip cleaner; 63/37 rosin-core solder, 0.8&nbsp;mm; MG Chemicals 426 desoldering wick; no-clean rosin flux pen; 16&nbsp;oz 99% isopropyl alcohol (flux cleanup, and surface prep for the flywheel magnet epoxy).</td><td class="cost"><span class="tag tag-ordered">~$119 tools</span></td></tr>
+<tr><td>K-type washer thermocouple</td><td>2–3</td><td>Deferred to unboxing: ring size must match head-bolt/plug hardware measured on the delivered engine. Prefer ungrounded/insulated-junction listings; route the probes&rsquo; own K-type leads to the MAX31855s — never extend with copper.</td><td class="cost"><span class="tag tag-deferred">Deferred</span></td></tr>
+<tr><td>Fast optocoupler</td><td>2–3</td><td>6N137 high-speed optocoupler for the crank-trigger tap and CDI trigger drive; PC817 pack as slow-side spares.</td><td class="cost"><span class="tag tag-p2">Phase 2</span></td></tr>
+<tr><td>Trigger driver parts</td><td>1&nbsp;lot</td><td>Logic-level transistor or MOSFET (2N2222 / IRLZ44N class), flyback diodes, harness wire.</td><td class="cost"><span class="tag tag-p2">Phase 2</span></td></tr>
+<tr><td>Ignition interface connectors</td><td>1&nbsp;set</td><td>Servo/JST connector pairs that make the CDI trigger a plug swap between stock fixed timing and the ignition controller.</td><td class="cost"><span class="tag tag-p2">Phase 2</span></td></tr>
+</table></div>
+<p>Ordered total: $204.79 against the ~$160 pre-order estimate. The difference is deliberate rather than drift: multi-pack spares (three ESP32s, three bucks, three SD modules, three IMUs, ten Hall sensors), a second TVS value for the battery leads, and two lines promoted into this order (epoxy, grommets), partly offset by $0 spent on resistors already owned. Remaining Phase 1 spend — thermocouples, starter/CDI battery, balance charger, consumables, and bench materials — is estimated at $120–$160, which keeps Phase 1 near the top of its $600–$750 budget line in the companion proposal. Separately, a home soldering setup was ordered at roughly $119; it is recorded in the table for completeness but excluded from the Phase 1 parts total, since it is durable bench tooling shared across all phases (lab soldering equipment remains available as backup).</p>
+
+<h2><span class="num">Section 5</span>Build sequencing rules</h2>
+<p>Three rules govern the first weeks and exist to keep failure modes separated. First, the engine is assembled and broken in on its stock glow ignition with nitro fuel, tuned to a steady idle and clean throttle response, before the gasoline/CDI conversion is installed — so that engine problems and conversion problems can never be confused with one another. Second, the CDI conversion is installed only after adding the high-voltage ground strap (a known defect in the current kit revision that otherwise destroys the Hall sensor and ignition module). Third, per the manufacturer&rsquo;s manual: the cam box is greased before first start, the engine is never run wide-open with no load, starting attempts are limited to short bursts, and all running happens outdoors.</p>
+<p>ESP32 data logging (cylinder-head temperature and RPM) is brought online from the first start, so the baseline dataset that informs Phase 2 design decisions accumulates from day one. With ignition-timing control now a core objective, Phase 1 also records the CDI kit&rsquo;s Hall crank-trigger waveform through an opto-isolated tap, giving the Phase 2 ignition controller real captured signals to be developed against. The engine itself runs entirely on the stock fixed-timing CDI throughout Phase 1; the sequencing rules above are unchanged.</p>
+
+<h2><span class="num">Section 6</span>Phase 1 completion criteria</h2>
+<p>Phase 1 is complete when the engine is assembled with timing verified; runs and tunes reliably on glow ignition; runs on gasoline with the CDI conversion and ground-strap fix installed; and a full run of head-temperature, RPM, vibration, and crank-trigger data has been logged. That dataset, together with the documented build log, is the deliverable that gates Phase 2 (electric motor-generator integration) and supports the budget request for the later stages.</p>
+</div>
+</body>
+</html>

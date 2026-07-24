@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hybrid RC power unit — build companion</title>
+<style>
+:root{
+  --paper:#F7F8F6; --ink:#212823; --muted:#5D6B62; --accent:#0B6E4F; --warm:#B35310;
+  --line:#D9E1DB; --card:#FFFFFF; --code:#EEF2EE;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#131816; --ink:#E3EAE4; --muted:#95A49A; --accent:#46BE93; --warm:#E08A4A; --line:#2A332E; --card:#1A211D; --code:#202823; }
+}
+html{background:var(--paper);}
+body{margin:0;color:var(--ink);font-family:Charter,Georgia,'Times New Roman',serif;line-height:1.65;font-size:17px;}
+.wrap{max-width:820px;margin:0 auto;padding:48px 24px 96px;}
+.eyebrow{font-family:'Segoe UI',system-ui,sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 14px;}
+h1{font-size:34px;line-height:1.2;margin:0 0 6px;text-wrap:balance;font-weight:700;}
+.subtitle{font-size:20px;color:var(--muted);margin:0 0 18px;text-wrap:balance;}
+.meta{font-family:'Segoe UI',system-ui,sans-serif;font-size:13.5px;color:var(--muted);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;margin:0 0 40px;}
+h2{font-size:23px;margin:52px 0 14px;font-weight:700;text-wrap:balance;}
+h2 .num{color:var(--accent);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;font-weight:600;letter-spacing:.06em;display:block;margin-bottom:2px;}
+h3{font-size:18px;margin:26px 0 10px;font-weight:700;}
+p{margin:0 0 16px;}
+strong{font-weight:700;}
+code{font-family:'Cascadia Code',Consolas,ui-monospace,monospace;font-size:.85em;background:var(--code);padding:1px 6px;border-radius:4px;}
+ul,ol{margin:0 0 16px;padding-left:24px;}
+li{margin-bottom:8px;}
+.tablebox{overflow-x:auto;margin:20px 0 24px;border:1px solid var(--line);border-radius:6px;background:var(--card);}
+table{border-collapse:collapse;width:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13.5px;line-height:1.5;min-width:680px;}
+th{background:var(--code);text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);font-weight:600;white-space:nowrap;}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+.callout{border:1px solid var(--line);border-radius:6px;background:var(--card);padding:16px 20px;margin:20px 0;}
+.callout p:last-child{margin-bottom:0;}
+.check{list-style:none;padding-left:0;}
+.check li{padding-left:30px;position:relative;}
+.check li::before{content:"";position:absolute;left:0;top:5px;width:14px;height:14px;border:1.5px solid var(--accent);border-radius:3px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">Hybrid RC power unit · document 3 of 3</p>
+<h1>Build companion</h1>
+<p class="subtitle">System walkthrough, arrival checklists, wiring reference, and study guide</p>
+<p class="meta">Working notes distilled from the planning &amp; procurement sessions &nbsp;·&nbsp; July 2026</p>
+
+<h2><span class="num">Part 1</span>How the system works, end to end</h2>
+<p><strong>The ground rule that shapes everything.</strong>&ensp;The ignition world and the electronics world never share power or wiring. The CDI generates 15–20&nbsp;kV pulses inches from the logic boards; the only reliable defense is isolation. The electronics have their own 2S battery feeding an MP1584 buck at 5.0&nbsp;V; that rail powers the ESP32 (whose onboard regulator makes 3.3&nbsp;V), the SD module, and the Hall sensor. Any signal that must cross between worlds does so as a sealed digital pulse or through an optocoupler, where it crosses as light with no shared wire. Ferrites, shielded cable, TVS clamps, and star grounding all reinforce this one wall.</p>
+<p><strong>The combustion side.</strong>&ensp;The flywheel carries the CDI&rsquo;s magnet; each revolution it sweeps the CDI&rsquo;s Hall sensor, which tells the CDI box &ldquo;piston near top,&rdquo; and the CDI fires the plugs. Stock timing is fixed — the spark fires at the same crank angle at every RPM. All of Phase 1 runs this way.</p>
+<p><strong>Sensing — three one-way conversations into the ESP32.</strong>&ensp;Head temperature: a K-type washer thermocouple generates microvolts at its junction; the MAX31855 sits nearby, amplifies, cold-junction compensates, and answers the ESP32 over SPI — one per cylinder so the two carbs can be caught disagreeing. RPM: a separate SmCo magnet sweeps a separate A3144 Hall sensor (never the ignition&rsquo;s), one pulse per rev into the ESP32&rsquo;s hardware pulse counter, which counts edges with no software in the loop. Vibration: the MPU-6050 reports over I2C, building the &ldquo;healthy baseline&rdquo; that later changes are measured against.</p>
+<p><strong>The hub.</strong>&ensp;The telemetry ESP32 is the scribe: it timestamps every reading so temperature, RPM, and vibration become one synchronized story, then sends it out three ways — microSD (SPI) as ground truth, WiFi to the laptop dashboard for live monitoring with zero wires to the bench, and USB serial for engine-off debugging.</p>
+<p><strong>Phase 2 — the electric side.</strong>&ensp;The brushless motor belt-couples to the crank; torque flows both directions. The VESC converts battery DC to three-phase motor current and works in all four quadrants: it can spin the engine (start, assist) or resist it (dyno load, harvest). VESC and telemetry ESP32 talk UART — the system&rsquo;s only true dialogue: commands go one way, and motor RPM, phase current, and battery volts/amps come back, which is the entire electrical half of the energy dataset for free. The ESP32 graduates from scribe to energy manager.</p>
+<p><strong>Phase 2 — the second brain.</strong>&ensp;Fixed spark timing is wrong at most RPMs; the flame needs a head start that grows with engine speed. A dedicated ignition ESP32 intercepts the crank pulse (through an opto), looks up the correct advance in an RPM-indexed map with hard-coded limits, waits precisely the right microseconds, and fires the CDI trigger (through another opto). It is a separate chip because WiFi and file writes cause millisecond pauses — nothing in a log entry, tens of degrees of error in spark timing. The interface is a plug swap: pull one connector and stock fixed timing is back. The telemetry ESP32 logs commanded advance beside RPM and head temp, so every map becomes data.</p>
+<p><strong>Phase 3</strong> adds pitot pressure and ride-height sensors as more digital breakouts on the same buses, flowing down the same SD/WiFi paths, compared against CFD. Nothing structural changes — that is the payoff of the architecture.</p>
+
+<h2><span class="num">Part 2</span>Arrival-day checklists</h2>
+<h3>Electronics (this week — do while return windows are open)</h3>
+<ul class="check">
+<li>Flash a blink + WiFi-scan sketch on all three ESP32s. If one won&rsquo;t enumerate over USB, swap the cable before blaming the board.</li>
+<li>Power each MP1584 buck alone and set its trim pot to 5.0&nbsp;V with a multimeter before it ever touches a board. They arrive at random setpoints.</li>
+<li>Run <code>h2testw</code> on the Lexar card — full write/verify pass to confirm genuine capacity before it holds engine data.</li>
+<li>Solder headers onto the MPU-6050 boards (lab iron is fine if the TS101 hasn&rsquo;t arrived). No friction-fit on a vibration sensor.</li>
+<li>Breadboard the Hall sensor: 5&nbsp;V supply, 10&nbsp;k pull-up to 3.3&nbsp;V on the output. Test each SmCo magnet&rsquo;s polarity — the A3144 is unipolar — and paint-mark the working face of every magnet you plan to use.</li>
+<li>Wire a MAX31855 and confirm it reads room temperature sanely (any K-type probe or even shorted input for a fault-bit check).</li>
+<li>SD module: VCC from the 5&nbsp;V rail, never 3.3&nbsp;V. If writes are flaky on jumper wires, drop the SPI clock speed first.</li>
+<li>TS101: run the IronOS firmware updater once — it recognizing the iron confirms a genuine unit while the return window is open.</li>
+</ul>
+<h3>Engine (weeks out — full checklist in document 2, section 2)</h3>
+<ul class="check">
+<li>Photograph everything before assembly; verify bundle contents; identify the starter-harness connector (unlocks the battery buy); inventory exhaust parts; inspect machining and dry-fit.</li>
+<li>Measure head-bolt / plug-seat hardware with calipers — this sizes the washer thermocouple order (prefer ungrounded/insulated-junction probes).</li>
+</ul>
+
+<h2><span class="num">Part 3</span>Wiring and protocol reference</h2>
+<div class="tablebox"><table>
+<tr><th>Signal</th><th>From &rarr; to</th><th>Bus / wiring</th><th>Notes</th></tr>
+<tr><td>Head temperature ×2</td><td>Washer thermocouple &rarr; MAX31855</td><td>Probe&rsquo;s own K-type leads</td><td>Never extend with copper wire — new junctions corrupt the reading. Route the supplied leads all the way to the amplifier.</td></tr>
+<tr><td>Temperature readout</td><td>MAX31855 ×2 &rarr; telemetry ESP32</td><td>SPI (shared SCK/MISO, one CS each)</td><td>3.3&nbsp;V logic, ~4 samples/s each. Check fault bits every read.</td></tr>
+<tr><td>Engine RPM</td><td>A3144 Hall &rarr; telemetry ESP32</td><td>Single GPIO pulse, shielded pair</td><td>Sensor powered at 5&nbsp;V; open-collector output pulled to 3.3&nbsp;V via 10&nbsp;k. Use the pulse-counter peripheral, not polling.</td></tr>
+<tr><td>Vibration</td><td>MPU-6050 &rarr; telemetry ESP32</td><td>I2C</td><td>Solder headers; mount rigidly to the thing being measured.</td></tr>
+<tr><td>Log storage</td><td>Telemetry ESP32 &rarr; microSD module</td><td>SPI</td><td>Module VCC = 5&nbsp;V rail. Ground-truth CSV; flush files regularly so a power loss costs seconds, not runs.</td></tr>
+<tr><td>Live telemetry</td><td>Telemetry ESP32 &rarr; laptop</td><td>WiFi (UDP or web dashboard)</td><td>Best-effort by design; the SD card is the record.</td></tr>
+<tr><td>Bench debug</td><td>Telemetry ESP32 &harr; laptop</td><td>USB serial</td><td>Engine-off use only — avoid a wired ground path to a sparking bench.</td></tr>
+<tr><td>Motor command + electrical data</td><td>Telemetry ESP32 &harr; VESC</td><td>UART (VescUart library)</td><td>Phase 2. Carries start/harvest/deploy out, motor RPM + currents + battery V/I back.</td></tr>
+<tr><td>Crank trigger tap</td><td>CDI Hall line &rarr; ignition ESP32</td><td>6N137 optocoupler</td><td>Phase 1 capture, Phase 2 control input. Light crosses the boundary, not wire.</td></tr>
+<tr><td>Spark command</td><td>Ignition ESP32 &rarr; CDI trigger input</td><td>Opto-isolated driver, plug-swap connector</td><td>Phase 2. Advance map clamped in firmware; one connector reverts to stock fixed timing.</td></tr>
+</table></div>
+<div class="callout">
+<p><strong>EMI rules, compressed:</strong> electronics on their own battery, never the ignition supply · all grounds meet at one star point · cable shield drain lands at the star point only, one end · ferrites clamp at the receiving end of each run, thin cables looped through twice · P6KE6.8CA TVS on 5&nbsp;V lines, P6KE12CA on 2S battery leads · 0.1&nbsp;µF ceramic at every board&rsquo;s power pins, bulk electrolytic at buck outputs · physical distance between ignition wiring and signal wiring beats every other fix.</p>
+</div>
+
+<h2><span class="num">Part 4</span>Pre-arrival study guide</h2>
+<h3>This week, matched to the electronics arriving</h3>
+<ul>
+<li><strong>Random Nerd Tutorials</strong> (site) — tested ESP32 guides for nearly every module ordered. Search: <em>ESP32 MAX31855</em>, <em>ESP32 microSD logging</em>, <em>ESP32 MPU-6050</em>, <em>ESP32 web server dashboard</em>.</li>
+<li><strong>DroneBot Workshop</strong> (YouTube) — clearest long-form ESP32 introductions. <strong>Andreas Spiess</strong> — deeper cuts on thermocouple accuracy, interrupts, logging architecture, EMI.</li>
+<li><strong>EEVblog soldering tutorial</strong> (3 parts) and <strong>Adafruit &ldquo;Collin&rsquo;s Lab: Soldering&rdquo;</strong> — before the TS101 meets perfboard. Also search <em>perfboard soldering techniques</em>.</li>
+<li>Concept searches: <em>pull-up resistor open collector explained</em> · <em>SPI vs I2C explained</em> · <em>ESP32 hardware interrupt vs polling</em> · <em>LiPo battery safety charging storage</em>.</li>
+</ul>
+<h3>Before the engine lands</h3>
+<ul>
+<li>Search <em>Toyan FS-L200 assembly</em> / <em>Toyan engine build</em> — watching a full build of this engine family is a rehearsal. <strong>JohnnyQ90</strong> for micro nitro engine break-in and tuning by ear.</li>
+<li>Search <em>nitro engine break in procedure</em> · <em>nitro engine tuning rich vs lean</em> · <em>reading a glow plug</em>.</li>
+<li><strong>Engineering Explained</strong> — <em>ignition timing advance explained</em>; then <em>CDI vs inductive ignition</em>; then the <strong>Speeduino</strong> and <strong>rusEFI</strong> wikis on crank trigger decoding and ignition scheduling — the working textbook for the ignition ESP32.</li>
+</ul>
+<h3>Background, any time</h3>
+<ul>
+<li><em>F1 power unit explained MGU-K</em> — Chain Bear and the Mercedes HPP official videos; this is the architecture being miniaturized.</li>
+<li><em>VESC tool tutorial</em> and <em>VESC UART control Arduino</em>; the SolidGeek <code>VescUart</code> library on GitHub is the likely Phase 2 interface.</li>
+<li><em>Star grounding explained</em> · <em>EMI suppression hobby electronics</em>.</li>
+</ul>
+<div class="callout">
+<p><strong>Five-hour priority order:</strong> two Random Nerd Tutorials builds with real hardware → EEVblog soldering series → one full Toyan build video → one nitro tuning video → Speeduino ignition-decoding docs. That set covers every skill Phase 1 demands.</p>
+<p><strong>And start the build log now</strong> — a first entry summarizing the architecture and plan means the portfolio deliverable exists from day zero, and writing it is the best comprehension check on everything above.</p>
+</div>
+</div>
+</body>
+</html>

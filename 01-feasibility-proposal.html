@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hybrid RC power unit — feasibility proposal</title>
+<style>
+:root{
+  --paper:#F7F8F6; --ink:#212823; --muted:#5D6B62; --accent:#0B6E4F; --warm:#B35310;
+  --line:#D9E1DB; --card:#FFFFFF; --code:#EEF2EE;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#131816; --ink:#E3EAE4; --muted:#95A49A; --accent:#46BE93; --warm:#E08A4A; --line:#2A332E; --card:#1A211D; --code:#202823; }
+}
+html{background:var(--paper);}
+body{margin:0;color:var(--ink);font-family:Charter,Georgia,'Times New Roman',serif;line-height:1.65;font-size:17px;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.eyebrow{font-family:'Segoe UI',system-ui,sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 14px;}
+h1{font-size:34px;line-height:1.2;margin:0 0 6px;text-wrap:balance;font-weight:700;}
+.subtitle{font-size:20px;color:var(--muted);margin:0 0 18px;text-wrap:balance;}
+.meta{font-family:'Segoe UI',system-ui,sans-serif;font-size:13.5px;color:var(--muted);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;margin:0 0 40px;}
+h2{font-size:23px;margin:52px 0 14px;font-weight:700;text-wrap:balance;}
+h2 .num{color:var(--accent);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;font-weight:600;letter-spacing:.06em;display:block;margin-bottom:2px;}
+p{margin:0 0 16px;}
+strong{font-weight:700;}
+.tablebox{overflow-x:auto;margin:20px 0 24px;border:1px solid var(--line);border-radius:6px;background:var(--card);}
+table{border-collapse:collapse;width:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13.5px;line-height:1.5;min-width:640px;}
+th{background:var(--code);text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);font-weight:600;white-space:nowrap;}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+td.num, .risk{white-space:nowrap;font-variant-numeric:tabular-nums;}
+.risk-low{color:var(--accent);font-weight:600;}
+.risk-med{color:var(--warm);font-weight:600;}
+.risk-high{color:var(--warm);font-weight:700;}
+.total td{font-weight:700;background:var(--code);}
+.close{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-style:italic;}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">Hybrid RC power unit · document 1 of 3</p>
+<h1>Miniature hybrid powertrain development platform</h1>
+<p class="subtitle">Feasibility assessment and phased budget proposal</p>
+<p class="meta">Prepared by Adam &nbsp;·&nbsp; B.S. Simulation &amp; Visualization, Full Sail University &nbsp;·&nbsp; July 2026</p>
+
+<h2><span class="num">Executive summary</span>At a glance</h2>
+<p>This proposal covers the design and construction of a 1/10-scale hybrid powertrain: a commercially available 7cc twin-cylinder four-stroke internal combustion engine kit paired with a crank-mounted electric motor-generator (modeled on the Formula 1 MGU-K), managed by a custom ESP32-based control and telemetry system that culminates in microcontroller-managed ignition timing, and ultimately installed in a self-designed, 3D-printed chassis with instrumented aerodynamics. The project is structured in three sequential phases with defined completion gates, so that spending in each phase is only committed once the previous phase has demonstrably succeeded. Total estimated cost is $1,200–$1,700 including contingency, spread across the phases over an estimated six to eight months of part-time work.</p>
+<p>A link-by-link feasibility audit (Section 4) finds no step on the critical path that lacks either commercial precedent or a reduction to well-established physics and engineering practice. The two identified medium-risk areas degrade gracefully: in the worst realistic case, the project descopes to a fully instrumented single-power-source vehicle with live telemetry, which remains a substantial deliverable. There is no failure mode in which the phased investment becomes worthless.</p>
+
+<h2><span class="num">Section 1</span>Project overview and objectives</h2>
+<p>The technical objective is a working parallel hybrid at RC scale: the combustion engine and an electric motor-generator share the crankshaft through a belt drive, allowing the electric machine to start the engine, harvest energy as a generator, and deploy stored energy as torque assist under microcontroller control. An equally core control objective is microcontroller-managed spark-ignition timing: replacing the conversion kit&rsquo;s fixed advance with a crank-synchronized, RPM-indexed ignition map, developed and tuned on the bench dynamometer. Commanding both the electrical machine and the combustion process from software is the project&rsquo;s clearest demonstration of understanding how the engine itself works in parallel with the hybrid system. This mirrors the architecture of current Formula 1 power units, which pair a combustion engine with a large MGU-K in a roughly even power split. A later, optional second version replaces the centrifugal clutch with a rigid coupling to add full brake-energy regeneration, the most control-intensive configuration.</p>
+<p>The educational and professional objective is equally central. The project produces a portfolio piece aligned with a Simulation &amp; Visualization degree: an embedded control system (energy management and ignition-timing control), a real-time telemetry pipeline from physical sensors, and a data-driven design loop in which CAD and CFD models are validated against measured results from the vehicle. The build log, telemetry dashboards, and iteration history are deliverables in their own right, documented from the first engine start.</p>
+
+<h2><span class="num">Section 2</span>Technical approach (three phases)</h2>
+<p><strong>Phase 1 — Engine platform.</strong>&ensp;Assemble the SEMTO ST-NF2 / Toyan FS-L200AC 7cc twin-cylinder four-stroke DIY engine kit; run and tune it on a bench mount using the included glow-ignition starter hardware; then install the manufacturer&rsquo;s gasoline/CDI spark conversion kit, which also provides a magnet flywheel and Hall-effect crank position sensor. Instrument the running engine with an ESP32 logging cylinder-head temperature and RPM, and record the CDI kit&rsquo;s Hall-effect crank-trigger waveform — the reference signal against which the ignition-timing controller is later developed. Phase output: a characterized, spark-ignition engine and the baseline dataset (thermal behavior, vibration, operating envelope) that informs all later design.</p>
+<p><strong>Phase 2 — Hybrid powertrain.</strong>&ensp;Mount a sensored brushless motor to the crankshaft via the engine&rsquo;s existing starter-belt interface, driven by a VESC-class four-quadrant motor controller. On the bench, the motor doubles as a dynamometer load, producing the engine&rsquo;s real torque curve. The bench-dyno stage is also where ignition-timing control is developed: a dedicated microcontroller intercepts the crank trigger and re-times the spark under a programmable advance map, tuned against measured torque (Section 3). Integrate engine, clutch, and motor into a 1/10 drivetrain with ESP32 energy management (start, harvest, deploy). Phase output: a driving hybrid vehicle with logged energy flows, running on a microcontroller-managed ignition map.</p>
+<p><strong>Phase 3 — Chassis and aerodynamics.</strong>&ensp;Design a monocoque-style chassis and modular aerodynamic elements in SolidWorks, evaluate candidates in CFD, print in engineering polymers (carbon-filled nylon structure, lighter materials for aero surfaces), and instrument the car for aerodynamic measurement: pitot airspeed, ride-height-based downforce estimation, and coast-down drag testing. Phase output: a complete instrumented vehicle and a validated CAD-to-test design loop.</p>
+
+<h2><span class="num">Section 3</span>Data path and telemetry architecture</h2>
+<p><strong>One architecture, sensor to dashboard.</strong>&ensp;Every measurement in the project follows the same path: a sensor produces a digital signal, an ESP32 timestamps it, logs it locally, and streams it live over WiFi. The ESP32&rsquo;s analog inputs are deliberately never used — its ADC is nonlinear, and an ignition system generating 15–20 kV pulses nearby is the worst possible environment for small analog signals. Every sensor is therefore either a hardware pulse or a digital breakout on an SPI or I2C bus.</p>
+<p><strong>Phase 1 sensing.</strong>&ensp;Engine speed comes from a Hall-effect sensor switching on a flywheel-mounted magnet: an open-collector output pulled up to 3.3&nbsp;V, counted by the ESP32&rsquo;s hardware pulse-counter peripheral. At redline the trigger rate is roughly 267&nbsp;Hz against a peripheral rated in the tens of MHz, so timing margin is enormous. Cylinder-head temperature is measured per cylinder with K-type thermocouple washers read by MAX31855 amplifiers over SPI — cold-junction compensated, 0.25&nbsp;°C resolution, with open- and short-circuit fault detection so a vibration-loosened probe announces itself instead of reading plausible garbage. An inertial measurement unit logs the vibration baseline. The measurement chain shares no wiring with the ignition chain.</p>
+<p><strong>Getting data off the engine.</strong>&ensp;Three transport tiers are used across the project. On the bench, USB serial streams timestamped CSV to a laptop. For running-engine work, the ESP32 streams over WiFi to a live dashboard, which galvanically isolates the laptop from the spark-carrying bench entirely — and is the only tier that survives the transition to a moving vehicle. Onboard microSD logging is the ground truth: telemetry is streamed best-effort and logged locally, so a radio dropout never loses data. The electronics run from their own battery through a buck regulator, never from the ignition supply, with star grounding, shielded sensor runs, and ferrite suppression throughout.</p>
+<p><strong>Phase 2 adds the electrical half for free.</strong>&ensp;The VESC motor controller reports motor RPM, phase current, and battery voltage and current over its UART link — the entire electrical side of the energy-flow dataset arrives without a single additional sensor. The same link carries the supervisory ESP32&rsquo;s start, harvest, and deploy commands, so one connection closes the loop between commanding the hybrid system and measuring what it did.</p>
+<p><strong>Ignition-timing controller.</strong>&ensp;Now a core objective, ignition timing runs on its own dedicated microcontroller that does nothing else: it reads the crank trigger, applies an RPM-indexed advance map with hard-coded safe limits, and fires the CDI trigger input through an opto-isolated driver. Keeping it separate from the telemetry ESP32 means WiFi and logging can never add jitter to spark timing; a second ESP32 fills the role initially, with a Teensy 4.1 as the drop-in upgrade path if measured jitter demands it. The interface is built as a plug swap, so the stock fixed-timing CDI remains a one-connector reversion at any moment, and the telemetry stream records commanded advance alongside RPM and head temperature so every ignition map becomes part of the project dataset.</p>
+
+<h2><span class="num">Section 4</span>Feasibility analysis</h2>
+<p>Each link in the project chain was assessed against a single standard: does it have commercial or community precedent, or does it reduce to established physics with known engineering solutions? The table summarizes the audit.</p>
+<div class="tablebox"><table>
+<tr><th>Critical-path link</th><th>Basis / precedent</th><th>Risk</th><th>Fallback</th></tr>
+<tr><td>Engine kit assembles and runs</td><td>Mass-market product; ~50 reviews on one listing; vendor sells a ready-to-run RC car built on this engine</td><td class="risk risk-low">Low</td><td>Vendor warranty / support</td></tr>
+<tr><td>Spark (CDI) conversion</td><td>Official manufacturer conversion kit; one known wiring defect with a documented one-wire fix</td><td class="risk risk-low">Low</td><td>Engine runs on stock glow ignition indefinitely</td></tr>
+<tr><td>Crank-driven electric machine</td><td>Manufacturer sells this engine factory-packaged with a 12V generator; belt interface to crank already exists for the stock starter</td><td class="risk risk-med">Low–Med</td><td>Direct shaft coupling on bench rig</td></tr>
+<tr><td>Bidirectional motor control and battery harvest</td><td>Open-source VESC four-quadrant control; standard practice in e-mobility (regen into lithium packs)</td><td class="risk risk-med">Low–Med</td><td>Uni-directional (deploy-only) operation</td></tr>
+<tr><td>Engine in a clutched 1/10 drivetrain</td><td>Vendor&rsquo;s $999 ready-to-run car is this exact integration; clutch kits sold as accessories</td><td class="risk risk-low">Low</td><td>Commercial drivetrain parts throughout</td></tr>
+<tr><td>Parallel torque deploy (hybrid operation)</td><td>Two torque sources summing on one shaft; motor torque commanded by microcontroller via VESC</td><td class="risk risk-med">Med</td><td>Graceful: system runs engine-only if assist is disabled</td></tr>
+<tr><td>ESP32 supervisory control / ignition-timing ECU</td><td>Crank trigger rate at redline is ~267 Hz, far within ESP32 capability; DIY spark-timing controllers are an established hobbyist genre</td><td class="risk risk-med">Low (logging) / Med (ECU)</td><td>Ignition interface is a plug swap; stock fixed-timing CDI remains a one-connector reversion</td></tr>
+<tr><td>3D-printed chassis and aero</td><td>OpenRC project proves printed 1/10 structures; nitro-specific deltas (heat, fuel, vibration) addressed by aluminum engine subframe and fuel-resistant nylon</td><td class="risk risk-med">Med</td><td>Commercial 1/10 chassis (~$100) carries the entire powertrain project</td></tr>
+<tr><td>v2 locked-clutch full regeneration</td><td>Advanced controls work (launch/anti-stall)</td><td class="risk risk-high">High</td><td>Explicitly optional; project is complete without it</td></tr>
+</table></div>
+
+<h2><span class="num">Section 5</span>Risk assessment</h2>
+<p>The dominant technical risk is electromagnetic interference: a capacitive-discharge ignition producing 15–20 kV pulses will operate near a brushless motor controller and a microcontroller on a small, vibrating platform. This is the step most likely to take longer than planned. It is a well-understood class of problem with standard mitigations — shielded sensor wiring, opto-isolated ignition signaling, star grounding, and physical separation — and its failure mode is iteration on layout, not a dead end. Promoting ignition timing to a core objective adds a related control risk: a software fault could command damaging spark advance. The mitigations are architectural — a dedicated controller isolated from telemetry and radio, advance limits clamped in firmware, tuning done only on the bench dynamometer, and the stock fixed-timing CDI retained as a one-connector reversion — so the realistic failure mode is falling back to fixed timing, not harming the engine.</p>
+<p>The secondary risk is printed-chassis durability under nitro-engine heat, fuel exposure, and vibration. Mitigations (metal engine subframe, carbon-filled nylon, heat shielding, sacrificial aero mounts) are planned from the outset, and a complete commercial fallback exists: the entire powertrain program succeeds on a purchased chassis if printing underdelivers.</p>
+<p>Because every phase gates the next, financial exposure is limited to one phase at a time, and the worst realistic outcome at any gate is a descoped but still-complete project — an instrumented combustion vehicle with full telemetry — rather than sunk cost.</p>
+
+<h2><span class="num">Section 6</span>Phased budget</h2>
+<div class="tablebox"><table>
+<tr><th>Phase</th><th>Scope of spend</th><th>Estimate</th><th>Gate to proceed</th></tr>
+<tr><td>Phase 1</td><td>Engine kit with starter hardware ($290); gasoline/CDI conversion kit ($113); exhaust, spares, fuel-system accessories; batteries and charging; fuel and fluids; bench mounting; ESP32 telemetry system (full bill of materials in the companion Phase 1 report); safety equipment</td><td class="num">$600–$750</td><td>Engine assembled, tuned, running on spark ignition, with logged temperature/RPM data</td></tr>
+<tr><td>Phase 2</td><td>Sensored brushless motor; VESC motor controller; clutch kit; belts, pulleys, couplers; drive battery and wiring; 1/10 drivetrain components; ignition-timing controller hardware (dedicated microcontroller, opto-isolated CDI trigger interface, harness)</td><td class="num">$400–$650</td><td>Bench dyno complete; engine runs under a mapped ignition curve; vehicle drives with functioning electric assist and energy logging</td></tr>
+<tr><td>Phase 3</td><td>Engineering filaments (PA-CF, PETG/ASA); differential-pressure, ride-height, and inertial sensors; fasteners and inserts</td><td class="num">$200–$300</td><td>Instrumented vehicle running; aero data collected and compared against CFD</td></tr>
+<tr><td>Contingency</td><td>~15% across phases (broken parts, consumables, revisions)</td><td class="num">$150–$250</td><td>—</td></tr>
+<tr class="total"><td>Total</td><td></td><td class="num">$1,200–$1,700</td><td></td></tr>
+</table></div>
+<p>Recurring operating costs after purchase are modest: gasoline/two-stroke oil mix (dollars per month of running), spark and glow plugs as consumables, and reprinted parts. The spark conversion specifically avoids ongoing nitro-fuel costs of roughly $30 per gallon.</p>
+
+<h2><span class="num">Section 7</span>Timeline</h2>
+<p>Working part-time alongside coursework and tutoring: Phase 1 is estimated at four to six weeks (kit assembly is rated at roughly 3.5 hours; the balance is tuning, conversion, and instrumentation). Phase 2 is the largest engineering effort at eight to twelve weeks, dominated by the motor coupling, VESC integration, and ignition-timing development on the bench dyno. Phase 3 runs six to ten weeks of design-print-test iteration and can partially overlap Phase 2 on the CAD side. End-to-end estimate: six to eight months, with a presentable milestone at the end of every phase.</p>
+
+<h2><span class="num">Section 8</span>Deliverables and success criteria</h2>
+<p>Minimum success (end of Phase 2): a driving 1/10-scale vehicle in which an electric motor starts the combustion engine, loads it as a generator, and deploys torque assist under software control; the engine runs on a microcontroller-managed ignition-advance map developed on the bench dyno; and energy flows and ignition data are logged and visualized. Full success (end of Phase 3): the same vehicle in a self-designed printed chassis with measured aerodynamic performance validated against simulation. Stretch goals, pursued only after full success: closed-loop ignition strategies (temperature-adaptive advance and knock-margin mapping), and the locked-clutch configuration with full brake-energy regeneration. Throughout, the documented build log, telemetry dashboards, and design-iteration history constitute the portfolio deliverable.</p>
+
+<p class="close">I welcome feedback on scope, phasing, and budget before any purchase is made.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# OS noise
+Thumbs.db
+desktop.ini
+*.tmp
+
+# Uncomment when firmware development starts (Phase 1-2 ESP32 work)
+# build/
+# .pio/
+# *.bin.tmp
