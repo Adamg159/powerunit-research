@@ -48,6 +48,19 @@ TS101 soldering iron.
   USB-A-to-USB-C cable into a direct port, drag `TS101_EN.hex` from the
   [IronOS releases page](https://github.com/Ralim/IronOS/releases), look for `.RDY`.
 
+## 2026-07-24 — Workspace now synced via GitHub
+
+- Workspace turned into a git repository and pushed to
+  **https://github.com/Adamg159/powerunit-research** (public — chosen deliberately since the
+  project is a portfolio piece; rule adopted: no secrets in the repo, WiFi credentials will
+  live in a gitignored `secrets.h` once firmware work starts).
+- Workflow on both machines: pull before working, commit + push after. Laptop still needs
+  its one-time `git clone`.
+- Problem hit: first push failed with a stale legacy GitHub token in Windows Credential
+  Manager, and Claude Code's shell disables git's interactive prompts. Fixed by setting
+  `GIT_TERMINAL_PROMPT=1` for the push so Git Credential Manager could do a fresh browser
+  sign-in; new credential cached, pushes work normally now.
+
 ## 2026-07-24 (expected) — Main electronics arrival
 
 Remaining electronics order due. Arrival-day checklist (document 3, Part 2) to run while
