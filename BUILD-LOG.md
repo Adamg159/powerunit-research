@@ -61,18 +61,43 @@ TS101 soldering iron.
   `GIT_TERMINAL_PROMPT=1` for the push so Git Credential Manager could do a fresh browser
   sign-in; new credential cached, pushes work normally now.
 
-## 2026-07-24 (expected) — Main electronics arrival
+## 2026-07-24 — Main electronics arrived (two stragglers in transit)
 
-Remaining electronics order due. Arrival-day checklist (document 3, Part 2) to run while
-return windows are open:
+Delivery received and photographed laid-out before assembly (checklist item 1 — photo to be
+committed to `photos/`). Confirmed present: 3× ESP32, 1× MAX31855, 10× A3144 Hall sensors,
+3× MPU-6050, 3× SD modules, Lexar microSD, 3× MP1584 bucks, 2× URGENEX 2S packs + charger,
+shielded cable, ferrites, grommets, perfboard kit, both capacitor kits, 1N4148s, TVS diodes,
+jumper wires, plus the full soldering bench (TS101, 65W supply, solder, wick, flux, IPA,
+bonus silicone mat).
 
-- [ ] Flash blink + WiFi-scan sketch on all 3 ESP32s (swap cable before blaming a board)
+**Short/delayed items — neither blocks anything:**
+- 1× MAX31855 (second of two) stuck in shipping; due in a couple of days, before the engine.
+  One board covers all bench testing; second needed only for per-cylinder logging at first start.
+- SmCo magnets due shortly after the engine — only needed once there's a flywheel to mount to.
+
+Arrival-day verification checklist (document 3, Part 2):
+
+- [x] Flash blink + WiFi-scan sketch on all 3 ESP32s — **all three PASS** (flash write
+      verified, LED blink, WiFi scan sees 3 networks at up to −49 dBm). All are genuine
+      ESP32-D0WD-V3 rev 301, dual-core 240 MHz, 4 MB flash. Board identity by eFuse MAC
+      (boards unlabeled for now; any board re-identifiable by plugging in and reading serial):
+      - Board 1: `58:2A:BD:7D:A7:D8`
+      - Board 2: `58:2A:BD:7C:AA:E8`
+      - Board 3: `58:2A:BD:7E:33:EC`
+
+      Test sketch lives at `firmware/arrival-test/arrival-test.ino` (repo's first code).
+      Problems hit and fixed along the way: Windows 11 has no inbox CP2102 driver
+      (code 28 on first plug-in) — installed the official Silicon Labs CP210x driver, which
+      created COM4 and covers all future CP2102 boards; and `WiFi.macAddress()` reads
+      all-zeros right after `WiFi.mode()` — switched to `ESP.getEfuseMac()`, which reads the
+      factory MAC from eFuse with no WiFi dependency.
 - [ ] Dial each MP1584 buck to 5.0 V with a multimeter BEFORE it touches anything
-- [ ] Run h2testw full write/verify on the Lexar 32 GB microSD
+- [ ] Run h2testw full write/verify on the Lexar 32 GB microSD — planned on the laptop
+      (desktop lacks a card reader)
 - [ ] Solder headers onto MPU-6050 boards (no friction fit on a vibration sensor)
 - [ ] Breadboard a Hall sensor (5 V supply, 10 k pull-up to 3.3 V); polarity-test and
-      paint-mark each SmCo magnet's working face (A3144 is unipolar)
-- [ ] Wire a MAX31855, confirm sane room-temp reading and fault bits
+      paint-mark each SmCo magnet's working face (A3144 is unipolar) — waits on magnets
+- [ ] Wire the MAX31855, confirm sane room-temp reading and fault bits
 - [ ] SD module VCC from 5 V rail (never 3.3 V); drop SPI clock if writes are flaky
 
 ## 2026-07-24 — Correction: IronOS flash fallback is invalid on both machines
