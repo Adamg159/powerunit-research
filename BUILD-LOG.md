@@ -93,9 +93,12 @@ Arrival-day verification checklist (document 3, Part 2):
       factory MAC from eFuse with no WiFi dependency.
 - [ ] Dial each MP1584 buck to 5.0 V with a multimeter BEFORE it touches anything
       — **blocked: no multimeter on the bench.** Ordered 2026-07-24, arriving next day:
-      AstroAI True RMS 6000-count auto-ranging DMM ($34.99) + alligator-clip test leads
-      (bench-stock tooling, like the soldering kit). 6000 counts gives millivolt resolution
-      on the 6 V range — right tool for setting 5.00 V trim pots. Bucks stay in the bag
+      AstroAI True RMS 6000-count auto-ranging DMM ($34.99) + DIANN banana-to-alligator
+      test leads ($5.99, 4 mm banana fits the AstroAI's standard jacks) — both bench-stock
+      tooling, like the soldering kit. 6000 counts gives millivolt resolution on the 6 V
+      range — right tool for setting 5.00 V trim pots. Plan for the bucks: solder short
+      pigtails/header pins to each buck's IN/OUT pads first (first soldering rep), clip on
+      hands-free, then dial the pot. Bucks stay in the bag
       until it arrives; nothing powers through them unset. Sensor-board first power comes
       from ESP32 USB rails instead.
 - [ ] Run h2testw full write/verify on the Lexar 32 GB microSD — planned on the laptop
