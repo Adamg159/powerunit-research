@@ -101,8 +101,8 @@ Arrival-day verification checklist (document 3, Part 2):
       hands-free, then dial the pot. Bucks stay in the bag
       until it arrives; nothing powers through them unset. Sensor-board first power comes
       from ESP32 USB rails instead.
-- [ ] Run h2testw full write/verify on the Lexar 32 GB microSD — planned on the laptop
-      (desktop lacks a card reader)
+- [x] Run h2testw full write/verify on the Lexar 32 GB microSD — **PASS, card is genuine**
+      (done on the laptop; desktop lacks a card reader). Details in the 07-24 SD entry below.
 - [ ] Solder headers onto MPU-6050 boards (no friction fit on a vibration sensor)
 - [ ] Breadboard a Hall sensor (5 V supply, 10 k pull-up to 3.3 V); polarity-test and
       paint-mark each SmCo magnet's working face (A3144 is unipolar) — waits on magnets
@@ -122,6 +122,23 @@ Arrival-day verification checklist (document 3, Part 2):
   or macOS machine for five minutes.
 - No action for Phase 1 — stock v2.11 heats and regulates fine; this stays a
   someday-item, now with an accurate map.
+
+## 2026-07-24 — Lexar 32 GB microSD verified genuine (h2testw PASS)
+
+- Full write/verify run on the laptop (Realtek PCIE card reader): h2testw 1.4 wrote and
+  read back 29,837 of 29,838 MByte — **"Test finished without errors."** Full advertised
+  capacity is real; zero data mismatches. Test files deleted afterward; card is empty
+  (FAT32, ~29.1 GiB free) and cleared for engine data logging.
+- Speeds: **62.3 MByte/s write, 134 MByte/s read** — far beyond logging needs, and the
+  read speed means the laptop reader runs the card above stock UHS-I rates. (ESP32 SPI
+  will be the bottleneck in the logger, not the card.)
+- The "only 29,837 of 29,838 MByte tested" warning is normal FAT32 overhead, not a defect.
+- Problems hit (all around *getting* the tool, none with the card): heise.de download links
+  are single-use tokenized and refuse non-browser clients (403), so curl/WebFetch couldn't
+  pull the zip — resolved by downloading through a real browser session. h2testw itself is
+  GUI-only with no CLI, so the run was click-through (target E:, all available space,
+  Write+Verify); progress was monitored from the card side by watching `.h2w` files land.
+- Tool kept at `C:\Users\Adamg\Downloads\h2testw\` on the laptop for future card checks.
 
 ---
 
