@@ -116,7 +116,8 @@ Arrival-day verification checklist (document 3, Part 2):
 - [ ] Breadboard a Hall sensor (5 V supply, 10 k pull-up to 3.3 V); polarity-test and
       paint-mark each SmCo magnet's working face (A3144 is unipolar) — waits on magnets
 - [ ] Wire the MAX31855, confirm sane room-temp reading and fault bits
-- [ ] SD module VCC from 5 V rail (never 3.3 V); drop SPI clock if writes are flaky
+- [x] SD module VCC from 5 V rail (never 3.3 V); drop SPI clock if writes are flaky
+      — **PASS at 10 MHz** (25 MHz failed on jumper wires, as expected). See the 07-26 entry.
 
 ## 2026-07-24 — Correction: IronOS flash fallback is invalid on both machines
 
@@ -148,6 +149,28 @@ Arrival-day verification checklist (document 3, Part 2):
   GUI-only with no CLI, so the run was click-through (target E:, all available space,
   Write+Verify); progress was monitored from the card side by watching `.h2w` files land.
 - Tool kept at `C:\Users\Adamg\Downloads\h2testw\` on the laptop for future card checks.
+
+## 2026-07-26 — microSD SPI module verified end-to-end on the ESP32 (PASS)
+
+- Ran `firmware/sd-test/sd-test.ino` on an ESP32 DevKit with the microSD module on jumper
+  wires (VCC to VIN/5 V, SCK 18, MISO 19, MOSI 23, CS 5) — **PASS**. Card mounted, type 3
+  (SDHC), size reported **29.15 GB** (matches the h2testw result), file written, append
+  survived, and both lines read back with matching content.
+- **25 MHz SPI failed, 10 MHz mounted.** The sketch's clock-ladder retry
+  (25 → 10 → 4 → 1 → 0.4 MHz) did exactly what it was written for. This is the jumper
+  wires, not the module or the card — unshielded flying leads won't hold 25 MHz SPI.
+  Expect this to improve once the logger moves to perfboard with short traces; if it
+  doesn't, 10 MHz is still ~10× the bandwidth the logger needs.
+- **Port is COM8 on this machine, not COM4.** The Silicon Labs CP210x driver assigns a
+  COM number per USB port, so the same board enumerates differently depending on which
+  port it's plugged into. Nothing to fix — just check Tools → Port rather than trusting
+  the number in `firmware/README.md`.
+- Arduino IDE board selection confirmed: **ESP32 Dev Module** (equivalent to the
+  `esp32:esp32:esp32` FQBN the arrival tests were flashed with). Not "ESP32-WROOM-DA
+  Module" — that's the dual-antenna variant.
+- Storage side of the telemetry chain is now proven end-to-end: card is genuine (h2testw),
+  module works, and the ESP32 can write and re-read log files. Remaining sensor arrival
+  tests: MPU-6050 and MAX31855 (both need headers soldered), Hall (needs breadboarding).
 
 ---
 
