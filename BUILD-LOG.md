@@ -112,7 +112,8 @@ Arrival-day verification checklist (document 3, Part 2):
       from ESP32 USB rails instead.
 - [x] Run h2testw full write/verify on the Lexar 32 GB microSD — **PASS, card is genuine**
       (done on the laptop; desktop lacks a card reader). Details in the 07-24 SD entry below.
-- [ ] Solder headers onto MPU-6050 boards (no friction fit on a vibration sensor)
+- [x] Solder headers onto MPU-6050 boards (no friction fit on a vibration sensor)
+      — **all 3 soldered and tested, all PASS at 0x68.** See the 07-26 entry.
 - [ ] Breadboard a Hall sensor (5 V supply, 10 k pull-up to 3.3 V); polarity-test and
       paint-mark each SmCo magnet's working face (A3144 is unipolar) — waits on magnets
 - [ ] Wire the MAX31855, confirm sane room-temp reading and fault bits
@@ -172,12 +173,14 @@ Arrival-day verification checklist (document 3, Part 2):
   module works, and the ESP32 can write and re-read log files. Remaining sensor arrival
   tests: MPU-6050 and MAX31855 (both need headers soldered), Hall (needs breadboarding).
 
-## 2026-07-26 — MPU-6050 IMU live on I2C (PASS)
+## 2026-07-26 — All 3 MPU-6050 IMUs soldered and live on I2C (PASS)
 
-- Ran `firmware/mpu6050-test/mpu6050-test.ino` (VCC→3V3, GND, SDA→21, SCL→22) — **PASS**.
+- Headers soldered onto **all three** GY-521 boards (first real soldering rep on project
+  hardware, TS101 on stock v2.11) and each one tested with
+  `firmware/mpu6050-test/mpu6050-test.ino` (VCC→3V3, GND, SDA→21, SCL→22) — **all 3 PASS**.
   At rest: accel magnitude **0.99–1.00 g**, gyro settling to ~1–3 dps of uncalibrated
   bias, die temp 28.1–28.5 °C (a few degrees over ambient, as the MPU-6050 always reads).
-  Values track handling — the board was picked up and waved mid-run and the numbers
+  Values track handling — a board was picked up and waved mid-run and the numbers
   followed, so nothing is stuck or fabricated.
 - **I2C address is 0x68 with AD0 left unconnected** — these GY-521 boards pull AD0 low
   on-board, so the sketch's `const uint8_t MPU = 0x68` is correct as written and no

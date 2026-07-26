@@ -19,7 +19,7 @@ than assuming (COM4 and COM8 have both been seen).
 | Sketch | Verifies | Needs soldering first? |
 |---|---|---|
 | [arrival-test](arrival-test/arrival-test.ino) | ESP32 board: flash, LED, WiFi, eFuse MAC | no |
-| [mpu6050-test](mpu6050-test/mpu6050-test.ino) | MPU-6050 IMU: WHO_AM_I, accel ~1 g at rest, gyro, temp — **PASS 07-26 at 0x68** | yes — headers |
+| [mpu6050-test](mpu6050-test/mpu6050-test.ino) | MPU-6050 IMU: WHO_AM_I, accel ~1 g at rest, gyro, temp — **all 3 PASS 07-26 at 0x68** | yes — headers |
 | [max31855-test](max31855-test/max31855-test.ino) | MAX31855: cold-junction temp + fault bits (OC expected with no probe) | yes — headers |
 | [sd-test](sd-test/sd-test.ino) | SD module + card: mount, write, append, read-back (VCC = 5 V!) — **PASS 07-26, mounts at 10 MHz** | no (jumpers ok) |
 | [hall-test](hall-test/hall-test.ino) | A3144 Hall: detect + pulse count; also finds each magnet's working face | no (breadboard) |
