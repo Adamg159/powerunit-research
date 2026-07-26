@@ -172,6 +172,29 @@ Arrival-day verification checklist (document 3, Part 2):
   module works, and the ESP32 can write and re-read log files. Remaining sensor arrival
   tests: MPU-6050 and MAX31855 (both need headers soldered), Hall (needs breadboarding).
 
+## 2026-07-26 — MPU-6050 IMU live on I2C (PASS)
+
+- Ran `firmware/mpu6050-test/mpu6050-test.ino` (VCC→3V3, GND, SDA→21, SCL→22) — **PASS**.
+  At rest: accel magnitude **0.99–1.00 g**, gyro settling to ~1–3 dps of uncalibrated
+  bias, die temp 28.1–28.5 °C (a few degrees over ambient, as the MPU-6050 always reads).
+  Values track handling — the board was picked up and waved mid-run and the numbers
+  followed, so nothing is stuck or fabricated.
+- **I2C address is 0x68 with AD0 left unconnected** — these GY-521 boards pull AD0 low
+  on-board, so the sketch's `const uint8_t MPU = 0x68` is correct as written and no
+  jumper is needed. The address is a hardware property (AD0 low → 0x68, AD0 high → 0x69);
+  it can't be set in software, and the sketch's I2C scan is how you read it back.
+  Only relevant if two IMUs ever share one bus, which the telemetry design doesn't do.
+- **Gyro clipped at ±250.1 dps during handling** — that's the rail of the MPU-6050's
+  default ±250 dps full scale (32767/131 = 250.13), not a fault. Defaults (±2 g,
+  ±250 dps) are right for an arrival test but will saturate badly on a running engine.
+  The real logger should widen both: `writeReg(0x1B, ...)` for gyro and
+  `writeReg(0x1C, ...)` for accel — ±2000 dps and ±16 g are the usual engine choices.
+- Problem hit first: with nothing wired, the sketch prints plausible-looking garbage
+  rather than failing — `WHO_AM_I: 0xFF`, `accel -0.00`, and a very believable
+  **36.5 °C**. All of it is `Wire.read()` returning −1 on an empty buffer
+  (−1/340 + 36.53 = 36.53). The empty `I2C scan:` line was the only honest indicator.
+  Worth hardening the sketch to bail on a failed WHO_AM_I instead of streaming fake data.
+
 ---
 
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
