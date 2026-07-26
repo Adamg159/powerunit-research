@@ -116,7 +116,8 @@ Arrival-day verification checklist (document 3, Part 2):
       — **all 3 soldered and tested, all PASS at 0x68.** See the 07-26 entry.
 - [ ] Breadboard a Hall sensor (5 V supply, 10 k pull-up to 3.3 V); polarity-test and
       paint-mark each SmCo magnet's working face (A3144 is unipolar) — waits on magnets
-- [ ] Wire the MAX31855, confirm sane room-temp reading and fault bits
+- [x] Wire the MAX31855, confirm sane room-temp reading and fault bits — **PASS** (cold
+      junction 26.5 °C, OC fault correctly set with no probe). See the 07-26 entry.
 - [x] SD module VCC from 5 V rail (never 3.3 V); drop SPI clock if writes are flaky
       — **PASS at 10 MHz** (25 MHz failed on jumper wires, as expected). See the 07-26 entry.
 
@@ -197,6 +198,25 @@ Arrival-day verification checklist (document 3, Part 2):
   **36.5 °C**. All of it is `Wire.read()` returning −1 on an empty buffer
   (−1/340 + 36.53 = 36.53). The empty `I2C scan:` line was the only honest indicator.
   Worth hardening the sketch to bail on a failed WHO_AM_I instead of streaming fake data.
+
+## 2026-07-26 — MAX31855 thermocouple amp verified (PASS)
+
+- Headers soldered and board tested with `firmware/max31855-test/max31855-test.ino`
+  (VIN→3V3, SCK→18, DO→19, CS→5) — **PASS**. Cold-junction reads a sane
+  **26.44–26.56 °C**, and the fault register reports `fault=1 SCV=0 SCG=0 OC=1`:
+  open-circuit only, nothing shorted to Vcc or GND. That fault detection is the reason
+  this chip was chosen over the MAX6675, and it works.
+- The `thermocouple 2047.75 C` line is the rail, not a reading — the thermocouple field
+  is 14-bit signed at 0.25 °C/LSB, so 8191 × 0.25 = 2047.75. An open input floats to full
+  scale; the OC bit is what says to disregard the number. Expected and documented in the
+  sketch header.
+- **Still unverified: the thermocouple measurement path itself.** This run proves the
+  cold-junction sensor and the fault logic. Shorting T+ to T− with a clip lead should
+  clear OC and pull the thermocouple reading down to ~internal temp (a short acts like a
+  junction at the connector) — worth doing before the washer thermocouples arrive with
+  the engine, since it's the only way to exercise the analog front end without a probe.
+- Inventory: this is the only MAX31855 on the bench; the second of two is the shipping
+  straggler from the 07-24 entry, and isn't needed until per-cylinder logging at first start.
 
 ---
 
