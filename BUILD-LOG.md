@@ -92,6 +92,15 @@ Arrival-day verification checklist (document 3, Part 2):
       all-zeros right after `WiFi.mode()` — switched to `ESP.getEfuseMac()`, which reads the
       factory MAC from eFuse with no WiFi dependency.
 - [ ] Dial each MP1584 buck to 5.0 V with a multimeter BEFORE it touches anything
+      — **update 2026-07-25:** multimeter + clip leads arrived. New gap caught while
+      planning the hookup: no mating connector for the battery packs' discharge lead.
+      Identified the pack's connector as **JST-RCY** (red 2-pin discharge; small white
+      JST-XH is balance/charging only — never used for power). Ordered SIM&NAT 20 AWG
+      silicone JST-RCY pre-wired pigtails, 10 pairs ($7.49), arriving next day — this was
+      the "connector adapter assortment" insurance line from document 2's deferred list.
+      Plan unchanged: pigtails soldered to buck IN pads, battery clicks in, clip leads on
+      OUT pads, dial to 5.00 V. Spare RCY pairs will standardize the buck→ESP32 power
+      connections too. Meanwhile sensor soldering + tests proceed on USB power.
       — **blocked: no multimeter on the bench.** Ordered 2026-07-24, arriving next day:
       AstroAI True RMS 6000-count auto-ranging DMM ($34.99) + DIANN banana-to-alligator
       test leads ($5.99, 4 mm banana fits the AstroAI's standard jacks) — both bench-stock
