@@ -59,7 +59,7 @@ tr:last-child td{border-bottom:none;}
 <h3>Electronics (this week — do while return windows are open)</h3>
 <ul class="check">
 <li>Flash a blink + WiFi-scan sketch on all three ESP32s. If one won&rsquo;t enumerate over USB, swap the cable before blaming the board.</li>
-<li>Power each MP1584 buck alone and set its trim pot to 5.0&nbsp;V with a multimeter before it ever touches a board. They arrive at random setpoints.</li>
+<li>Power each MP1584 buck alone and set its trim pot to 5.0&nbsp;V with a multimeter before it ever touches a board. They arrive at random setpoints. Practical kit for this: solder a JST-RCY pigtail to the IN pads so a 2S pack clicks in, clip the meter&rsquo;s alligator leads to the OUT pads so both hands stay free, and turn the pot with a ~1.5&nbsp;mm precision blade &mdash; a normal screwdriver will chew the pot.</li>
 <li>Run <code>h2testw</code> on the Lexar card — full write/verify pass to confirm genuine capacity before it holds engine data.</li>
 <li>Solder headers onto the MPU-6050 boards (lab iron is fine if the TS101 hasn&rsquo;t arrived). No friction-fit on a vibration sensor.</li>
 <li>Breadboard the Hall sensor: 5&nbsp;V supply, 10&nbsp;k pull-up to 3.3&nbsp;V on the output. Test each SmCo magnet&rsquo;s polarity — the A3144 is unipolar — and paint-mark the working face of every magnet you plan to use.</li>

@@ -101,6 +101,8 @@ Arrival-day verification checklist (document 3, Part 2):
       Plan unchanged: pigtails soldered to buck IN pads, battery clicks in, clip leads on
       OUT pads, dial to 5.00 V. Spare RCY pairs will standardize the buck→ESP32 power
       connections too. Meanwhile sensor soldering + tests proceed on USB power.
+      — **update 2026-07-28:** last tooling gap closed, a ~1.5 mm precision blade for the
+      trim pot itself (see the 07-28 entry).
       — **blocked: no multimeter on the bench.** Ordered 2026-07-24, arriving next day:
       AstroAI True RMS 6000-count auto-ranging DMM ($34.99) + DIANN banana-to-alligator
       test leads ($5.99, 4 mm banana fits the AstroAI's standard jacks) — both bench-stock
@@ -217,6 +219,30 @@ Arrival-day verification checklist (document 3, Part 2):
   the engine, since it's the only way to exercise the analog front end without a probe.
 - Inventory: this is the only MAX31855 on the bench; the second of two is the shipping
   straggler from the 07-24 entry, and isn't needed until per-cylinder logging at first start.
+
+## 2026-07-28 — Two tooling gaps closed while setting up the buck tuning
+
+Both caught while actually laying out the buck-tuning bench rather than reading about it —
+the same pattern as the JST-RCY connector gap on 07-25.
+
+- **Precision screwdriver set** — AXTH 25-in-1 magnetic bearing-steel set ($9.99). The MP1584
+  trim pot is a tiny surface-mount potentiometer needing roughly a 1.5 mm blade; the bench had
+  nothing that small, and forcing a larger driver into it is the standard way to destroy the
+  wiper and scrap the module. Magnetic tips also matter for the M2/M3 hardware coming with the
+  engine and for the ESP32 enclosure work later.
+- **Wire stripper / crimper** — WGGE WG-015 8-inch multi-tool ($15.99). Needed for the pigtail
+  and sensor harness work now starting: the 20 AWG silicone JST-RCY leads and 22–26 AWG sensor
+  wire both want gauge-matched strip notches. Stripping silicone-insulated wire with side
+  cutters or a blade nicks strands, which is exactly the kind of hidden defect that shows up
+  later as an intermittent power fault under vibration.
+
+Both are durable bench tooling, tracked like the soldering kit and multimeter — outside the
+Phase 1 parts total. Documents 2 and 3 updated: document 2 gained a "Bench hand tools" row
+(multimeter, leads, screwdrivers, stripper — ~$67) plus the previously unrecorded JST-RCY
+pigtail line, and document 3's buck checklist item now spells out the full hookup (pigtail on
+IN, alligator clips on OUT, precision blade on the pot).
+
+Buck tuning is now fully equipped; it proceeds as soon as the pigtails and this tooling land.
 
 ---
 
