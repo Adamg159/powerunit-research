@@ -91,7 +91,10 @@ Arrival-day verification checklist (document 3, Part 2):
       created COM4 and covers all future CP2102 boards; and `WiFi.macAddress()` reads
       all-zeros right after `WiFi.mode()` — switched to `ESP.getEfuseMac()`, which reads the
       factory MAC from eFuse with no WiFi dependency.
-- [ ] Dial each MP1584 buck to 5.0 V with a multimeter BEFORE it touches anything
+- [x] Dial each MP1584 buck to 5.0 V with a multimeter BEFORE it touches anything
+      — **done 2026-07-31: 2 of 3 tuned to ~5 V; third board fried during tuning.**
+      Two working bucks cover both planned rails (Phase 1 telemetry logger + Phase 2
+      ignition controller); spare lost. See the 07-31 entry.
       — **update 2026-07-25:** multimeter + clip leads arrived. New gap caught while
       planning the hookup: no mating connector for the battery packs' discharge lead.
       Identified the pack's connector as **JST-RCY** (red 2-pin discharge; small white
@@ -243,6 +246,20 @@ pigtail line, and document 3's buck checklist item now spells out the full hooku
 IN, alligator clips on OUT, precision blade on the pot).
 
 Buck tuning is now fully equipped; it proceeds as soon as the pigtails and this tooling land.
+
+## 2026-07-31 — Buck tuning done: 2 of 3 MP1584s at ~5 V, one board lost
+
+- Buck tuning finally happened with the full kit (JST-RCY pigtail on IN, alligator clips
+  on OUT, precision blade on the pot, AstroAI DMM): **two bucks dialed to ~5 V and ready**.
+- **Problem: the third board was fried during tuning** — scrapped. Inventory is now
+  2 working bucks, 0 spares.
+- Coverage check against the plan: only two 5 V rails are ever called for — the Phase 1
+  telemetry logger and the Phase 2 ignition controller (same one-active-plus-spare logic
+  as the 3× ESP32 buy). So **nothing is blocked**; Phase 1 needs just one buck.
+- Decision: restore the spare, but no rush — MP1584 3-packs are ~$7, so ride it on the
+  next parts order (deferred engine-arrival items) rather than paying shipping for a
+  standalone order. Until then the bench runs with zero buck margin, which is acceptable
+  for bench work on USB-powered sensor tests.
 
 ---
 
