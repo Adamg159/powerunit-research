@@ -251,8 +251,8 @@ Buck tuning is now fully equipped; it proceeds as soon as the pigtails and this 
 
 - Buck tuning finally happened with the full kit (JST-RCY pigtail on IN, alligator clips
   on OUT, precision blade on the pot, AstroAI DMM): **two bucks dialed to ~5 V and ready**.
-- **Problem: the third board was fried during tuning** — scrapped. Inventory is now
-  2 working bucks, 0 spares.
+- **Problem: the third board was fried during tuning** — an accidental short while
+  hooked up; board is dead and scrapped. Inventory is now 2 working bucks, 0 spares.
 - Coverage check against the plan: only two 5 V rails are ever called for — the Phase 1
   telemetry logger and the Phase 2 ignition controller (same one-active-plus-spare logic
   as the 3× ESP32 buy). So **nothing is blocked**; Phase 1 needs just one buck.
