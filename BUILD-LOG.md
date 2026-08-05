@@ -306,6 +306,58 @@ Buck tuning is now fully equipped; it proceeds as soon as the pigtails and this 
   fallback, steering geometry inputs (wheelbase/track/tires), radio architecture,
   and traction-pack charging.
 
+## 2026-08-05 — Q&A round: RWD made explicit, single-speed decided, one-way bearing risk found
+
+Adam answered the morning's open questions; each answer was worked through and the
+resulting recommendations adversarially reviewed before landing in CLAUDE.md.
+
+- **Rear-wheel drive is now explicit** — it had been assumed but never written
+  down anywhere. Front wheels steer only, which keeps the upright/Ackermann work
+  simpler (no front driveshafts).
+- **Transmission: single-speed for v1.** The remembered concern ("single-speed
+  makes brake regen harder") is real but small: kinetic energy scales with v², so
+  ~85–90% of recoverable energy sits above the clutch drop-out speed even with one
+  gear. The clincher against a two-speed: off-the-shelf 1/10 nitro two-speeds
+  shift centrifugally and drive first gear through a one-way bearing — the wheels
+  can't backdrive the input in exactly the gear that was supposed to widen the
+  regen window. Ratio math will include the v2 locked-clutch sanity check (engine
+  reaches firing RPM at a sane road speed) so v2 never forces a re-gear.
+- **Problem found before it happened: the starter-belt interface may freewheel.**
+  Starters crank engines; engines never drive starters — so the stock belt
+  interface plausibly contains a one-way bearing. If it does, the crank can never
+  drive the MGU-K through it: zero brake regen and zero engine-driven charging, in
+  v1 AND v2, regardless of gearing. This question goes to EngineDIY alongside the
+  already-requested spec sheet; a one-way forces the direct crank-nose mount.
+- **Shipping clarified:** starter kit + CDI conversion kit come with the engine
+  (harness-connector ID and starter-battery buy stay blocked); SmCo magnets land
+  ~2 weeks earlier (~mid-August), unblocking the Hall breadboard and the full
+  engine-telemetry breadboard. Adam may get lab access to fab a custom telemetry
+  PCB — board envelope and mounting location will come out of the chassis
+  packaging work; the vehicle PCB waits for the post-engine packaging freeze
+  (design-for-slop applies to boards, too).
+- **Surrogate motor: buy it — initial recommendation reversed by review.** The
+  first lean was to defer the ~$50–70 purchase since free-spinning the MGU-K on
+  the VESC exercises most of the firmware. Review flipped it: free-spin validates
+  *logic* but not the *charge power path* (pack accepts current, BMS stays
+  closed, bus voltage in bounds — free-spin regen is over in under a second), and
+  without a surrogate the first sustained regen event would happen during engine
+  break-in, stacking an electrical unknown on a temperamental first-run engine.
+  It joins the bench order (brake-capable RC-car ESC, not an airplane ESC that
+  can only drive) and stays boxed until Stage 1 free-spin bring-up is done. New
+  bench rule adopted: never run regen with only a bench PSU on the DC bus.
+- **Radio architecture (phased):** steering servo always RX-direct. Phase A:
+  throttle servo also RX-direct via Y-lead, ESP32 passively reads demand and
+  commands only the VESC — a firmware crash costs neither steering nor engine
+  control, and v1 assist/harvest still runs under software control. Phase B
+  (after real bench hours): throttle moves behind the ESP32 for full blending,
+  carrying the non-negotiable failsafe kit (carb return spring to idle,
+  boot-to-idle on a non-strapping GPIO, watchdogs, SBUS failsafe parsing + 100 ms
+  timeout, VESC timeout proven by an unplug test, opto-isolated CDI kill line
+  post-conversion). Latency is a non-issue against carb/combustion lag. Still
+  open: mechanical disc brake vs documented coast-down-only braking for v1.
+- **Traction-pack order will include a real balance charger + LiPo safety bag** —
+  the owned USB 2S unit can't service a regen-capable pack.
+
 ---
 
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->

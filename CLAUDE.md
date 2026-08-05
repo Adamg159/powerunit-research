@@ -20,12 +20,27 @@ file, this file wins.
   535g, 11.2 x 9 x 9.2 cm bare. Ordered with starter kit + gas/CDI conversion kit.
 - **Hybrid layout:** parallel MGU-K, crank-mounted, no turbo. Chosen to mirror
   current F1 regulations as closely as is feasible at this scale.
+- **Drivetrain:** rear-wheel drive (made explicit 2026-08-05). Front wheels
+  steer only — no front driveshafts, which keeps the custom uprights and
+  Ackermann work simpler.
 - **v1:** crank-mounted MGU-K with a standard centrifugal clutch. Accepts limited
   brake regen as a known compromise.
-- **MGU-K coupling — open (decided 2026-08-05 to stay open):** belt drive off
-  the engine's existing starter-belt interface (per docs 1/3) vs direct coaxial
-  mount on the crank nose. Undecided until the vendor's dimensioned spec sheet
-  arrives. Motor sizing proceeds either way; mount design waits.
+- **Transmission: single-speed for v1 (decided 2026-08-05).** The regen case
+  for a two-speed doesn't survive scrutiny: kinetic energy scales with v², so
+  ~85–90% of recoverable energy sits above the clutch drop-out speed even with
+  one gear, and off-the-shelf 1/10 nitro two-speeds drive first gear through a
+  one-way bearing — the wheels can't backdrive the input in exactly the gear
+  that was supposed to widen the regen window. Ratio math must sanity-check the
+  v2 locked-clutch case (engine reaches firing RPM at a sane road speed) so v2
+  never forces a re-gear.
+- **MGU-K coupling — open until the spec sheet:** belt drive off the existing
+  starter-belt interface (per docs 1/3) vs direct coaxial mount on the crank
+  nose. THE deciding check: whether the starter-belt interface freewheels
+  (one-way bearing — starters crank engines, engines never drive starters). A
+  one-way there means the crank can never drive the MGU-K: zero brake regen and
+  zero engine-driven charging, in v1 AND v2, regardless of gearing — which
+  would force the direct crank mount. Ask EngineDIY alongside the spec-sheet
+  request. Motor sizing proceeds either way; mount design waits.
 - **MGU-K controller:** VESC-class four-quadrant unit. "Current sensing" means
   the VESC's own UART-reported motor/battery currents — no separate current
   sensor hardware.
@@ -54,6 +69,28 @@ Architecture ground rules from the planning docs, still in force:
   current-related) must be digital-path parts — INA-class monitors, ToF or
   digital ride-height sensing, HX711-class bridge amps — never raw analog.
 
+Driver-command architecture (adopted 2026-08-05, phased):
+
+- **Steering servo is always RX-direct** — a firmware crash must never cost
+  steering authority.
+- **Phase A (bench + first drives):** engine throttle servo also RX-direct via
+  a Y-lead; the ESP32 passively reads driver demand and commands only the
+  VESC. Assist/harvest still runs under software control; a crash costs
+  nothing. Added latency is a non-issue either way — carb, combustion, and
+  servo mechanics dominate throttle response.
+- **Phase B (after real bench hours on the firmware):** throttle servo moves
+  behind the ESP32 for full engine+electric blending, only with the failsafe
+  kit: carb return spring biased to idle; throttle pin initialized to idle
+  first thing in boot, on a non-strapping GPIO (not 0/2/12/15/TX0); task + RTC
+  watchdogs; SBUS failsafe-flag parsing plus a ~100 ms frame timeout forcing
+  idle/zero-assist; VESC command timeout set to 200–300 ms and proven by an
+  unplug test; and post-CDI-conversion, an opto-isolated ignition-kill line on
+  its own receiver channel as the ESP32-independent hard stop.
+- **Open decision — braking:** crank-side MGU-K + centrifugal clutch means no
+  regen braking below engagement speed. Either document coast-down-only braking
+  as an accepted v1 limitation, or fit a conventional servo-actuated disc brake
+  (standard nitro two-servo layout) as an ESP32-independent stopping path.
+
 ## Deferred / stretch (decided 2026-08-05)
 
 - **Custom ignition-timing ECU** — deferred out of the core plan, parked
@@ -70,20 +107,31 @@ Architecture ground rules from the planning docs, still in force:
   detachable aero parts mounted to it
 - Body and aero surfaces designed from scratch in SolidWorks — no purchased body
   kit, for full control over the aerodynamics
-- Printer may be capable of polycarbonate (material and access still to confirm)
+- Printer may be capable of polycarbonate (material and access still to
+  confirm — neither has been looked into yet). Until confirmed, design to
+  conservative PETG/ASA-class properties (wall thickness, ribs, inserts) so a
+  material downgrade never forces a redesign; doc 1 budgeted PA-CF for the
+  structure as the reference point.
 
 ## Current status: staged build, engine on backorder
 
-The engine is delayed roughly 3–4 weeks (late August 2026 expected). A vendor
-swap to a CISON L4 (~$969) was offered and **declined** — it would have consumed
-the entire budget on the least novel component. The plan is to build everything
-around the engine and slot the engine in on arrival.
+The engine is delayed roughly 3–4 weeks (late August 2026 expected). The starter
+kit and gas/CDI conversion kit ship WITH the engine, so harness-connector ID and
+the starter-battery buy stay blocked. The SmCo magnets ship separately and land
+~2 weeks before it (~mid-August) — the Hall breadboard test and the full
+engine-telemetry breadboard unblock then. A vendor swap to a CISON L4 (~$969)
+was offered and **declined** — it would have consumed the entire budget on the
+least novel component. The plan is to build everything around the engine and
+slot the engine in on arrival.
 
 ### Purchasing during the wait (decided 2026-08-05)
 
-- **Authorized now, no per-item check-in:** the bench set — MGU-K motor,
-  VESC-class controller, bench surrogate motor (+ its drive), gearbox, and the
-  traction pack (+ BMS per sizing) the rig needs to run.
+- **Authorized now, one combined order as selections land:** the bench set —
+  MGU-K motor, VESC-class controller, surrogate motor + brake-capable RC-car
+  ESC + coupling (~$50–70), single-speed drivetrain parts per the ratio math,
+  traction pack + BMS per sizing, plus a real balance charger and LiPo safety
+  bag (the owned USB 2S unit can't service a regen-capable pack). Ride the ~$7
+  MP1584 3-pack along.
 - **Design/sizing only until separately approved:** steering hardware (servo,
   linkage), aero/dynamics sensors, everything else.
 - Log every order and price in BUILD-LOG.md as usual; flag cost implications
@@ -91,22 +139,50 @@ around the engine and slot the engine in on arrival.
 
 ### Unblocked — work these now
 
-- **Steering:** servo, linkage, uprights, Ackermann geometry, bump steer
+- **Chassis packaging:** dummy block at the 11.2 x 9 x 9.2 cm / 535g envelope;
+  outputs wheelbase/track/wheel-tire picks (feeds steering) and the
+  telemetry-board envelope (feeds the PCB). Run this ahead of steering.
+- **Steering:** Ackermann geometry, bump steer, upright/linkage design — needs
+  the wheelbase/track/tire picks from chassis packaging first. Servo purchase
+  waits.
 - **MGU-K electrical:** motor sizing, VESC selection, pack and BMS sizing,
   wiring (per the EMI ground rules above)
-- **Firmware:** telemetry, logging pipeline, assist/regen state machine
-- **Transmission (partial):** ratio math off the 4,000–16,000 rpm range; gearbox
-  can be ordered now
-- **Chassis packaging:** using a dummy block at the 11.2 x 9 x 9.2 cm / 535g
-  envelope as a stand-in
+- **Firmware:** telemetry, logging pipeline, assist/regen state machine (Phase A
+  command architecture)
+- **Transmission:** single-speed ratio math off the 4,000–16,000 rpm band and
+  the bench-measured clutch engagement point, sanity-checked against the v2
+  locked-clutch case; then select and order the unit
+- **Telemetry PCB (lab fab opportunity):** breadboard the full engine-telemetry
+  chain when the magnets land; board outline and mounting location come from
+  chassis packaging; a bench perfboard version can come any time, but the
+  vehicle PCB is fabbed only after packaging freezes post-engine
+  (design-for-slop applies to the board, too).
 
-### Bench surrogate approach
+### Bench surrogate approach (staged 2026-08-05)
 
-Develop the full control loop without the engine: mount a second brushless motor
-as a crank stand-in, spin the MGU-K against it, and validate the state machine and
-telemetry end to end on the bench. When the engine arrives it should be a driver
-swap, not a rewrite. Keep the engine interface behind an abstraction so the
-surrogate and the real engine are interchangeable.
+Develop the full control loop without the engine; arrival is a driver swap, not
+a rewrite. Keep the engine interface behind an abstraction so the surrogate and
+the real engine are interchangeable.
+
+- **Stage 1 — no surrogate needed:** VESC + MGU-K free-spinning exercises the
+  UART link, telemetry pipeline, logging, and every state-machine transition as
+  *logic*. It does NOT validate the charge power path — free-spin regen is over
+  in under a second and moves a few watts.
+- **Stage 2 — surrogate rig:** a second brushless motor (cheap outrunner +
+  brake-capable RC-car ESC — an airplane ESC can only drive, halving the rig)
+  spins the MGU-K as a controllable crank stand-in. The first SUSTAINED
+  regen/charge test happens here, never during engine break-in:
+  pack-accepts-current, BMS-stays-closed, bus-voltage-in-bounds are exactly the
+  failures to find on a $50 rig at tens of watts instead of stacked on a
+  temperamental first-run engine.
+- Also bench-measure the clutch engagement RPM here (spring-tunable; the ratio
+  and regen-window math both need the real number). Firmware must cap regen
+  torque below the RPM-dependent clutch capacity and cut regen on detected slip
+  (VESC RPM vs wheel-derived RPM divergence) — centrifugal clutch slip is
+  self-reinforcing and glazes the shoes.
+- **Bench safety rule:** never run brake/regen commands with only a bench PSU
+  on the DC bus — regenerated current back-feeds a non-bidirectional supply.
+  Keep the traction pack (or a braking resistor) connected.
 
 ### Blocked until the engine (or a dimensioned drawing) arrives
 
@@ -152,19 +228,19 @@ leave clearance around anything non-structural. Final-fit on arrival.
   WiFi credentials go in a gitignored `secrets.h` once firmware needs them.
 - Sync between desktop and laptop: pull before working, commit + push after.
 
-## Open questions (as of 2026-08-05)
+## Open questions (as of 2026-08-05, second pass)
 
-- Which gearbox (make/model/ratio) — is one already chosen, or does the order
-  wait on the ratio math?
-- Did the starter kit, CDI conversion kit, and SmCo magnets ship separately, or
-  are they held with the backordered engine? (Magnets gate the last open bench
-  test — Hall sensor breadboard; the harness connector gates the starter-battery
-  buy.)
-- Bench surrogate motor: owned or a purchase, and what spec (kv / power / shaft)?
-- Printer and chassis material: is polycarbonate access confirmed, and what is
-  the design-fallback material if not?
-- Steering geometry inputs: wheelbase, track, wheel/tire package.
-- Radio architecture: receiver → ESP32 → actuators, or conventional
-  receiver-direct with the ESP32 listening?
-- Traction pack charging: the owned USB 2S charger won't cover a regen-capable
-  pack — what charger, and where does the rig live/how is it guarded?
+- **One-way bearing (ask EngineDIY now, alongside the spec-sheet request):**
+  does the ST-NF2 starter-belt interface freewheel? The answer decides the
+  MGU-K coupling — a one-way forces the direct crank mount for any regen at all.
+- **Radio gear:** which transmitter/receiver? The command architecture needs
+  SBUS (or iBUS) out plus at least one plain PWM output for the RX-direct
+  steering servo, at 3.3 V-safe signal levels.
+- **Brake:** accept coast-down-only braking as a documented v1 limitation, or
+  fit a servo-actuated disc as an ESP32-independent stopping path?
+- **Printer:** which machine, and is polycarbonate access real? (Design
+  proceeds on the conservative fallback either way.)
+- Wheelbase / track / wheel-tire package: not a question for Adam so much as
+  the first output owed by the chassis-packaging work.
+- Where the bench rig physically lives and how it's guarded (two coupled
+  motors at speed on a plywood bench).
