@@ -228,19 +228,41 @@ leave clearance around anything non-structural. Final-fit on arrival.
   WiFi credentials go in a gitignored `secrets.h` once firmware needs them.
 - Sync between desktop and laptop: pull before working, commit + push after.
 
-## Open questions (as of 2026-08-05, second pass)
+## Open questions (as of 2026-08-05, consolidated for research)
 
-- **One-way bearing (ask EngineDIY now, alongside the spec-sheet request):**
-  does the ST-NF2 starter-belt interface freewheel? The answer decides the
+Ask EngineDIY (with the pending spec-sheet request):
+
+- **Does the starter-belt interface freewheel (one-way bearing)?** Decides the
   MGU-K coupling — a one-way forces the direct crank mount for any regen at all.
-- **Radio gear:** which transmitter/receiver? The command architecture needs
-  SBUS (or iBUS) out plus at least one plain PWM output for the RX-direct
-  steering servo, at 3.3 V-safe signal levels.
+- Chase the dimensioned spec sheet itself: crank shaft diameter/length, thread
+  pitch and direction, keyway/flat; mounting boss hole pattern; crank
+  centerline height above the mounting face.
+- **Which centrifugal clutch kit fits the ST-NF2**, and are engagement springs
+  available/tunable? The clutch is the heart of the v1 driveline and its
+  engagement RPM feeds the ratio math.
+
+Ask the lab:
+
+- **Printer:** which machine, which materials (is polycarbonate real), and can
+  it be used for a personal project?
+- **PCB fab:** what process and constraints — max board size, layers, minimum
+  trace/space, accepted design files (KiCad?), turnaround. The telemetry board
+  gets designed to these limits.
+
+Check what's on hand / decide:
+
+- **Radio gear:** which transmitter/receiver (owned or to buy)? Needs SBUS or
+  iBUS out PLUS at least one plain PWM output for the RX-direct steering servo,
+  at 3.3 V-safe signal levels.
+- **Target top speed** (even a rough number): the single-speed ratio math needs
+  it together with tire diameter — "parking-lot demonstrator" and "40+ km/h"
+  produce different gearing.
 - **Brake:** accept coast-down-only braking as a documented v1 limitation, or
   fit a servo-actuated disc as an ESP32-independent stopping path?
-- **Printer:** which machine, and is polycarbonate access real? (Design
-  proceeds on the conservative fallback either way.)
-- Wheelbase / track / wheel-tire package: not a question for Adam so much as
-  the first output owed by the chassis-packaging work.
-- Where the bench rig physically lives and how it's guarded (two coupled
-  motors at speed on a plywood bench).
+- **Bench rig location and guarding:** where do two coupled motors at speed
+  live, and behind what?
+- Optional but useful: a comfort number for the combined bench-set order — it
+  steers component tier (e.g. VESC-clone vs genuine).
+
+Owed by the work itself (not research): wheelbase / track / wheel-tire package
+from chassis packaging; pack voltage and capacity from MGU-K sizing.
