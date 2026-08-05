@@ -261,6 +261,51 @@ Buck tuning is now fully equipped; it proceeds as soon as the pigtails and this 
   standalone order. Until then the bench runs with zero buck margin, which is acceptable
   for bench work on USB-powered sensor tests.
 
+## 2026-08-05 — Engine backorder confirmed; plan re-sequenced to build around it
+
+- **The engine is on backorder, roughly 3–4 weeks — late-August arrival expected.**
+  The vendor offered a swap to a CISON L4 (~$969) and it was **declined**: it would
+  have consumed the entire budget on the least novel component of the project. A
+  dimensioned spec sheet for the ST-NF2 was requested from the vendor instead; if it
+  arrives before the engine, the crank-interface and mount design unblock early.
+- Problem being fixed today: the project spent the past week bottlenecked behind
+  engine arrival when most of the work never needed the engine. A staged-build plan
+  was drafted (on the laptop) and is now merged into the repo as **`CLAUDE.md` at the
+  repo root** — the governing project context from here on; docs 1–3 stay as the
+  detailed reference and win nothing on conflict.
+- **Now-unblocked work:** steering geometry, MGU-K electrical sizing, firmware
+  (telemetry pipeline + assist/regen state machine), transmission ratio math off the
+  4,000–16,000 rpm band, and chassis packaging against a dummy block at the engine's
+  11.2 × 9 × 9.2 cm / 535 g envelope. A bench surrogate (second brushless motor as
+  crank stand-in) will let the full control loop be validated end to end before the
+  engine lands — engine arrival becomes a driver swap, not a rewrite.
+- **Decisions made while reconciling the new plan with the repo docs** (a full
+  cross-check turned up several conflicts; each was resolved explicitly):
+  - **Ignition-timing ECU deferred** out of the core plan, parked alongside the v2
+    locked-clutch stretch goal. The engine runs on the stock fixed-timing CDI
+    indefinitely and the success criteria drop the mapped-ignition requirement.
+    Side effect: ESP32 #3 and the second tuned buck revert to true spares — the
+    07-31 "zero buck margin" concern resolves itself, though the ~$7 MP1584 3-pack
+    can still ride the next order.
+  - **Bench-set purchases authorized now** without per-item check-ins: MGU-K motor,
+    VESC-class controller, surrogate motor + drive, gearbox, and the traction
+    pack/BMS the rig needs. Steering hardware and aero sensors stay design-only
+    until separately approved.
+  - **MGU-K coupling left open** — belt off the starter-belt interface (as docs 1/3
+    describe) vs direct crank-nose mount (as the new plan's blocked list implies) —
+    until the vendor spec sheet decides it. Motor sizing proceeds regardless.
+  - **No dedicated current sensor:** "current sensing on the MGU-K" = the VESC's
+    UART-reported motor/battery currents, as doc 1 always assumed.
+  - **Engine-arrival sequencing unchanged:** glow break-in before CDI conversion,
+    ground strap before the CDI kit, inspection checklist at unboxing, deferred
+    purchases ($120–160) still trigger there. "Slot-in-able" means the chassis
+    interfaces are ready, not that break-in is skipped.
+- Open questions carried in CLAUDE.md: gearbox selection, whether the starter
+  kit / CDI kit / SmCo magnets shipped separately or are held with the engine
+  (magnets gate the last open bench test), surrogate motor spec, printer material
+  fallback, steering geometry inputs (wheelbase/track/tires), radio architecture,
+  and traction-pack charging.
+
 ---
 
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
