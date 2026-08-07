@@ -47,6 +47,48 @@ file, this file wins.
 - **v2 (later):** locked-clutch full F1-style setup with proper regen.
 - **Explicitly rejected:** P3 / downstream-motor layout. Don't re-propose it.
 
+## MGU-K electrical system (sized 2026-08-07)
+
+Two independent sizing studies plus an adversarial verification pass converged
+on this envelope. Full trail in BUILD-LOG (2026-08-07 entry).
+
+- **3S (11.1 V) traction system.** Sensored motors only exist as a mainstream
+  class in high-kv RC-car form, so 6S/4S have no motor to buy; 2S pushes ~61 A.
+  Full-assist battery burst ~41 A. Never move this motor class to 4S — the
+  2–3S rating is explicit and it unlocks nothing.
+- **Motor: Hobbywing QuicRun 3650SD G2 17.5T, 2170 kv, sensored, 3.175 mm
+  shaft (~$50).** The 1900 kv alternative loses too much to back-EMF + I·R at
+  the top of the band on a sagged pack (~180–280 W deliverable at 16k rpm);
+  the 17.5T delivers ~390–470 W there. Its end-bell timing must be set to the
+  zero mark before any four-quadrant/regen use. 450 W bursts are far above
+  this class's continuous rating — assist is strictly burst-duty, with a
+  firmware duty timer and motor-NTC temp foldback via the VESC.
+- **Controller — the one open buy decision:** genuine Trampa VESC 6 MkVI
+  (~$270 imported from the UK, 80 A cont / 120 A burst, huge margin — the
+  reliability-rule pick) vs Flipsky Mini FSESC4.20 50A ($56–70, known-fragile
+  DRV8302 tier, caps the build at ~350 W ≈ 40:60 split). No mid-tier exists:
+  every VESC-6-class clone has a 14 V input floor (won't even boot on 3S) and
+  Trampa's cheaper EDU is undersized at 25 A.
+- **No discrete BMS — deliberate, not an omission.** A port-style BMS that
+  opens under regen load-dumps an inductive bus into the VESC (known killer);
+  one that never opens adds nothing. Instead: VESC regen cap −10 A, charge
+  ceiling 4.15 V/cell, discharge cutoffs 10.2 V soft / 9.9 V hard, every-cycle
+  balance charging, 50 A MAXI blade fuse in the pack positive (protects wiring
+  only), and a standalone balance-lead low-voltage buzzer during bench runs.
+  All limits set AND unplug-tested before the first regen event.
+- **Pack:** Zeee 3S 5200 mAh 80C hard-case, XT60, 12 AWG leads (~380–420 g —
+  feed into the chassis mass budget). A matched pair lets one pack rest between
+  regen sessions. Label 2S vs 3S packs on arrival — they share XT60, and 3S
+  into the surrogate ESC over-revs the coupled MGU-K.
+- **Surrogate rig:** GoolRC/Surpass 3650 3900 kv sensorless + 60 A car-ESC
+  combo (~$37, active proportional brake, independently long-term reviewed),
+  1:1 coupling, powered by its OWN 2S pack — never the bench PSU (car-ESC
+  braking back-feeds its supply) and never the traction pack. Commanded by a
+  ~$10 servo tester until the radio-gear question resolves.
+- **Sensor path:** the motor's JST-ZH 6-pin hall harness needs a JST-ZH→VESC
+  adapter (~$5–10) — without it nothing runs sensored FOC, which is the point
+  of the motor choice. Strain-relieve it; verify hall order during detection.
+
 ## Control and telemetry
 
 ESP32-based. Scope covers:
@@ -145,8 +187,9 @@ slot the engine in on arrival.
 - **Steering:** Ackermann geometry, bump steer, upright/linkage design — needs
   the wheelbase/track/tire picks from chassis packaging first. Servo purchase
   waits.
-- **MGU-K electrical:** motor sizing, VESC selection, pack and BMS sizing,
-  wiring (per the EMI ground rules above)
+- **MGU-K electrical: sized 2026-08-07** (see "MGU-K electrical system" above).
+  Remaining: the VESC tier decision, then place the combined bench order and
+  wire it per the EMI ground rules.
 - **Firmware:** telemetry, logging pipeline, assist/regen state machine (Phase A
   command architecture)
 - **Transmission:** single-speed ratio math off the 4,000–16,000 rpm band and

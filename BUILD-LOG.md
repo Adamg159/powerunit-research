@@ -358,6 +358,58 @@ resulting recommendations adversarially reviewed before landing in CLAUDE.md.
 - **Traction-pack order will include a real balance charger + LiPo safety bag** —
   the owned USB 2S unit can't service a regen-capable pack.
 
+## 2026-08-07 — MGU-K electrical system sized; bench-set cart sourced and verified
+
+Adam set the design targets (≈50/50 IC/electric power balance; reliable parts
+where they're in constant use, budget-lean elsewhere; Amazon-preferred). Two
+independent sizing studies were run, judged into one envelope, real parts
+sourced against it, and the whole cart adversarially re-checked. Results:
+
+- **System envelope: 3S (11.1 V).** The voltage ladder has exactly one rung that
+  works: sensored motors don't exist as a mainstream class at the kv that 4S/6S
+  would need, and 2S pushes battery current to ~61 A. At 3S, 450 W assist is a
+  ~41 A burst — easy for a 5000 mAh-class hard-case pack.
+- **Verification caught a real sizing error.** The initial primary motor pick
+  (Surpass Supersonic 21.5T, 1900 kv, fixed timing) survives the back-EMF check
+  but not the full arithmetic: adding winding I·R drop, it can only deliver
+  ~180–280 W at 16,000 rpm on a sagged pack — the "escalation case" was actually
+  a certainty. Primary pick is now the **Hobbywing QuicRun 3650SD G2 17.5T
+  (2170 kv)** at the same $49.99, which delivers ~390–470 W at the top of the
+  band. Its adjustable end-bell timing must be set to zero before regen use.
+- **Two order-blocking gaps found:** (1) the motor's JST-ZH hall harness doesn't
+  mate with a VESC's sensor port — a ~$5–10 adapter cable is load-bearing for
+  sensored FOC; (2) nothing in the cart could command the surrogate's car ESC
+  (radio gear still unresolved) — a ~$10 servo tester fixes it and is the right
+  bench tool regardless.
+- **No-BMS strategy confirmed** (both studies converged independently): a port
+  BMS that opens under regen charge is itself the top hazard — it load-dumps the
+  bus into the VESC. Protection is the VESC's own limits (regen −10 A, ceiling
+  4.15 V/cell, cutoffs 10.2/9.9 V) + every-cycle balance charging + 50 A MAXI
+  fuse (wiring protection only) + balance-lead buzzer on bench runs. Hobby-
+  standard practice for hard-case RC packs, not a shortcut.
+- **The one open decision — VESC tier, a $200 swing:** genuine Trampa VESC 6
+  MkVI ~$270 (UK import, 1–2 weeks + customs; 80 A cont, the reliability-rule
+  pick, and the only path to the full 450 W / 50:50 target) vs Flipsky Mini
+  FSESC4.20 50A at $56–70 (known-fragile DRV8302 tier; caps the build at
+  ~350 W ≈ 40:60; conservative limits + heatsink + pack-connected-regen rule
+  become load-bearing). Verified: no middle option exists — all VESC-6-class
+  clones have a 14 V floor (dead on 3S), Trampa's EDU is undersized at 25 A.
+- **Cart as recommended** (Amazon-preferred applied; several Amazon prices
+  bot-blocked, verify at checkout): Hobbywing 17.5T motor $49.99 · Zeee 3S
+  5200 80C hard-case pack ×2 ~$85–99 · SkyRC S100 Neo charger ~$73 · Zeee LiPo
+  bag 2-pack ~$25 · GoolRC/Surpass 3650 3900 kv + 60 A ESC surrogate combo
+  ~$33–40 · Zeee 2S 5200 pack(s) for the surrogate ~$40–48 · 5×5 jaw coupling
+  $9.01 + 3.175→5 mm sleeves $7.99 · 2× 540 clamp mounts $26.48 · XT60 12 AWG
+  pigtails $12.99 · MAXI fuse holder + 50 A fuses ~$12. Small adds: hall
+  adapter, servo tester, XT60 charge lead, XT60→JST-RCY charge adapter,
+  balance buzzer, XT60→Deans adapter, MP1584 3-pack (~$45–55 together).
+  **Total ≈ $430–460 + the VESC: ≈$490–520 (Flipsky) or ≈$700–730 (Trampa).**
+  Flagged per the budget rule — the Trampa alone is ~40% of the cart.
+- Bench rules adopted into CLAUDE.md: label 2S vs 3S packs (shared XT60,
+  cross-plug over-revs the rig), surrogate runs only on its own 2S pack, file
+  flats + threadlocker where the coupling grub screws land, verify both shaft
+  diameters with calipers on arrival (sleeves assume 3.175 mm both sides).
+
 ---
 
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
