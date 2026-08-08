@@ -410,6 +410,54 @@ sourced against it, and the whole cart adversarially re-checked. Results:
   flats + threadlocker where the coupling grub screws land, verify both shaft
   diameters with calipers on arrival (sleeves assume 3.175 mm both sides).
 
+## 2026-08-07 — VESC market swept end to end: "no mid-tier exists" was wrong; ladder corrected
+
+Adam chose the Flipsky probe strategy (cheapest unit first, upgrade only if
+proven necessary) conditional on being *absolutely sure* no alternative existed
+between the $56–70 clone and the ~$270 genuine Trampa. A four-corner sweep
+(full Flipsky catalog, other clone makers, genuine/boutique Vedder-ecosystem
+tier, non-VESC FOC controllers — ~40 products, voltage floors read off vendor
+pages/manuals, not search snippets) says: **not sure — two real alternatives
+exist.** Corrections logged:
+
+- **Makerbase VESC MINI V6.7 Pro (~$92–136)** is the one VESC-6-class clone
+  WITHOUT the 14 V floor — "DC 8V–60V (3S–13S)" verified in four independent
+  sources, 50 A cont / 240 A peak, STM32F405 + the same ON-Semi FETs as the
+  genuine VESC 6. Caveats: gate driver IC undisclosed, batch-dependent FET
+  substitutions, mixed Makerbase QC record (their failures cluster in the
+  high-power family, not this board), no US stock (1–3 wk from China).
+- **Trampa VESC 6 EDU (~$120–175 shipped, complete kit)** was wrongly excluded
+  earlier: the "undersized at 25 A" verdict applied continuous-duty logic to a
+  burst-duty application. Its 50 A burst spec sits exactly at this project's
+  50–54 A assist pulses, and 2–5 A harvest is ~10% of its continuous rating.
+  Genuine hardware, discrete gate drivers (no DRV8302), 6 V floor, dual UART.
+  Same ~350 W ceiling as the Flipsky — zero margin — but it fails by graceful
+  thermal foldback rather than clone-tier gate-driver death. Stock needs a
+  manual check; Trampa's pages don't render to scrapers.
+- Everything else genuinely fails: every other Flipsky line has a 14 V+ floor
+  (and the new FT series isn't even VESC-firmware); Maytech quietly cost-cut
+  its gate driver and states a 12.6 V floor; Spintend is 12 V/$279; Holybro's
+  licensed board is 20 A; Stormcore/Little FOCer/Cheap FOCer are 15–22 V
+  floors and largely sold out; in non-VESC land the moteus family (10 V floor,
+  CAN-FD, encoder-magnet, full protocol rewrite) and SOLO UNO (8 V floor but
+  32–45 A cap at Trampa money) both lose to staying in the VESC ecosystem.
+- **Flipsky purchase channel, if the probe strategy stands:** Amazon ASIN
+  B08725X8CT at $71.99, in stock, ships from Amazon, 30-day returns — worth
+  the $16 over flipsky.net for return leverage on a known-fragile part.
+- **Probe-design note for the decision:** a Flipsky probe conflates two
+  questions — "is ~350 W enough?" and "does the clone survive?" A dead DRV8302
+  answers neither. The EDU at ~2× isolates the real question on hardware that
+  degrades gracefully. Escalation triggers that mean "350 W is the bottleneck,
+  buy the MkVI": repeated firmware temp/current foldback during assist with
+  cooling already fixed, or logged assist saturation at the 50 A cap on track.
+  A DRV fault / dead gate driver means "clone died," not "350 W insufficient."
+- Also this session: purchase links for all small add-ons sourced and live-
+  verified (hall adapter $1.80 at Flipsky — ride it with the ESC order; servo
+  tester, balance buzzers, MP1584 3-pack, charge leads, XT60 adapters on
+  Amazon). The live re-verification of the main cart (most of Adam's tabs
+  showed unavailable) was interrupted by the session usage limit and resumes
+  after it resets tonight (~9:30 pm ET).
+
 ---
 
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->

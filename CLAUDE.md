@@ -63,12 +63,35 @@ on this envelope. Full trail in BUILD-LOG (2026-08-07 entry).
   zero mark before any four-quadrant/regen use. 450 W bursts are far above
   this class's continuous rating — assist is strictly burst-duty, with a
   firmware duty timer and motor-NTC temp foldback via the VESC.
-- **Controller — the one open buy decision:** genuine Trampa VESC 6 MkVI
-  (~$270 imported from the UK, 80 A cont / 120 A burst, huge margin — the
-  reliability-rule pick) vs Flipsky Mini FSESC4.20 50A ($56–70, known-fragile
-  DRV8302 tier, caps the build at ~350 W ≈ 40:60 split). No mid-tier exists:
-  every VESC-6-class clone has a 14 V input floor (won't even boot on 3S) and
-  Trampa's cheaper EDU is undersized at 25 A.
+- **Controller — decision pending (ladder corrected 2026-08-07).** A 4-corner
+  market sweep (~40 products, all voltage floors verified from vendor pages)
+  disproved the earlier "no mid-tier exists" claim. The real ladder, all
+  3S-capable (floor ≤ 9.9 V), all VESC-firmware/VescUart:
+  1. **Flipsky Mini FSESC4.20 50A** — $71.99 Amazon in stock (B08725X8CT,
+     ships from Amazon, 30-day returns) or $56 flipsky.net (China, 1–3 wk).
+     DRV8302 gate driver (the known-fragile die) but 6.6-class FETs. ~350 W cap.
+  2. **Makerbase VESC MINI V6.7 Pro** — $92 direct / ~$136 Newegg. True
+     6-class architecture (STM32F405, same ON-Semi FETs as genuine VESC 6 —
+     but batch-dependent substitutions), 8–60 V verified in 4 sources, 50 A
+     cont / 240 A peak. Gate driver IC undisclosed; mixed brand QC; no US
+     stock. The one 6-class clone WITHOUT the 14 V floor.
+  3. **Trampa VESC 6 EDU** (complete kit £100 ≈ $120–175 shipped UK) —
+     genuine Vedder hardware, discrete gate drivers (no DRV8302 single point
+     of failure), 6 V floor, 25 A cont / 50 A burst. The earlier "undersized"
+     verdict was a continuous-duty argument; this project's duty (2–5 s
+     assist bursts at ~50–54 A phase, 2–5 A harvest) sits exactly at its
+     burst spec — same ~350 W cap as the Flipsky, zero margin, but failure
+     mode is graceful temp foldback, not gate-driver death. Stock unverified
+     (Trampa pages don't scrape) — confirm before counting on it.
+  4. **Trampa VESC 6 MkVI** ~$270 (UK) — 80 A cont / 120 A burst, the only
+     unit with full-450 W margin.
+  Everything else verified-out: all other Flipsky 6/75/FT-series (14 V+
+  floors, newest FT line isn't even VESC), Maytech (12.6 V floor + cost-cut
+  gate driver), Spintend (12 V, $279), Holybro (20 A), Stormcore/Little
+  FOCer/Cheap FOCer (15–22 V floors, sold out), and every non-VESC route
+  (moteus 10 V floor + CAN-FD rewrite; SOLO UNO passes 8 V floor but caps
+  32–45 A at Trampa money; ODrive 12 V). Adam's Flipsky-first probe strategy
+  was conditional on "no alternatives" — re-confirm against this ladder.
 - **No discrete BMS — deliberate, not an omission.** A port-style BMS that
   opens under regen load-dumps an inductive bus into the VESC (known killer);
   one that never opens adds nothing. Instead: VESC regen cap −10 A, charge
@@ -178,6 +201,11 @@ slot the engine in on arrival.
   linkage), aero/dynamics sensors, everything else.
 - Log every order and price in BUILD-LOG.md as usual; flag cost implications
   before recommending additions.
+- **Sourcing rule (2026-08-07):** availability is high-priority — a
+  recommended part must be verified in stock (live page check, not cached
+  search results) at the time it's listed, and every pick carries a named
+  in-stock backup. Commodity RC listings churn in days; re-verify at order
+  time.
 
 ### Unblocked — work these now
 
