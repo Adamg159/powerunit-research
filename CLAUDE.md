@@ -108,9 +108,17 @@ on this envelope. Full trail in BUILD-LOG (2026-08-07 entry).
   1:1 coupling, powered by its OWN 2S pack — never the bench PSU (car-ESC
   braking back-feeds its supply) and never the traction pack. Commanded by a
   ~$10 servo tester until the radio-gear question resolves.
-- **Sensor path:** the motor's JST-ZH 6-pin hall harness needs a JST-ZH→VESC
-  adapter (~$5–10) — without it nothing runs sensored FOC, which is the point
-  of the motor choice. Strain-relieve it; verify hall order during detection.
+- **Sensor path:** the motor's JST-ZH 6-pin hall harness and the VESC's
+  PH-style sensor port don't mate. Plan (decided 2026-08-07): splice an
+  adapter from the cables included in the motor and ESC boxes — map by
+  FUNCTION not position (5 V/GND/temp per both manuals, multimeter-verify
+  5 V and GND before the motor side connects; the three hall wires can land
+  in any order — VESC detection sorts them). Keep the temp wire: it feeds
+  the motor-NTC foldback. Fallback if the Flipsky box has no sensor pigtail:
+  ~$9 pre-crimped JST-PH 2.0 kit (Amazon B08T89ZK2Q) spliced to the motor
+  cable. Strain-relieve; shielded run + ferrite once the CDI engine is near.
+  The XT60→JST-RCY charge adapter is likewise soldered from owned pigtail
+  stock, not purchased.
 
 ## Control and telemetry
 
