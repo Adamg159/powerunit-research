@@ -502,6 +502,12 @@ re-checked live in-browser and replacements verified in stock:
   JST-RCY charge adapter are splice-from-stock, not purchases; three lines are
   low-stock (sleeves 9, mounts 14, combo 18) so the order goes in same-day.
 - Projected all-in for the bench set: ~$440–455 including the motor order.
+- **Update, same day: Amazon order PLACED** — all 16 items, $354.72 subtotal
+  plus tax. With the motor's $63.08 that closes the bench-set buy at ~$420 +
+  Amazon tax, comfortably inside the projection. First deliveries land
+  Aug 9–10 (Flipsky, packs, charger, surrogate combo); the slow tail is the
+  fuse holder (Aug 17). Bench work can start the moment the VESC + a pack +
+  the motor are all on the desk.
 
 ---
 
