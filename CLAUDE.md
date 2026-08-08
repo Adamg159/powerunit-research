@@ -27,12 +27,14 @@ file, this file wins.
   brake regen as a known compromise.
 - **Transmission: single-speed for v1 (decided 2026-08-05).** The regen case
   for a two-speed doesn't survive scrutiny: kinetic energy scales with v², so
-  ~85–90% of recoverable energy sits above the clutch drop-out speed even with
+  most recoverable energy sits above the clutch drop-out speed even with
   one gear, and off-the-shelf 1/10 nitro two-speeds drive first gear through a
   one-way bearing — the wheels can't backdrive the input in exactly the gear
-  that was supposed to widen the regen window. Ratio math must sanity-check the
-  v2 locked-clutch case (engine reaches firing RPM at a sane road speed) so v2
-  never forces a re-gear.
+  that was supposed to widen the regen window. **Target: 40 km/h at 16,000 rpm
+  (decided 2026-08-07)** ⇒ total ratio R ≈ 4.9–5.0 on 63–65 mm touring tires
+  (scale by tire diameter if the wheel pick changes). v2 locked-clutch check
+  passes: engine firing floor lands at 10 km/h. Final tooth counts wait on the
+  tire pick (chassis packaging) and the bench-measured clutch engagement RPM.
 - **MGU-K coupling — open until the spec sheet:** belt drive off the existing
   starter-belt interface (per docs 1/3) vs direct coaxial mount on the crank
   nose. THE deciding check: whether the starter-belt interface freewheels
@@ -346,15 +348,8 @@ Check what's on hand / decide:
   simultaneous by hardware design; documented SBUS failsafe flags). Full
   wiring map, day-one failsafe ritual, and bench acceptance tests in
   `docs/radio-setup.md`. Backup system: Radiolink RC6GS V3 + R7FG (~$75).
-- **Target top speed: analysis verified 2026-08-07, recommendation 40 km/h
-  at 16,000 rpm (R ≈ 4.9–5.0 on 63–65 mm touring tires) — awaiting Adam's
-  confirm.** The car is rev-limited, not power-limited (road load at 40 km/h
-  ≈ 20–25 W vs ~374 W available at the wheels; drag-limited ceiling would be
-  ~100+ km/h), and acceleration is traction-limited (~0.7–0.8 g) across the
-  entire geared range — so gearing chooses top speed without costing launch.
-  40 km/h = 17.5T-blinky spec-class pace and 1/10 F1-class (F104) pace;
-  shortening later is a one-pinion swap. v2 check passes: locked-clutch
-  firing floor lands at 10 km/h. Math trail in BUILD-LOG (2026-08-07).
+- ~~Target top speed~~ **decided 2026-08-07: 40 km/h** — see the Transmission
+  bullet in Powertrain architecture; math trail in BUILD-LOG (2026-08-07).
 - **Brake:** accept coast-down-only braking as a documented v1 limitation, or
   fit a servo-actuated disc as an ESP32-independent stopping path?
 - **Bench rig location and guarding:** where do two coupled motors at speed

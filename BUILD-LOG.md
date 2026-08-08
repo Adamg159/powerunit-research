@@ -580,6 +580,10 @@ isn't real at this scale, and the corrections it surfaced reshape the plan:
   test (reflected inertia adds ~10–20% effective mass); coast-down runs are
   clean of engine drag at all speeds since the clutch freewheels below
   engagement — good news for the aero program.
+- **Update: Adam confirmed the 40 km/h target.** Gearing is now fully
+  specified up to two measurements: tire diameter (chassis packaging) and
+  clutch engagement RPM (bench) → final pinion/spur tooth counts → order
+  drivetrain parts under the bench-set authorization.
 
 ## 2026-08-07 — Radio ordered
 
