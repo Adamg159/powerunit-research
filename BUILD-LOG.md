@@ -458,6 +458,30 @@ exist.** Corrections logged:
   showed unavailable) was interrupted by the session usage limit and resumes
   after it resets tonight (~9:30 pm ET).
 
+## 2026-08-07 — Cart live re-verified after Adam found dead listings; 5 swaps, all items orderable
+
+Adam tried to order and found most listings unavailable (the low-stock warnings
+aged out in hours, validating the new sourcing rule). Every cart line was
+re-checked live in-browser and replacements verified in stock:
+
+- **Swapped:** motor purchase channel → Hobbywing Direct NA $49.99 (Amazon has
+  no featured offer for the 17.5T G2, only a $45.78 third-party non-FBA seller);
+  traction packs → EMEPOVGY 3S 5200 80C hard-case XT60 **2-pack $39.99** FBA
+  (Zeee unavailable; less than half the Zeee 2-pack price); charger → SkyRC
+  B6ACneo $52 Prime (S100neo now $88.58 slow third-party; S65 and Hitec RDX1
+  both unavailable; 60 W AC means ~0.9C on the 5.2 Ah 3S — trivially slower);
+  surrogate combo → GoolRC 3650 3900 kv + 60 A $44.98 FBA, 18 left (all four
+  prior ASINs dead; brake/reverse standard in this family but not explicit in
+  the listing — verify with the programming card on arrival); surrogate 2S →
+  $29.99 80C hard-case 2-pack (Zeee dead; Gens ace single $39.99 is the
+  brand-name alternative).
+- **Still live from the original cart:** bags $15.29, coupling $9.01, sleeves
+  $7.99 (9 left), mounts $13.24×2 (14 left), XT60 pigtails $12.99, MAXI fuse
+  holder w/ two 50 A fuses $10.49, Flipsky Mini FSESC4.20 $71.99 FBA.
+- **Order urgency:** sleeves/mounts/surrogate are single-digit-to-teens stock.
+- Running total ≈ $300 before controller + ~$45–55 small adds; ≈ $420–430
+  all-in with the Flipsky, ≈ $470–530 if the EDU wins the ladder decision.
+
 ---
 
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
