@@ -146,11 +146,13 @@ Driver-command architecture (adopted 2026-08-05, phased):
 
 - **Steering servo is always RX-direct** — a firmware crash must never cost
   steering authority.
-- **Phase A (bench + first drives):** engine throttle servo also RX-direct via
-  a Y-lead; the ESP32 passively reads driver demand and commands only the
-  VESC. Assist/harvest still runs under software control; a crash costs
-  nothing. Added latency is a non-issue either way — carb, combustion, and
-  servo mechanics dominate throttle response.
+- **Phase A (bench + first drives):** engine throttle servo also RX-direct
+  (on its own receiver PWM port — the selected FS-R11P outputs PWM and the
+  serial stream simultaneously, so no Y-lead is needed); the ESP32 passively
+  reads driver demand from the serial stream and commands only the VESC.
+  Assist/harvest still runs under software control; a crash costs nothing.
+  Added latency is a non-issue either way — carb, combustion, and servo
+  mechanics dominate throttle response.
 - **Phase B (after real bench hours on the firmware):** throttle servo moves
   behind the ESP32 for full engine+electric blending, only with the failsafe
   kit: carb return spring biased to idle; throttle pin initialized to idle
@@ -330,9 +332,11 @@ Ask the lab:
 
 Check what's on hand / decide:
 
-- **Radio gear:** which transmitter/receiver (owned or to buy)? Needs SBUS or
-  iBUS out PLUS at least one plain PWM output for the RX-direct steering servo,
-  at 3.3 V-safe signal levels.
+- **Radio gear: selected 2026-08-07, purchase awaiting approval (~$86).**
+  Flysky FS-G7P+ + FS-R11P (11 PWM ports + dedicated serial port,
+  simultaneous by hardware design; documented SBUS failsafe flags). Full
+  wiring map, day-one failsafe ritual, and bench acceptance tests in
+  `docs/radio-setup.md`. Backup system: Radiolink RC6GS V3 + R7FG (~$75).
 - **Target top speed** (even a rough number): the single-speed ratio math needs
   it together with tire diameter — "parking-lot demonstrator" and "40+ km/h"
   produce different gearing.

@@ -509,6 +509,36 @@ re-checked live in-browser and replacements verified in stock:
   fuse holder (Aug 17). Bench work can start the moment the VESC + a pack +
   the motor are all on the desk.
 
+## 2026-08-07 — Radio system selected: Flysky FS-G7P+ / FS-R11P (purchase pending approval)
+
+- Market pass over the budget surface-radio ecosystems (Flysky, Radiolink,
+  DumboRC), judged against the command architecture's make-or-break spec: the
+  receiver must output the serial channel stream AND ordinary PWM channels
+  simultaneously — steering stays RX-direct forever, throttle is RX-direct in
+  Phase A, the ignition-kill line gets its own channel later, all while the
+  ESP32 reads driver demand from the serial port.
+- **Winner: Flysky FS-G7P+ (10-ch pistol grip) + FS-R11P, ~$86 on Amazon.**
+  The only candidate proven on primary sources: the official R11P manual shows
+  11 dedicated PWM ports plus a separate SERVO serial port with paired output
+  modes (PWM/S.BUS etc.), and — uniquely — documents SBUS failsafe flag bits,
+  the exact signal Phase B's safety parsing needs. Per-channel failsafe with
+  settable positions and 250–1000 ms judgment time; no gyro to disable.
+- Notable rejection: the classic Flysky FS-iA6B (the ESP32 hobby favorite)
+  provably repeats stale frames on link loss without flagging — disqualifying
+  for a system whose failsafe design assumes the receiver tells the truth.
+  Backup system if Flipsky stock vanishes: Radiolink RC6GS V3 + R7FG (~$75),
+  simultaneity confirmed but flag behavior undocumented.
+- Architecture simplification: the R11P makes the Phase-A Y-lead unnecessary —
+  the throttle servo runs RX-direct on CH2 while the ESP32 reads identical
+  CH2 demand from the serial stream. CLAUDE.md updated.
+- New reference doc: `docs/radio-setup.md` — wiring map (CH1 steer / CH2
+  throttle / CH3 kill / aux via TX knob), day-one failsafe ritual, the two
+  bench acceptance tests (TX-off vs serial-unplugged), and ESP32 SBUS
+  integration notes (inverted UART, level check before first connection,
+  2.4 GHz coexistence with the WiFi telemetry).
+- Cost flag: ~$86 + ~$21–30 for a spare receiver later; radio gear sits
+  outside the authorized bench set, so the order waits on Adam's go-ahead.
+
 ---
 
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
