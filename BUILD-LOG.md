@@ -538,6 +538,55 @@ re-checked live in-browser and replacements verified in stock:
   2.4 GHz coexistence with the WiFi telemetry).
 - Cost flag: ~$86 + ~$21–30 for a spare receiver later; radio gear sits
   outside the authorized bench set, so the order waits on Adam's go-ahead.
+- **Update, same session: ORDERED — $92.11 including tax, arriving Mon Aug 10**
+  (same delivery window as the bench-set boxes). Day-one ritual on arrival is
+  the failsafe configuration + acceptance tests in `docs/radio-setup.md`.
+
+## 2026-08-07 — Gearing analysis done and adversarially verified; 40 km/h target proposed
+
+Adam framed the single-speed question as acceleration-vs-top-speed. The math
+(independently re-derived by two verification passes) says the tradeoff mostly
+isn't real at this scale, and the corrections it surfaced reshape the plan:
+
+- **The car is rev-limited, not power-limited.** Road load at 40 km/h is
+  ~20–25 W against ~374 W available at the wheels; geared insanely tall the
+  drag-limited ceiling would be ~100+ km/h. Gearing *chooses* top speed.
+- **Acceleration is traction-limited everywhere** (~0.7–0.8 g incl. weight
+  transfer; ~3× wheel-force surplus even engine-only). Snappiness doesn't
+  depend on the ratio — and honestly, the MGU-K can't raise attainable
+  acceleration anywhere in the geared range. The hybrid's value shows in
+  telemetry (torque split, engine-load shift, ~100–140 J harvested per stop),
+  not seat-of-pants — which is the project's stated goal anyway.
+- **Launch feel belongs to the clutch, not the gearing.** Both power sources
+  sit upstream of the centrifugal clutch, so nothing moves until the crank
+  passes engagement — no EV-creep exists in v1. Spring tuning sets launch
+  character; shorter gearing actually *reduces* clutch-slip heating.
+- **Correction: the regen window is the top ~half of the speed range** at
+  8–9k engagement (not the top ⅔ as earlier estimated — that needs ~5.3k
+  engagement, likely colliding with the twin's idle). The window fraction is
+  engagement/16,000 and *independent of gearing* — clutch springs are the
+  regen lever. Bench target: bias engagement toward 6–7k if idle allows
+  (⇒ ~62% coverage).
+- **Proposed: gear for 40 km/h at 16,000 rpm — R ≈ 4.9–5.0 on 63–65 mm
+  touring tires** (awaiting Adam's confirm). That's genuine spec-class pace
+  (17.5T blinky FDR practice, 1/10 F1/F104 ≈ 40 km/h), the v2 locked-clutch
+  firing floor lands at a comfortable 10 km/h, all R values fit ordinary
+  pinion/spur/diff hardware, and going shorter later is a one-pinion swap
+  while starting short risks redoing the math. "Spec-formula pace," not
+  "fast for a nitro car" — matching the formula-car-not-drag-racer brief.
+- Side findings folded into CLAUDE.md: pitot sensing needs a low-range
+  digital DP sensor (SDP3x-class ±500 Pa — only ~60–76 Pa of dynamic
+  pressure at these speeds); bench list gains a crank-line inertia spin-down
+  test (reflected inertia adds ~10–20% effective mass); coast-down runs are
+  clean of engine drag at all speeds since the clutch freewheels below
+  engagement — good news for the aero program.
+
+## 2026-08-07 — Radio ordered
+
+- Flysky FS-G7P+ / FS-R11P combo ordered on Amazon: **$92.11 including tax**,
+  arriving Mon Aug 10 alongside the bench-set boxes. Bench-phase hardware
+  questions are now all closed; remaining opens are decisions (top-speed
+  confirm, brake approach) and engine-gated items.
 
 ---
 

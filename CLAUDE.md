@@ -129,7 +129,10 @@ ESP32-based. Scope covers:
 - MGU-K electrical data via the VESC UART link (RPM, phase current, battery V/I)
 - Engine sensing per the planning docs: per-cylinder head temp (MAX31855),
   RPM (A3144 Hall + SmCo magnet), vibration baseline (MPU-6050)
-- Aero and dynamics sensing: pitot, ride height, load cells
+- Aero and dynamics sensing: pitot, ride height, load cells. (Pitot note
+  2026-08-07: dynamic pressure at 35–40 km/h is only ~60–76 Pa — spec an
+  SDP3x-class ±500 Pa digital differential-pressure sensor on I2C, per the
+  no-ADC rule; a 1 psi part would waste its whole range.)
 - Data logging pipeline (microSD ground truth + WiFi live), coast-down test support
 
 Architecture ground rules from the planning docs, still in force:
@@ -257,10 +260,16 @@ the real engine are interchangeable.
   failures to find on a $50 rig at tens of watts instead of stacked on a
   temperamental first-run engine.
 - Also bench-measure the clutch engagement RPM here (spring-tunable; the ratio
-  and regen-window math both need the real number). Firmware must cap regen
-  torque below the RPM-dependent clutch capacity and cut regen on detected slip
-  (VESC RPM vs wheel-derived RPM divergence) — centrifugal clutch slip is
-  self-reinforcing and glazes the shoes.
+  and regen-window math both need the real number). **Spring choice is the
+  regen lever, not gearing:** the window fraction is engagement/16,000 rpm
+  regardless of ratio — 6k engagement ⇒ regen over the top ~62% of the speed
+  range, 9k ⇒ ~44%. Bias springs toward 6–7k if idle stability allows (twin
+  idles ~2.5–4k; keep clear margin). Also measure crank-line moment of
+  inertia (spin-down test) — reflected through R²/r² it adds ~10–20%
+  effective mass, so accel/energy predictions should use ~3.4–3.7 kg.
+  Firmware must cap regen torque below the RPM-dependent clutch capacity and
+  cut regen on detected slip (VESC RPM vs wheel-derived RPM divergence) —
+  centrifugal clutch slip is self-reinforcing and glazes the shoes.
 - **Bench safety rule:** never run brake/regen commands with only a bench PSU
   on the DC bus — regenerated current back-feeds a non-bidirectional supply.
   Keep the traction pack (or a braking resistor) connected.
@@ -337,9 +346,15 @@ Check what's on hand / decide:
   simultaneous by hardware design; documented SBUS failsafe flags). Full
   wiring map, day-one failsafe ritual, and bench acceptance tests in
   `docs/radio-setup.md`. Backup system: Radiolink RC6GS V3 + R7FG (~$75).
-- **Target top speed** (even a rough number): the single-speed ratio math needs
-  it together with tire diameter — "parking-lot demonstrator" and "40+ km/h"
-  produce different gearing.
+- **Target top speed: analysis verified 2026-08-07, recommendation 40 km/h
+  at 16,000 rpm (R ≈ 4.9–5.0 on 63–65 mm touring tires) — awaiting Adam's
+  confirm.** The car is rev-limited, not power-limited (road load at 40 km/h
+  ≈ 20–25 W vs ~374 W available at the wheels; drag-limited ceiling would be
+  ~100+ km/h), and acceleration is traction-limited (~0.7–0.8 g) across the
+  entire geared range — so gearing chooses top speed without costing launch.
+  40 km/h = 17.5T-blinky spec-class pace and 1/10 F1-class (F104) pace;
+  shortening later is a one-pinion swap. v2 check passes: locked-clutch
+  firing floor lands at 10 km/h. Math trail in BUILD-LOG (2026-08-07).
 - **Brake:** accept coast-down-only braking as a documented v1 limitation, or
   fit a servo-actuated disc as an ESP32-independent stopping path?
 - **Bench rig location and guarding:** where do two coupled motors at speed
