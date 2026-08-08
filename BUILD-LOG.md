@@ -482,6 +482,27 @@ re-checked live in-browser and replacements verified in stock:
 - Running total ≈ $300 before controller + ~$45–55 small adds; ≈ $420–430
   all-in with the Flipsky, ≈ $470–530 if the EDU wins the ladder decision.
 
+## 2026-08-07 — Bench-set ordering begun: MGU-K motor ordered; Amazon cart verified
+
+- **MGU-K motor ORDERED** — Hobbywing QuicRun 3650 G2 17.5T sensored (2170 kv),
+  Hobbywing Direct NA confirmation #N892GD4DL: $42.50 after HWTRYOUTS coupon
+  (list $49.99), + $16.74 shipping + $3.84 tax = **$63.08**. Manufacturer-direct
+  was the only clean channel — Amazon carries no featured offer for the 17.5T
+  variant. Arrival ritual on delivery: caliper the shaft (3.175 mm expected),
+  set end-bell timing to the ZERO mark before it ever meets the VESC.
+- **Amazon cart reviewed line-by-line and cleared to order** (16 items,
+  $354.72 subtotal): Flipsky Mini FSESC4.20 $71.99 (Adam's controller call —
+  the cheap-probe strategy, Amazon channel for returns), EMEPOVGY 3S 5200 80C
+  hard-case 2-pack $39.99 + 2S 2-pack $29.99, SkyRC B6ACneo $52, Zeee bags
+  $15.29, GoolRC surrogate combo $44.98, coupling $9.01 + sleeve 5-pack $7.99,
+  Tbest mounts ×2 $26.48, XT60 pigtails $12.99, MAXI fuse holder + 50 A fuses
+  $10.49, XT60↔Deans set $9.99, MP1584 3-pack $7.95, balance buzzers $6.59,
+  servo testers $8.99. Notes from the review: XT60↔XT60 charge lead correctly
+  omitted (the B6ACneo has a built-in XT60 output port); hall adapter and
+  JST-RCY charge adapter are splice-from-stock, not purchases; three lines are
+  low-stock (sleeves 9, mounts 14, combo 18) so the order goes in same-day.
+- Projected all-in for the bench set: ~$440–455 including the motor order.
+
 ---
 
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
