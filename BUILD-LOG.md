@@ -592,6 +592,26 @@ isn't real at this scale, and the corrections it surfaced reshape the plan:
   questions are now all closed; remaining opens are decisions (top-speed
   confirm, brake approach) and engine-gated items.
 
+## 2026-08-08 — Consumable: electrical tape (splice coverage gap spotted)
+
+- Adam noticed the bench-set order had nothing to cover the hall-sensor
+  adapter splice and bought **Scotch Super 33+/700 vinyl electrical tape,
+  3/4 in x 66 ft, $2.98** (Amazon, Aug 8). General shop consumable — it will
+  see use well beyond the splice (harness bundling, temporary labelling,
+  chafe protection at chassis pass-throughs).
+- **Related gap it exposes: still no heat-shrink in the bench inventory.**
+  Vinyl tape is the right *outer* wrap but the wrong *primary* insulation for
+  the JST-ZH → JST-PH hall adapter: the adhesive creeps under heat and
+  unwraps under vibration, and six conductors in a signal bundle want
+  per-conductor isolation, not one common wrap. Correct build order is
+  individual heat-shrink on each of the six joints (offset the joints so the
+  bundle stays thin), an outer shrink sleeve over the whole splice for strain
+  relief, then tape only if extra abrasion cover is wanted. An assorted
+  2:1 shrink kit is ~$8 and also serves the XT60→JST-RCY charge adapter,
+  which is likewise splice-from-stock. Flagged for the next order.
+- Running consumables total remains trivial against the ~$420 bench set +
+  $92.11 radio; no budget implication.
+
 ---
 
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
