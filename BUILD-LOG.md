@@ -611,6 +611,33 @@ isn't real at this scale, and the corrections it surfaced reshape the plan:
   which is likewise splice-from-stock. Flagged for the next order.
 - Running consumables total remains trivial against the ~$420 bench set +
   $92.11 radio; no budget implication.
+- **Update: gap closed same order cycle — tooling/consumables ORDERED,
+  $29.86 incl. tax** (Amazon #112-7745727-2813017, all three arriving
+  Mon Aug 10 with the bench-set boxes and the radio):
+  - **Ginsco 580 pc 2:1 heat-shrink kit, $7.99** (B01MFA3OFA). 11 sizes,
+    1/24"–25/64" (≈1.0–10 mm): covers the 28 AWG hall conductors (1.6–2.1 mm),
+    the outer sleeve over the finished six-wire bundle (6–8 mm), and the
+    12 AWG XT60 charge-adapter leads (8–10 mm). Chosen over the black-only
+    kits specifically for the **6 colors** — colour-coding each conductor at
+    the splice keeps the function map readable after the joints are buried,
+    which is what CLAUDE.md's "map by FUNCTION not position" rule needs.
+  - **ROMECH 350 W dual-temp heat gun (400 °F / 660 °F), 2 nozzles, $13.99**
+    (B0CHVDL25P). Deliberately NOT a 1500–1800 W paint-stripper: polyolefin
+    shrinks at ~90–120 °C, so the 400 °F setting is right, whereas a big gun
+    (750–1100 °F, several times the airflow) melts JST bodies and wire
+    insulation before the tube is even seated. The reducer nozzle lets one
+    joint in a staggered row be heated without cooking its neighbours.
+  - **Sharpie oil-based paint markers, white, medium, 2 ct, $6.45**
+    (B00KWTM7E6). Rejected the metallic-silver alcohol Sharpie: vinyl tape
+    migrates plasticizer to its own surface and lifts alcohol ink from
+    underneath, and it smears on contact with fuel or oil — both guaranteed
+    on a nitro car. Oil-based pigment keys into the vinyl, cures fuel/oil
+    resistant, and opaque white beats silver for contrast on black.
+    **First job: label the 2S vs 3S packs on arrival** — the standing hazard
+    in CLAUDE.md, since they share XT60 and 3S into the surrogate ESC
+    over-revs the coupled MGU-K.
+- Consequence: the hall-adapter splice is no longer gated on anything. Motor,
+  VESC, shrink, and gun all land Aug 10.
 
 ---
 
