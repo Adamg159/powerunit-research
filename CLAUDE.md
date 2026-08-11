@@ -278,12 +278,21 @@ the real engine are interchangeable.
 
 ### Blocked until the engine (or a dimensioned drawing) arrives
 
-- Crank interface: shaft diameter, length, thread pitch and direction, keyway/flat
+- Crank interface: **output-end diameter answered 2026-08-11 — 8 mm plain shank
+  stepping down to an M6 thread** (standard nitro clutch mount: shank carries
+  torque, nut clamps only). Still unknown: shank and thread *length*, thread
+  pitch and hand, keyway/flat vs bare, straight vs tapered — and the same
+  dimensions for the *starter* end, which is the one the MGU-K direct mount
+  would actually use.
 - Mounting boss hole pattern relative to crank centerline
 - Crank centerline height above the mounting face
 - Real torque curve and vibration signature (needed for engagement tuning)
 
-A dimensioned spec sheet has been requested from the vendor.
+A dimensioned spec sheet has been requested from the vendor; as of 2026-08-11
+they have supplied two numbers and no drawing. **Clutch bore is now specified
+at 8 mm** — clutch-kit shopping is unblocked to that extent, and an
+8 mm ↔ 3.175 mm rigid clamp coupler is an off-the-shelf part if the direct
+mount wins. Mount design remains blocked.
 
 ### Engine-arrival sequence (unchanged from the planning docs)
 
@@ -326,9 +335,19 @@ Ask EngineDIY (with the pending spec-sheet request):
 
 - **Does the starter-belt interface freewheel (one-way bearing)?** Decides the
   MGU-K coupling — a one-way forces the direct crank mount for any regen at all.
-- Chase the dimensioned spec sheet itself: crank shaft diameter/length, thread
-  pitch and direction, keyway/flat; mounting boss hole pattern; crank
-  centerline height above the mounting face.
+- Chase the dimensioned spec sheet itself. Partially answered 2026-08-11
+  (output shaft 8 mm, thread M6). Outstanding, and worth asking as discrete
+  questions rather than "send the spec sheet" — that framing produced two
+  numbers:
+  - Is there a **flat or keyway** on the 8 mm shank? (Decides whether a
+    friction-only clamp coupler survives a twin's reversing torque pulses.)
+  - **Exposed length** of the 8 mm shank and of the M6 thread. (A clamp
+    coupler needs ~12 mm of engagement; if the clutch eats the shank, direct
+    mount is geometrically dead.)
+  - **Thread pitch (M6×1.0 or ×0.75) and hand (LH/RH).**
+  - **Straight or tapered** shank?
+  - **Same dimensions for the starter/belt end** of the crank.
+  - Mounting boss hole pattern; crank centerline height above the mounting face.
 - **Which centrifugal clutch kit fits the ST-NF2**, and are engagement springs
   available/tunable? The clutch is the heart of the v1 driveline and its
   engagement RPM feeds the ratio math.

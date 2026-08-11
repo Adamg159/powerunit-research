@@ -641,4 +641,55 @@ isn't real at this scale, and the corrections it surfaced reshape the plan:
 
 ---
 
+## 2026-08-11 — EngineDIY partial reply: crank nose 8 mm shank / M6 thread. No spec sheet.
+
+- **What came back:** two numbers only — *crankshaft output shaft diameter
+  8 mm, thread diameter 6 mm*. No dimensioned drawing, no answer on the
+  starter-belt freewheel question, no clutch-kit guidance.
+- **Interpretation:** a stepped crank nose — 8 mm plain shank stepping down to
+  an M6 threaded stub. This is the standard nitro clutch mount: the clutch or
+  flywheel bores 8 mm and registers on the shank (which carries torque), and
+  the M6 nut supplies axial clamp only. The thread never transmits torque.
+- **What it unlocks (two real items):**
+  - **Clutch selection gains a hard filter.** The open CLAUDE.md question
+    "which centrifugal clutch fits the ST-NF2" now reduces to *8 mm bore*.
+    8 mm is a common RC crank size, so off-the-shelf candidates should exist
+    without a custom hub.
+  - **Direct-crank-mount coupling has a standard size.** 8 mm ↔ 3.175 mm rigid
+    clamp couplers are a stocked CNC/3D-printer part, so that branch needs no
+    bespoke adapter machining if it wins.
+- **Torque sanity check — the shaft is nowhere near the constraint.** 0.6 ps
+  ≈ 441 W; at 16,000 rpm that is ~0.26 N·m, and even a 450 W MGU-K burst
+  stacked on at mid-range rpm keeps the combined crank torque under ~1 N·m.
+  An 8 mm steel shaft sees ~10 MPa shear at 1 N·m against ~250 MPa yield —
+  roughly 25× margin. The tighter link is the M6 clamp: a correctly torqued
+  M6 gives on the order of 3 N·m of friction holding capacity at the clutch
+  face, ~3× the load. Adequate, but the modest margin is precisely why
+  production engines put a flat or key on the shank instead of trusting
+  friction — see the open question below.
+- **What is still missing, and now more sharply askable:**
+  - **Flat or keyway on the 8 mm shank?** Decides whether a friction-only
+    clamp coupler is acceptable. A parallel twin delivers reversing torque
+    pulses at 16k rpm, and friction-only joints creep under exactly that —
+    a coupler walking along the crank is a bad failure mode.
+  - **Exposed length of the 8 mm shank and of the thread.** A clamp coupler
+    wants ~1.5 × D ≈ 12 mm of engagement. If the clutch already consumes the
+    shank, direct mount is geometrically dead regardless of diameter.
+  - **Thread pitch (M6×1.0 vs ×0.75) and hand (LH/RH).** Hand matters for
+    anti-loosening — a nut threaded against crank rotation backs itself off.
+  - **Straight or tapered shank?** Changes the clutch hub entirely.
+- **Likely wrong end for MGU-K purposes.** "Output shaft" is almost certainly
+  the clutch end — already spoken for. The direct-mount option in CLAUDE.md
+  means the *opposite* crank end where the starter belt pulley lives, and
+  these numbers say nothing about it. Add "same measurements for the starter
+  end" to the vendor follow-up.
+- **The decider remains unanswered.** Whether the starter-belt interface
+  freewheels still determines if brake regen and engine-driven charging are
+  possible at all, in v1 and v2. Re-ask, standalone, so it can't get lost
+  behind a dimensions request again.
+- **Net:** clutch selection moves forward; one branch of the coupling decision
+  is de-risked. Mount design stays blocked. Bench-set work is unaffected.
+
+---
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
