@@ -473,11 +473,11 @@ Ask the lab:
 
 Check what's on hand / decide:
 
-- **Radio gear: selected 2026-08-07, purchase awaiting approval (~$86).**
-  Flysky FS-G7P+ + FS-R11P (11 PWM ports + dedicated serial port,
-  simultaneous by hardware design; documented SBUS failsafe flags). Full
-  wiring map, day-one failsafe ritual, and bench acceptance tests in
-  `docs/radio-setup.md`. Backup system: Radiolink RC6GS V3 + R7FG (~$75).
+- ~~Radio gear~~ **CLOSED — ordered 2026-08-07 ($92.11 incl. tax), delivered
+  Aug 10.** Flysky FS-G7P+ + FS-R11P (11 PWM ports + dedicated serial port,
+  simultaneous by hardware design; documented SBUS failsafe flags). Wiring map,
+  day-one failsafe ritual, and bench acceptance tests in `docs/radio-setup.md`.
+  No longer a question — it is a bench task: run the failsafe ritual.
 - ~~Target top speed~~ **decided 2026-08-07: 40 km/h** — see the Transmission
   bullet in Powertrain architecture; math trail in BUILD-LOG (2026-08-07).
 - **Brake:** accept coast-down-only braking as a documented v1 limitation, or
