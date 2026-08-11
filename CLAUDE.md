@@ -35,14 +35,26 @@ file, this file wins.
   (scale by tire diameter if the wheel pick changes). v2 locked-clutch check
   passes: engine firing floor lands at 10 km/h. Final tooth counts wait on the
   tire pick (chassis packaging) and the bench-measured clutch engagement RPM.
-- **MGU-K coupling — open until the spec sheet:** belt drive off the existing
-  starter-belt interface (per docs 1/3) vs direct coaxial mount on the crank
-  nose. THE deciding check: whether the starter-belt interface freewheels
-  (one-way bearing — starters crank engines, engines never drive starters). A
-  one-way there means the crank can never drive the MGU-K: zero brake regen and
-  zero engine-driven charging, in v1 AND v2, regardless of gearing — which
-  would force the direct crank mount. Ask EngineDIY alongside the spec-sheet
-  request. Motor sizing proceeds either way; mount design waits.
+- **MGU-K coupling — DECIDED 2026-08-11: direct crank-nose mount.** The
+  starter-belt route is dead. The one-way bearing lives inside the
+  crank-mounted start belt pulley (factory BOM item 37, "Start belt pulley
+  component" — the only start-drive part designated a sub-assembly; the motor
+  side is item 52, a plain "Ten-tooth adapter" with no bearing). The crank
+  therefore cannot drive that belt: **zero brake regen and zero engine-driven
+  charging through the starter path, v1 AND v2, regardless of gearing.**
+  Confirmed by an adversarial verification pass; full evidence chain in
+  BUILD-LOG (2026-08-11).
+  - The belt route fails a second, independent test even if the one-way were
+    pressed out: the drive is ~7:1 (70-tooth crank pulley, 10-tooth motor
+    adapter), so a 16,000 rpm crank asks ~112,000 rpm of a motor that tops out
+    near 24,000. Converting it means replacing both pulleys and the belt.
+    **Do not re-propose the belt route.**
+  - Precedent to copy: Toyan's own 12 V generator kit for this engine takes
+    drive from a dedicated pulley added at the CRANK NOSE outboard of the
+    flywheel, and does not tap the starter pulley.
+  - **Packaging conflict to solve:** the centrifugal clutch also replaces the
+    stock flywheel at the crank nose. Clutch and MGU-K drive want the same real
+    estate. Mount design must resolve that stack-up (nose is only ~21 mm long).
 - **MGU-K controller:** VESC-class four-quadrant unit. "Current sensing" means
   the VESC's own UART-reported motor/battery currents — no separate current
   sensor hardware.
@@ -227,6 +239,12 @@ slot the engine in on arrival.
 - **Chassis packaging:** dummy block at the 11.2 x 9 x 9.2 cm / 535g envelope;
   outputs wheelbase/track/wheel-tire picks (feeds steering) and the
   telemetry-board envelope (feeds the PCB). Run this ahead of steering.
+  **Hard constraint found 2026-08-11: the flywheel hangs 9–10 mm BELOW the
+  engine's mounting plane** (~50 mm flywheel on a crank axis only ~15 mm up).
+  The dummy block must model that overhang, and any chassis plate or rail needs
+  a cutout at the flywheel / start-pulley end — the official base plate has
+  exactly such a cutout. Mounting: four M4, 38 mm across the crank axis;
+  slot every hole (see design-for-slop).
 - **Steering:** Ackermann geometry, bump steer, upright/linkage design — needs
   the wheelbase/track/tire picks from chassis packaging first. Servo purchase
   waits.
@@ -261,12 +279,19 @@ the real engine are interchangeable.
   pack-accepts-current, BMS-stays-closed, bus-voltage-in-bounds are exactly the
   failures to find on a $50 rig at tens of watts instead of stacked on a
   temperamental first-run engine.
-- Also bench-measure the clutch engagement RPM here (spring-tunable; the ratio
-  and regen-window math both need the real number). **Spring choice is the
+- Also bench-measure the clutch engagement RPM here (the ratio and
+  regen-window math both need the real number). **Spring choice is the
   regen lever, not gearing:** the window fraction is engagement/16,000 rpm
   regardless of ratio — 6k engagement ⇒ regen over the top ~62% of the speed
   range, 9k ⇒ ~44%. Bias springs toward 6–7k if idle stability allows (twin
-  idles ~2.5–4k; keep clear margin). Also measure crank-line moment of
+  idles ~2.5–4k; keep clear margin).
+  **CAVEAT 2026-08-11 — the lever may not actually be adjustable.** The ST-NF2
+  clutch kit ships with shoes and springs matched to four-stroke rpm, but no
+  vendor sells the springs separately or advertises them as tunable, and none
+  publishes an engagement RPM. Treat engagement as a number we RECEIVE and
+  bench-measure early, not one we dial in. If it lands high, the fallback is
+  sourcing generic 1/10 nitro clutch springs and checking fitment — not
+  ordering a tuning set, because none is sold. Also measure crank-line moment of
   inertia (spin-down test) — reflected through R²/r² it adds ~10–20%
   effective mass, so accel/energy predictions should use ~3.4–3.7 kg.
   Firmware must cap regen torque below the RPM-dependent clutch capacity and
@@ -278,21 +303,50 @@ the real engine are interchangeable.
 
 ### Blocked until the engine (or a dimensioned drawing) arrives
 
-- Crank interface: **output-end diameter answered 2026-08-11 — 8 mm plain shank
-  stepping down to an M6 thread** (standard nitro clutch mount: shank carries
-  torque, nut clamps only). Still unknown: shank and thread *length*, thread
-  pitch and hand, keyway/flat vs bare, straight vs tapered — and the same
-  dimensions for the *starter* end, which is the one the MGU-K direct mount
-  would actually use.
-- Mounting boss hole pattern relative to crank centerline
-- Crank centerline height above the mounting face
-- Real torque curve and vibration signature (needed for engagement tuning)
+**Much of this was answered on 2026-08-11 from the factory manuals + a web
+recon pass — see BUILD-LOG. The manuals are public:** [SEMTO ST-NF2](https://cdn.shopify.com/s/files/1/0175/0718/8800/files/SEMTO-ST-NF2.pdf?v=1697620359)
+and [OTTO FS-L200AC-OT](https://rc24.mycashflow.fi/files/manuals/Toyan/FS-L200AC-OT_EN.pdf) — the same document under two brands,
+60-line BOM and exploded views. **Standing lesson: before opening a vendor
+ticket, search for a public manual under EVERY brand name the part is sold
+under.**
 
-A dimensioned spec sheet has been requested from the vendor; as of 2026-08-11
-they have supplied two numbers and no drawing. **Clutch bore is now specified
-at 8 mm** — clutch-kit shopping is unblocked to that extent, and an
-8 mm ↔ 3.175 mm rigid clamp coupler is an off-the-shelf part if the direct
-mount wins. Mount design remains blocked.
+Answered (all "do not machine to these — physical measurement on arrival
+governs"; the verifier widened every band the digger proposed):
+
+- Crank output nose: **8 mm parallel shank** (not tapered) stepping to an M6
+  thread. **Drive is a ROUND PIN in a longitudinal round-ended groove** — BOM
+  item 04 "Round pin (φ2X12)", qty 2 — not a flat, not a spline. Pin-driven
+  AND nut-clamped. Exposed nose ≈ 21 mm total, thread ≈ 8.5 mm.
+- Crank centerline **≈ 15 mm ±1.5** above the mounting face.
+- Mounting: **four M4 blind holes**, **38 mm across the crank axis** (solid),
+  ~40–42 mm along it (medium confidence).
+- **The flywheel hangs 9–10 mm BELOW the mounting plane** (~50 mm flywheel on a
+  ~15 mm axis) — confirmed three ways. **Chassis plates and rails need a cutout
+  at the flywheel / start-pulley end.** Feeds chassis packaging directly.
+- There is no second shaft end: start pulley and flywheel share the OUTPUT end;
+  the far end is the timing/fan end.
+
+Still genuinely unknown:
+
+- **M6 thread pitch (×1.0 vs ×0.75) and hand (LH/RH)** — unpublished anywhere;
+  the CAD thread is decorative (~0.32 mm pitch) so it cannot be read off the
+  drawings. A left-hand nose would wreck a purchased nut or hub.
+- **Mounting hole pattern TOPOLOGY** — rhombus (two holes on the crank
+  centerline fore/aft, two at mid-length across) per a 3D scan, vs rectangle
+  38 × 40 per a printed mount and the official base photo. **Unbroken tie. Do
+  not order machined parts against either reading.**
+- Whether both φ2 pins are on the output nose, and their angular/axial layout.
+- Real torque curve and vibration signature (needed for engagement tuning).
+
+**Design-for-slop is now vendor-endorsed:** the manual says *"If the existing
+holes on the engine bracket cannot be aligned perfectly with the engine
+mounting holes, do not force the installation... it is recommended to purchase
+adjustment pads"*, and an ST-NF2 owner reports the screws not lining up on the
+official base. Slot every hole.
+
+**Dead idea — do not resurrect:** the 8 mm ↔ 3.175 mm rigid clamp coupler.
+The nose is pin-driven with only ~21 mm exposed, most of it occupied by the
+pulley, flywheel/clutch and nut. Attachment is a face drive, not a shank clamp.
 
 ### Engine-arrival sequence (unchanged from the planning docs)
 
@@ -333,24 +387,36 @@ leave clearance around anything non-structural. Final-fit on arrival.
 
 Ask EngineDIY (with the pending spec-sheet request):
 
-- **Does the starter-belt interface freewheel (one-way bearing)?** Decides the
-  MGU-K coupling — a one-way forces the direct crank mount for any regen at all.
-- Chase the dimensioned spec sheet itself. Partially answered 2026-08-11
-  (output shaft 8 mm, thread M6). Outstanding, and worth asking as discrete
-  questions rather than "send the spec sheet" — that framing produced two
-  numbers:
-  - Is there a **flat or keyway** on the 8 mm shank? (Decides whether a
-    friction-only clamp coupler survives a twin's reversing torque pulses.)
-  - **Exposed length** of the 8 mm shank and of the M6 thread. (A clamp
-    coupler needs ~12 mm of engagement; if the clutch eats the shank, direct
-    mount is geometrically dead.)
-  - **Thread pitch (M6×1.0 or ×0.75) and hand (LH/RH).**
-  - **Straight or tapered** shank?
-  - **Same dimensions for the starter/belt end** of the crank.
-  - Mounting boss hole pattern; crank centerline height above the mounting face.
-- **Which centrifugal clutch kit fits the ST-NF2**, and are engagement springs
-  available/tunable? The clutch is the heart of the v1 driveline and its
-  engagement RPM feeds the ratio math.
+**Cut down hard on 2026-08-11** — the web recon answered the freewheel
+question, the clutch-kit question, the drive feature, the centerline height and
+most of the mounting pattern. Do NOT re-ask those; don't spend vendor goodwill
+re-establishing what the manuals already settle. Four items remain, and only
+the first two can cost machined parts:
+
+- **M6 thread pitch and hand.** "Is the crankshaft output thread M6 × 1.0 or
+  M6 × 0.75, and is it right-hand or left-hand?" Genuinely unpublished — not in
+  either manual, no BOM line, no listing, and the CAD thread is decorative so
+  it can't be measured off the drawings. A left-hand nose would wreck a
+  purchased nut or hub.
+- **Mounting hole pattern topology.** Phrase it so a shop hand can answer
+  without a drawing: "Looking at the bottom of the crankcase, are the four M4
+  holes at the corners of a rectangle, or are two on the crankshaft centerline
+  (front and rear) with the other two out at the sides at mid-length? A phone
+  photo of the bare engine's underside would answer this completely." A 3D scan
+  says rhombus, a printed mount and the official base photo say rectangle
+  38 × 40 — unbroken tie.
+- **Clutch bore, to EngineDIY's clutch desk.** "What is the bore diameter of
+  the clutch flywheel in the Clutch Assembly Kit for SEMTO ST-NF2, in mm? Your
+  photos show a notch in that bore — is it a keyway, and what are the key width
+  and depth?" Ask them to measure with calipers, not quote the listing: the
+  listing's "8mm output shaft" describes the shaft the kit PROVIDES, not the
+  bore. Also flag the keyway-vs-round-pin mismatch against BOM item 04.
+- **One-way bearing identification.** "Part 37, the Start belt pulley
+  component: what is the designation and size (bore × OD × width) of the
+  one-way bearing pressed into it?" Only matters if we ever want to defeat or
+  service it; it would also independently confirm the 8 mm shank.
+- Also worth asking: are BOTH φ2 × 12 round pins (BOM item 04) on the output
+  nose, and what is their layout?
 
 Ask the lab:
 

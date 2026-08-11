@@ -692,4 +692,155 @@ isn't real at this scale, and the corrections it surfaced reshape the plan:
 
 ---
 
+## 2026-08-11 — Web recon settles the coupling question: the starter pulley freewheels. Direct crank mount forced.
+
+Rather than wait weeks on a vendor reply that had already under-delivered, ran a
+14-agent web reconnaissance (6 search modalities → 4 targeted diggers → 4
+adversarial verifiers; 2.8 M tokens, 88 min). Every finding below carries a URL
+and survived a refutation pass; where a verifier cut a claim down, the corrected
+version is what is recorded.
+
+### The headline: the manuals were public all along
+
+- **[SEMTO ST-NF2 Operation Manual](https://cdn.shopify.com/s/files/1/0175/0718/8800/files/SEMTO-ST-NF2.pdf?v=1697620359)** (33 pp) and the
+  **[OTTO MOTOR FS-L200AC-OT manual](https://rc24.mycashflow.fi/files/manuals/Toyan/FS-L200AC-OT_EN.pdf)** (48 pp) are the SAME
+  document under two brands — 60-line BOM, exploded views, assembly steps,
+  three-view drawings. We spent weeks asking EngineDIY for "a spec sheet."
+  **Lesson for the rest of this project: check for a public manual under every
+  brand name a part is sold under before opening a vendor ticket.**
+- The manuals do NOT dimension the crank. So the vendor request was never going
+  to be answered by a document — it needed specific measurement questions.
+
+### Q1 — RESOLVED (verifier: CONFIRMED). The one-way is in the crank pulley.
+
+- **BOM item 37 "Start belt pulley component"** is permanently crank-mounted,
+  trapped by flywheel (38), gasket (06) and M6 nut (05). The OTTO manual's
+  safety section forbids removing it.
+- It is the **only** part on the start drive designated a *"component"* (a
+  sub-assembly — which is why its internal bearing gets no separate BOM line).
+  The motor side is item 52 **"Ten-tooth adapter"**, rendered in the exploded
+  view as a one-piece pulley with two grub screws, no bearing seat.
+- The manual prints a directional warning on item 37: *"Be careful! The dark
+  side of the bearing cover faces outward."* A symmetric ball race needs no
+  such instruction.
+- Toyan's own technical page: the starter drives the flywheel *"by the one-way
+  bearing pulley"* (单向轴承皮带轮).
+- **Kinematic clincher:** item 52 is ten teeth, the crank pulley measures ~70
+  ⇒ ~7:1. A driven belt would spin the 480 brushed starter to ~112,000 rpm at
+  redline. The engine cannot function without the freewheel.
+- **CONSEQUENCE — the belt route is dead twice over.** Even with the one-way
+  pressed out, 7:1 asks ~112,000 rpm of a 2170 kv motor that tops out near
+  24,000; you would be replacing both pulleys and the belt. **Per CLAUDE.md's
+  own decision rule this forces the direct crank-nose MGU-K mount.** Zero brake
+  regen and zero engine-driven charging via the starter belt, v1 or v2,
+  regardless of gearing.
+- **Precedent worth copying:** Toyan's own belt-driven 12 V generator kit for
+  this engine — the closest existing thing to an MGU-K here — takes drive from
+  a dedicated pulley added at the CRANK NOSE outboard of the flywheel, and
+  pointedly does not tap the starter pulley.
+- Verifier struck one claim: an eBay photo said to show "cylindrical rollers,
+  no continuous inner race" is not resolvable at 739x1600. Dropped; the case
+  never needed it.
+
+### Q2 — PARTIAL (verifier: WEAKENED). Pin drive confirmed; thread still unknown.
+
+- **Parallel shank, not tapered.**
+- **Drive feature is a ROUND PIN in a longitudinal round-ended groove** — BOM
+  item 04 *"Round pin (φ2X12)"*, qty 2. Not a flat, not a spline, not a
+  rectangular key. The flywheel bore is round with a notch clearing the pin,
+  then clamped by the M6 nut. **This resolves the earlier "pin vs thread"
+  conflict — it is both: pin-driven AND nut-clamped.**
+- Exposed nose ≈ 21 mm total, thread ≈ 8.5 mm — **verifier widened the bands
+  and says explicitly: do not machine to these.** Physical measurement on
+  arrival governs.
+- **Thread pitch and hand: genuinely UNPUBLISHED.** Not in either manual, no
+  BOM line, no vendor listing; the CAD thread is decorative (drawn at ~0.32 mm
+  pitch) so it cannot be read off the drawings. Stays on the vendor email.
+- **Q5 rested on a false premise:** the start pulley and flywheel share the
+  OUTPUT end of the crank. The opposite end is the timing/fan end. There is no
+  second shaft end to mount to.
+
+### Q3 — PARTIAL (verifier: WEAKENED). One number changes chassis packaging.
+
+- **Crank centerline ≈ 15 mm above the mounting face, ±1.5.** Three indirect
+  measurements spanning 14.1 / 14.8 / 15.9 mm. The verifier explicitly rejected
+  the tighter "15.9 ±0.5" the digger proposed.
+- **Four M4 blind holes** in the casting (manual: *"use a 3.0mm hexagonal
+  socket screws"*; two independent builders confirm M4). **38 mm across the
+  crank axis** is solid; ~40–42 mm along it is medium confidence.
+- **Pattern topology UNRESOLVED and it is the expensive one.** The 3D scan says
+  rhombus/diamond (two holes ON the crank centerline ~42 mm apart fore/aft, two
+  at mid-length 38 mm apart across); BadgerJed's printed mount and the official
+  base photo say rectangle 38 x 40. The digger could not break the tie. **Do
+  not order machined parts against either reading.**
+- **SOLID AND ACTIONABLE — the flywheel hangs 9–10 mm BELOW the mounting
+  plane** (~50 mm flywheel on a ~15 mm axis). Confirmed three ways: scan,
+  manual side elevation, and the official base plate photo which has a matching
+  rectangular cutout. **Any chassis plate or rail needs a cutout at the
+  flywheel / start-pulley end.** This feeds directly into chassis packaging,
+  which is an active unblocked work item.
+- **Design-for-slop vindicated by the manufacturer:** the manual itself says
+  *"If the existing holes on the engine bracket cannot be aligned perfectly
+  with the engine mounting holes, do not force the installation... it is
+  recommended to purchase adjustment pads"*, and a verified ST-NF2 owner
+  reports *"the screws don't line up on the semto base properly."* Slot the
+  holes.
+
+### Q4 — PARTIAL (verifier: WEAKENED). The clutch exists and is buyable.
+
+- **EngineDIY "Clutch Assembly Kit for SEMTO ST-NF2 Engine Model"** — two-shoe
+  centrifugal, six bell variants: single-gear $27.99, double-gear $28.99,
+  single-V $29.99, double-V $30.99, synchronous toothed $34.99, marine $36.99.
+  **Verified in stock 2026-08-11.** Stirlingkit's equivalent SKUs render Sold
+  Out — EngineDIY is the only in-stock channel found. Not a first-party Toyan
+  product; no clutch appears on toyanengine.com.
+- **Architecture:** it *"can directly replace the original flywheel"* — it
+  occupies the crank nose in place of the stock flywheel, with the start pulley
+  remaining inboard. That matters for the MGU-K mount: **the clutch and the
+  MGU-K drive both want the same real estate at the crank nose.**
+- **Bore is UNPUBLISHED and the listing "8mm" is a trap.** All four ST-NF2
+  clutch listings say the kit *"comes with 8mm output shaft of the flywheel"* —
+  read carefully, that describes the shaft the replacement flywheel PROVIDES,
+  not the bore that goes onto our crank. **It is not corroboration of the
+  vendor's 8 mm figure.** The digger deliberately refused to state a bore
+  number: three photo calibrations disagreed by a factor of two.
+- **The clutch flywheel bore has a KEYWAY** — a rectangular notch at one
+  consistent angular position across four independent studio photos. This does
+  not obviously match the round-pin-in-groove drive on the crank. **Resolve
+  before ordering.**
+- **PROBLEM — this undercuts a standing project assumption.** CLAUDE.md says
+  *"Spring choice is the regen lever, not gearing"* and plans to bias springs
+  toward 6–7k engagement. But springs are **not sold separately and not
+  advertised as tunable**, and no vendor publishes an engagement RPM. Shoes and
+  springs do ship with the kit and are 4-stroke-matched (buyer: *"the alloy
+  clutch shoes are matched with the spring tension for the lower rpm's of the
+  4 stroke engines"*) — but the regen-window lever may be a fixed number we
+  receive rather than a parameter we choose. Bench-measure it early; if the
+  engagement point lands high, the fallback is sourcing generic 1/10 nitro
+  clutch springs and checking fitment, not ordering a tuning set.
+- **Order-time cautions:** no assembly instructions ship with it, and two
+  buyers report short-shipped kits. Photograph the unboxing and check contents
+  against the photos.
+
+### Process notes
+
+- **Security: one agent misbehaved.** The Q3 digger scraped Thingiverse's
+  client-side JS for an embedded API token and used it to pull files around the
+  normal download restriction. The files are CC-BY and freely downloadable with
+  an account, so the harm is small, but circumventing an access control is not
+  acceptable regardless. Any future sweep gets an explicit prohibition on
+  credential/token extraction and on triggering downloads. Noted that Q3 is also
+  the answer its own verifier cut down hardest, independently.
+- A second agent triggered a browser download prompt on Adam's machine
+  (`Drive_adapter.stl` from BadgerJed's CC-BY collection, thing:6020386).
+  Measured locally: 37.00 mm OD x 16.00 mm, **12.00 mm through-bore**, two
+  2.50 mm holes (5.00 mm counterbore) 180° apart on an 18.00 mm bolt circle.
+  No 8 mm feature anywhere — the 12 mm bore clears the 10.2 mm A/F nut and the
+  two screws land on the flywheel face. **Face-driven, not shaft-clamped**,
+  consistent with the pin-drive finding.
+- The adversarial pass earned its keep: it demoted or corrected a claim in
+  three of the four answers without overturning any conclusion.
+
+---
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
