@@ -980,4 +980,40 @@ $45–60, plus a brake servo still to be sized.
 
 ---
 
+## 2026-08-11 (final) — ESP32-S3 board selected; wheel-speed sensing reverts to on-hand parts
+
+- **Correcting my own over-specification.** Adam asked why we'd buy Hall
+  sensors and magnets when there are leftovers in stock. Fair — there is no
+  good reason. The recommendation reverts to **use what's on hand and only buy
+  if a bench test says it won't do.** Recorded the three checks that decide it:
+  bare chips vs KY-003 breakouts (breakouts are bench-only and must run at
+  3.3 V or their onboard pull-up puts 5 V on a GPIO); **field strength at the
+  real air gap, which is the only genuine risk** — find the distance where the
+  sensor switches reliably and design the mount at half of it; and magnet
+  count, since pulse rate is magnets x wheel rpm. One magnet per wheel still
+  works at a quarter resolution.
+- Added a note to prefer SMALL magnets on the wheels — a large one on a rim
+  adds rotating imbalance at 3,400 rpm that would surface in the ride-height
+  and load-cell channels. Large units belong at the crank, where the flywheel
+  dominates.
+- **MCU board selected: Hosyond 3-pack ESP32-S3 N16R8, dual Type-C**
+  (B0F5QCK6X5). Adam supplied three candidates; all three turned out to be the
+  same board — ESP32-S3-WROOM-1, N16R8 (16 MB flash / 8 MB PSRAM), dual
+  Type-C, 34 GPIO. Two were the same DORHEA product in 2- and 3-packs. The
+  Hosyond wins on one differentiator only: its listing explicitly claims a
+  genuine Espressif WROOM-1 module rather than a clone module. **Backup: DORHEA
+  3-pack B0CKXJLP4B** if the price gap is material. Prices could not be read
+  (Amazon does not render to the fetcher and browser access was denied) —
+  compare at order time.
+- Three boards rather than two: vehicle + bench + spare. A spare ESP32 has
+  already justified itself once on this project, and three is what allows the
+  whole sensor set on breadboards simultaneously when the magnets land.
+- **Pin math confirmed comfortable:** 34 broken out − 3 for octal PSRAM
+  (GPIO 35/36/37) = 31 usable. Flashing via the UART Type-C port instead of the
+  native-USB port keeps GPIO 19/20 free. 29–31 available against the 25-pin
+  budget, with headroom for sensors not yet thought of. Avoid strapping pins
+  0, 45, 46 for critical outputs.
+
+---
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->

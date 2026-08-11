@@ -164,11 +164,25 @@ ESP32-based. Scope covers:
     needed. Do NOT use a KY-003-style breakout at 5 V — its onboard pull-up
     goes to its own VCC and would put 5 V on an ESP32 pin. Bare chip + own
     10 kΩ pull-up is the clean build.
-  - **Magnets: 3 x 2 mm N52 neodymium discs** (~$8–10/50) — NOT the SmCo
+  - **USE THE PARTS ALREADY ON HAND FIRST.** There are leftover Hall switches
+    and magnets in stock; buying is only justified if a bench test says they
+    won't do the job. Three checks, no purchase needed: (i) bare chips are
+    ideal, KY-003 breakouts are bench-only and must be run at 3.3 V, never 5 V,
+    or their onboard pull-up puts 5 V on a GPIO; (ii) **field strength at the
+    real air gap is the only genuine risk** — slide a magnet in until the
+    sensor switches reliably, then design the mount at HALF that distance to
+    cover vibration, drift and wheel runout; (iii) count what's in the drawer,
+    since pulse rate is magnets x wheel rpm.
+  - **If topping up: 3 x 2 mm N52 neodymium discs** (~$8–10/50) — NOT the SmCo
     magnets, which are specified and priced for the crank's heat. Four per
     wheel, **all with the same pole facing out** (A3144 is unipolar and only
     responds to one pole). ~220 pulses/s at 40 km/h on 63 mm tires; ~20 at
-    walking pace, still fast enough for slip detection.
+    walking pace, still fast enough for slip detection. One magnet per wheel
+    still works at a quarter the resolution.
+  - **Prefer SMALL magnets on the wheels.** A large magnet on a rim adds
+    rotating imbalance at 3,400 rpm that will show up in the ride-height and
+    load-cell channels later. Save large units for the crank end, where the
+    flywheel dominates.
   - **Retention matters:** ~260 g of centrifugal acceleration at 3,400 rpm.
     The load is small (~0.3 N) but oil-soaked CA glue fails in service —
     pocket the magnets in the printed hub with a retaining lip and use epoxy.
@@ -220,13 +234,22 @@ offers roughly 20 output-capable GPIO once GPIO 6–11 (flash) and TX0/RX0 are
 removed and the strapping pins are treated carefully, plus 4 input-only
 (34/35/36/39). The shape is wrong, not just the count.
 
-- **Buy an ESP32-S3-DevKitC-1 (N16R8), ~$15 official / ~$8–12 clone.** ~36
-  usable GPIO, native USB for logging and debug, and 8 MB PSRAM that is
-  genuinely useful for log buffering. Note the octal-PSRAM variants consume
-  GPIO 35–37 — still far more headroom than the WROOM-32. The S3's different
-  ADC is irrelevant here because of the no-ADC rule.
-- **Buy two** — one is the vehicle board, one is the bench/spare. This is what
-  lets the whole sensor set go on breadboards at once when the magnets land.
+- **Board picked 2026-08-11: Hosyond 3-pack ESP32-S3, N16R8, dual Type-C**
+  (Amazon B0F5QCK6X5) — the only one of three candidates whose listing claims a
+  genuine Espressif ESP32-S3-WROOM-1 module rather than a clone module, which
+  means a certified radio and known flash/PSRAM parts. **Backup: DORHEA 3-pack
+  B0CKXJLP4B**, same spec, take it if materially cheaper. (DORHEA 2-pack
+  B0CKXJKQ1F is the same board in a smaller pack — no reason to prefer it.)
+  Prices not verified; compare at order time.
+- **Three boards, not two:** vehicle + bench + spare. A spare ESP32 has already
+  justified itself once on this project. Three is what lets the whole sensor
+  set go on breadboards at once when the magnets land.
+- **Usable pin math on N16R8:** 34 broken out, minus 3 consumed by the octal
+  PSRAM (GPIO 35/36/37) = **31**. Flash and debug through the **UART** Type-C
+  port rather than the native-USB one to keep GPIO 19/20 free; native USB costs
+  those two. 29–31 against a 25-pin budget. Avoid strapping pins 0, 45, 46 for
+  critical outputs.
+- The S3's different ADC is irrelevant here because of the no-ADC rule.
 - Owned WROOM-32s stay useful as bench units and for single-sensor bring-up.
 - Regardless of MCU: put the three pulse inputs on input-only pins where the
   part has one (they are inputs, and an open-collector Hall needs an external
