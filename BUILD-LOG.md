@@ -1016,4 +1016,56 @@ $45–60, plus a brake servo still to be sized.
 
 ---
 
+## 2026-08-11 — Clutch email sent; ESP32-S3 ordered; purchase record consolidated into doc 2
+
+- **Clutch email SENT** to service@enginediy.com (not sales@ — that address is
+  labelled "Wholesale Business Email" and a retail pre-purchase question would
+  only have been forwarded). Asks the three things that gate the clutch buy:
+  whether the clutch flywheel carries the CDI ignition trigger magnet, the
+  bore diameter and keyway dimensions, and a bell-variant recommendation for a
+  single-speed RWD car.
+- **ESP32-S3 ORDERED** — Hosyond 3-pack, ESP32-S3-WROOM-1 N16R8, dual Type-C,
+  34 GPIO (Amazon B0F5QCK6X5). $18.99 list, **$20.22 including tax**, arriving
+  Sat 15 Aug. Amazon's Choice, 4.6★/106, 1K+ bought in the past month, shown
+  In Stock at order time — so the stock caveat from the previous entry is now
+  moot for this line.
+- **Doc 2 (phase 1 status) updated — this was a real gap.** Section 4 was the
+  only as-ordered record in the repo and covered just the 21 July telemetry
+  order. Everything bought since lived only in this build log. Added:
+  - **New Section 5, "Powertrain and bench-set purchase record"** — all 20
+    lines of the 7–11 August buying: MGU-K motor $63.08, Flipsky VESC $71.99,
+    3S packs $39.99, 2S packs $29.99, B6ACneo $52.00, LiPo bags $15.29,
+    surrogate combo $44.98, coupling + sleeves $17.00, mounts $26.48, XT60
+    pigtails $12.99, fuse holder $10.49, XT60↔Deans $9.99, MP1584 3-pack
+    $7.95, buzzers $6.59, servo testers $8.99, radio $92.11, heat-shrink
+    $7.99, heat gun $13.99, paint markers $6.45, electrical tape $2.98. Each
+    row carries the *reasoning* — why a car ESC and not an aeroplane ESC, why
+    a 350 W heat gun and not a paint stripper, why six colours of shrink —
+    so the document stays a portfolio artefact and not just a receipt.
+  - The two **blocked** lines recorded with what each waits on: clutch (bore +
+    trigger magnet) and brake hardware (transmission pick).
+  - **ESP32-S3 row added to Section 4** with the pin-budget rationale.
+  - **Hall-sensor and magnet rows updated in place** rather than duplicated —
+    see below.
+  - Sections renumbered 5→6, 6→7. Section 1 given a dated update paragraph.
+- **Running totals now stated in the doc:** ~$533 powertrain/bench-set, ~$738
+  Phase 1 parts, excluding ~$186 of durable bench tooling shared across phases.
+- **The Hall/magnet question answered itself from doc 2.** Adam asked why we'd
+  buy sensors when there are leftovers. The as-ordered record shows **10×
+  uxcell A3144 ($7.01) and 50× SmCo 5×2 mm magnets ($13.98)** already owned —
+  and the row already specified the exact 5 V supply / 3.3 V pull-up practice
+  I had written up as a new finding. **Zero purchase needed for wheel speed.**
+  At ~$0.28/magnet, the earlier suggestion to buy separate neodymium discs for
+  the wheels was pointless; struck. Both rows updated in place to cover the
+  widened scope rather than adding duplicate lines.
+- **Deliberately NOT recorded:** the payment card reference and delivery ZIP
+  visible in the order screenshot. The repo is public and neither belongs in a
+  build log. Standing rule going forward for any order confirmation.
+- **Photo still missing.** `photos/` holds only
+  `2026-07-24-electronics-unboxing.jpg`. The first-shipment photo Adam
+  mentioned has not reached the repo — needs dropping into `photos/` following
+  the existing convention, e.g. `2026-08-10-bench-set-unboxing.jpg`.
+
+---
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
