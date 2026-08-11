@@ -77,10 +77,13 @@ on this envelope. Full trail in BUILD-LOG (2026-08-07 entry).
   zero mark before any four-quadrant/regen use. 450 W bursts are far above
   this class's continuous rating — assist is strictly burst-duty, with a
   firmware duty timer and motor-NTC temp foldback via the VESC.
-- **Controller — decision pending (ladder corrected 2026-08-07).** A 4-corner
-  market sweep (~40 products, all voltage floors verified from vendor pages)
-  disproved the earlier "no mid-tier exists" claim. The real ladder, all
-  3S-capable (floor ≤ 9.9 V), all VESC-firmware/VescUart:
+- **Controller — DECIDED and ORDERED 2026-08-07: Flipsky Mini FSESC4.20 50A,
+  $71.99 (Amazon FBA, B08725X8CT), delivered Aug 10.** Adam's call: probe the
+  cheapest 3S-capable unit first and upgrade only if it dies. The ladder below
+  is retained as the upgrade path, not an open decision — if the DRV8302 gate
+  driver fails, step to the Trampa VESC 6 EDU or MkVI rather than re-running
+  the market sweep. Ladder, all 3S-capable (floor ≤ 9.9 V), all
+  VESC-firmware/VescUart:
   1. **Flipsky Mini FSESC4.20 50A** — $71.99 Amazon in stock (B08725X8CT,
      ships from Amazon, 30-day returns) or $56 flipsky.net (China, 1–3 wk).
      DRV8302 gate driver (the known-fragile die) but 6.6-class FETs. ~350 W cap.
@@ -286,9 +289,11 @@ slot the engine in on arrival.
 - **Steering:** Ackermann geometry, bump steer, upright/linkage design — needs
   the wheelbase/track/tire picks from chassis packaging first. Servo purchase
   waits.
-- **MGU-K electrical: sized 2026-08-07** (see "MGU-K electrical system" above).
-  Remaining: the VESC tier decision, then place the combined bench order and
-  wire it per the EMI ground rules.
+- **MGU-K electrical: sized 2026-08-07, bench set ORDERED and DELIVERED Aug 10**
+  (see "MGU-K electrical system" above). Remaining is bench work, not
+  decisions: splice the JST-ZH → JST-PH hall adapter, set the motor end-bell
+  timing to the zero mark, wire per the EMI ground rules, set and unplug-test
+  every VESC limit BEFORE the first regen event.
 - **Firmware:** telemetry, logging pipeline, assist/regen state machine (Phase A
   command architecture)
 - **Transmission:** single-speed ratio math off the 4,000–16,000 rpm band and
