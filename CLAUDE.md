@@ -429,6 +429,40 @@ the real engine are interchangeable.
   on the DC bus — regenerated current back-feeds a non-bidirectional supply.
   Keep the traction pack (or a braking resistor) connected.
 
+**Bench rig location and safety rules (settled 2026-08-11).** Location is a
+wall-anchored wooden desk — rigid, so coupler runout won't walk the rig.
+
+- **Speeds are higher than they feel.** Free-spinning, the surrogate is the
+  fast one: 3900 kv on a fresh 2S ≈ 32,000 rpm no-load; the MGU-K at 2170 kv
+  on 3S ≈ 27,000. Coupled 1:1, that is a rigid aluminium coupler at ~30,000
+  rpm about arm's length from your face.
+- **The hazard is NOT fragments.** A coupler letting go carries roughly half a
+  joule — a dropped coin. The two things that actually injure people at a rig
+  like this are **entanglement** (a multimeter probe lead, sleeve, or cable tail
+  drawn into the coupler) and **the LiPo** (a 3S 5200 mAh pack holds ~58 Wh,
+  which is the genuinely dangerous energy on that desk).
+- **Guard requirements: anchored, and reach-blocking.** It must not be propped
+  or hand-held — a guard that can fall into the rig is worse than none. And it
+  must stop you *reaching in*, not merely seeing in; a flat sheet you can lean
+  around blocks fragments but not the actual hazard. A clear storage tote
+  inverted over the rig with a notch for wiring satisfies both at zero cost.
+- **Decide where the probe leads live BEFORE spin-up**, and anchor every
+  cable away from the shaft line. Nothing draped.
+- **Disconnect must be reachable without crossing the rotating parts** — site
+  the pack's XT60 to the side, never behind the coupler.
+- **NON-COMBUSTIBLE SURFACE under all charging and pack rest.** The desk is
+  wood. LiPo bags contain a venting pack but run very hot. Ceramic tile, steel
+  tray or paving slab (~$5–10). Same surface for packs resting between regen
+  sessions.
+- **Charge rate is power-limited anyway.** The B6ACneo is ~50 W on AC; a 3S
+  pack charges at 12.6 V, so it caps near 4 A regardless of setting — about
+  0.75C on a 5200 mAh pack. 2.6 A (0.5C, ~2 h) if being gentler; nothing here
+  is time-pressured on charge rate.
+- **Still to buy: ABC dry-chemical extinguisher (~$25) plus a tub of sand.**
+  Deferred since July and now the last open safety item. The goal is not to
+  extinguish the cell — you won't — but to stop it igniting a desk that is
+  bolted to the wall. Have it before the first 5200 mAh charge.
+
 ### Blocked until the engine (or a dimensioned drawing) arrives
 
 **Much of this was answered on 2026-08-11 from the factory manuals + a web
@@ -574,9 +608,10 @@ Check what's on hand / decide:
   disc.** See the braking bullet under Driver-command architecture. Remaining
   is design work, not a question: pick the disc/pad hardware alongside the
   transmission, and size the brake servo.
-- **Bench rig location and guarding:** where do two coupled motors at speed
-  live, and behind what? **Now urgent — the surrogate and VESC are already
-  here and the MGU-K motor lands Friday 2026-08-14.**
+- ~~Bench rig location and guarding~~ **CLOSED 2026-08-11.** Wall-anchored
+  wooden desk — rigid enough that a coupler-runout imbalance won't walk the
+  rig. Bench rules now documented under "Bench surrogate approach"; one open
+  purchase remains (ABC extinguisher, ~$25, still unbought since July).
 - Optional but useful: a comfort number for the combined bench-set order — it
   steers component tier (e.g. VESC-clone vs genuine).
 

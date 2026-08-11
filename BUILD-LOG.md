@@ -1068,4 +1068,46 @@ $45–60, plus a brake servo still to be sized.
 
 ---
 
+## 2026-08-11 — Bench rig location settled; safety rules documented
+
+Last open bench decision closed, two days before the MGU-K motor lands.
+
+- **Location: a wall-anchored wooden desk.** Rigid enough that coupler runout
+  won't walk the rig, which was the main structural worry — two motors at
+  ~30,000 rpm with any imbalance will move a folding table.
+- **Ran the numbers on what is actually dangerous.** Free-spinning, the
+  *surrogate* is the fast one: 3900 kv on fresh 2S ≈ 32,000 rpm, against the
+  MGU-K's ~27,000 on 3S. Coupled 1:1, that is a rigid aluminium coupler at
+  ~30,000 rpm at arm's length. **But the fragment risk is negligible** — a
+  coupler letting go carries ~0.5 J, about a dropped coin. The two real
+  hazards are **entanglement** (probe lead, sleeve, cable tail into the
+  coupler — the classic bench injury) and **the LiPo**, since a 3S 5200 mAh
+  pack holds ~58 Wh. That reframing changed the guarding spec: it needs to
+  block *reach*, not catch debris.
+- **Guard spec adopted:** anchored (never propped or hand-held — a guard that
+  can fall into the rig is worse than none), and reach-blocking rather than
+  merely see-through. A clear storage tote inverted over the rig with a notch
+  for wiring satisfies both at zero cost. Probe-lead routing decided before
+  spin-up; nothing draped; pack disconnect sited to the side, never behind the
+  coupler.
+- **GAP FOUND — the desk is wood and that is where charging happens.** Bags
+  contain a venting pack but get very hot. Added a hard rule: non-combustible
+  surface (ceramic tile, steel tray, paving slab, ~$5–10) under all charging
+  and under packs resting between regen sessions.
+- **Charge rate: slower is automatic, not a choice.** Adam raised charging
+  below maximum for safety — good instinct, and the hardware already enforces
+  it. The B6ACneo is ~50 W on AC and a 3S pack charges at 12.6 V, so it is
+  power-limited to roughly 4 A regardless of setting — about 0.75C on a
+  5200 mAh pack, already under the 1C standard. 2.6 A (0.5C, ~2 h) if being
+  gentler. Nothing in this project is time-pressured on charge rate. (Verify
+  against the B6ACneo manual on the bench.)
+- **Last open safety item: ABC dry-chemical extinguisher (~$25) + a tub of
+  sand.** On the deferred list since July, still unbought. The goal is not to
+  extinguish the cell — that is not achievable — but to stop it igniting a
+  desk bolted to the wall. Needed before the first 5200 mAh charge.
+- Bench rules written into CLAUDE.md under "Bench surrogate approach" so they
+  are a documented standing rule rather than a remembered conversation.
+
+---
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
