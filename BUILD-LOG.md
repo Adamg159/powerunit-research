@@ -843,4 +843,60 @@ version is what is recorded.
 
 ---
 
+## 2026-08-11 (later) — Working the recon back through the sensor plan
+
+Adam asked whether the day's findings change the sensor work. They do, in five
+ways, and one of them is a trap we would otherwise have walked into.
+
+- **Corrected a misreading first.** The "zero regen" finding was scoped to the
+  starter-BELT path only — the option we eliminated — not to regen generally.
+  There is no v3 in this project and never was: v1 is the centrifugal-clutch
+  build accepting limited brake regen, v2 is the locked clutch with full regen.
+  The MGU-K sits upstream of the clutch, so brake regen works whenever the
+  clutch is closed (above engagement, the top ~62% of the speed range at 6k,
+  ~44% at 9k) and is unavailable below it. The freewheel finding removed a
+  coupling *option*, not a capability. Restating for the record because the
+  distinction is easy to lose.
+- **TRAP AVOIDED — never put the RPM magnet on the start-belt pulley.** It is
+  the most attractive-looking real estate on the engine: big, accessible,
+  permanently crank-mounted. But it holds the one-way bearing, so once the
+  engine fires the crank outruns it and it trails on bearing drag. A pickup
+  there would read near-zero at idle and nonsense above it. Same for the belt
+  and the starter-side pulley. This would only have surfaced on the bench, as
+  an inexplicably wrong tach.
+- **VESC RPM is promoted to primary crank tach.** The direct crank-nose mount
+  is rigid and the QuicRun 3650SD is sensored, so VESC-reported RPM is crank
+  RPM, accurate to standstill, over a UART link already in the build. Better
+  than a one-magnet Hall pickup and free. **The A3144 + SmCo path stays but
+  changes role to the independent cross-check** — a hardware pulse on its own
+  pin survives a firmware fault or a UART/VESC failure. Consistent with the
+  project's standing independence rule.
+- **GAP FOUND — nothing in the plan measures wheel speed.** CLAUDE.md mandates
+  cutting regen on slip detected as "VESC RPM vs wheel-derived RPM divergence",
+  but with the MGU-K crank-mounted the VESC *is* the crank tach, so that
+  comparison has no second term. True vehicle speed and the coast-down tests
+  need it too. Added to the telemetry scope; must be hardware-pulse or digital
+  per the no-ADC rule.
+- **NEW CONFLICT — the flywheel is contested three ways.** The CDI kit's
+  ignition Hall wants a trigger magnet on the flywheel, our RPM pickup wants
+  the same face, and the clutch kit replaces the flywheel outright. Every
+  clutch listing carries the machine-translated line *"Without a magnet, the
+  screws of the flywheel can be directly locked"*, whose bad reading is that
+  the clutch flywheel has no trigger magnet — which would break CDI ignition
+  timing. Added to the vendor question list. **Do not order a clutch variant
+  or plan the CDI conversion around the flywheel until this is answered.**
+- **Free head start:** BadgerJed's CC-BY collection includes four Hall-effect
+  sensor mount STLs for this exact engine (M3 slot-headed screws). Pull them
+  before designing our own — they answer where a Hall sensor physically fits.
+  Useful as soon as the SmCo magnets land (~mid-August).
+- **Packaging consequence carried over:** the ~21 mm crank nose is contested by
+  the MGU-K drive, the clutch, and any crank-mounted sensor target. Drawn as
+  one stack-up problem, not three.
+
+Vendor question list re-cut accordingly — five items now, down from eight,
+split across two recipients (crank questions to the engine desk, clutch and
+magnet questions to the clutch desk).
+
+---
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->

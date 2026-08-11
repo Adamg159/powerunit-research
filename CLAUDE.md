@@ -143,11 +143,49 @@ ESP32-based. Scope covers:
 - MGU-K electrical data via the VESC UART link (RPM, phase current, battery V/I)
 - Engine sensing per the planning docs: per-cylinder head temp (MAX31855),
   RPM (A3144 Hall + SmCo magnet), vibration baseline (MPU-6050)
+- **Wheel speed (added 2026-08-11 — was a gap).** Needed three ways over:
+  the mandated regen-slip cut compares VESC RPM against a wheel-derived RPM,
+  but with the MGU-K crank-mounted the VESC *is* the crank tach, so the
+  comparison has no second term without a wheel-side pickup; true vehicle
+  speed needs it; and so do the coast-down tests. Must be a hardware-pulse or
+  digital part per the no-ADC rule.
 - Aero and dynamics sensing: pitot, ride height, load cells. (Pitot note
   2026-08-07: dynamic pressure at 35–40 km/h is only ~60–76 Pa — spec an
   SDP3x-class ±500 Pa digital differential-pressure sensor on I2C, per the
   no-ADC rule; a 1 psi part would waste its whole range.)
 - Data logging pipeline (microSD ground truth + WiFi live), coast-down test support
+
+RPM-sensing constraints (established 2026-08-11 from the factory manuals):
+
+- **NEVER put the RPM magnet on the start-belt pulley, its belt, or the
+  starter-side pulley.** The start pulley (BOM item 37) contains the one-way
+  bearing: once the engine fires the crank outruns it and it trails on bearing
+  drag, so anything sensing it reads garbage. It is otherwise the most
+  attractive-looking real estate on the engine — this trap would only have
+  surfaced on the bench.
+- **VESC RPM is now a genuine crank tachometer** and should be the primary
+  source: the direct crank-nose mount is rigid, the motor is sensored, so it
+  is accurate to standstill at high resolution over a UART link already being
+  built. **The A3144 + SmCo path stays, but its job changes to the independent
+  cross-check** — a hardware pulse on its own pin survives a firmware fault or
+  a VESC/UART failure, which the VESC path cannot.
+- **The flywheel is three-way contested real estate:** the CDI conversion kit's
+  own ignition Hall wants a trigger magnet there, our RPM pickup wants the same
+  face, and the centrifugal clutch kit REPLACES the flywheel outright. Every
+  clutch listing repeats a machine-translated line — *"Without a magnet, the
+  screws of the flywheel can be directly locked"* — whose bad reading is that
+  the clutch flywheel carries no trigger magnet, which would break CDI ignition
+  timing. Unresolved; on the vendor question list. Do not order a clutch
+  variant or plan the CDI conversion around the flywheel until it is answered.
+- **Free reference geometry:** BadgerJed's CC-BY collection ([thing:6020386](https://www.thingiverse.com/thing:6020386))
+  includes four Hall-effect sensor mount STLs for this exact engine, mounted
+  with M3 slot-headed screws. Pull these before designing our own — they
+  answer "where does a Hall sensor physically fit on an ST-NF2." Useful the
+  moment the SmCo magnets land (~mid-August, ~2 weeks before the engine).
+- **Packaging reality:** the crank nose is ~21 mm long and already carries the
+  start pulley, the flywheel-or-clutch, and the M6 nut. The MGU-K drive, the
+  clutch, and any crank-mounted sensor target all compete for it. Draw that
+  stack-up as ONE problem — do not solve it three times independently.
 
 Architecture ground rules from the planning docs, still in force:
 
@@ -411,6 +449,13 @@ the first two can cost machined parts:
   and depth?" Ask them to measure with calipers, not quote the listing: the
   listing's "8mm output shaft" describes the shaft the kit PROVIDES, not the
   bore. Also flag the keyway-vs-round-pin mismatch against BOM item 04.
+- **Clutch vs CDI trigger magnet — same email, and it may matter more than the
+  bore.** "Does the clutch flywheel carry the ignition trigger magnet? If I fit
+  this clutch and also fit the gas/CDI conversion kit, will the CDI's Hall
+  sensor still have a magnet to trigger from?" Driven by the listings' line
+  *"Without a magnet, the screws of the flywheel can be directly locked."* If
+  the answer is no, the clutch and the CDI conversion are incompatible as
+  shipped and one of them needs rework.
 - **One-way bearing identification.** "Part 37, the Start belt pulley
   component: what is the designation and size (bore × OD × width) of the
   one-way bearing pressed into it?" Only matters if we ever want to defeat or
