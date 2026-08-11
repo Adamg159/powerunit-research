@@ -146,12 +146,32 @@ ESP32-based. Scope covers:
 - MGU-K electrical data via the VESC UART link (RPM, phase current, battery V/I)
 - Engine sensing per the planning docs: per-cylinder head temp (MAX31855),
   RPM (A3144 Hall + SmCo magnet), vibration baseline (MPU-6050)
-- **Wheel speed (added 2026-08-11 — was a gap).** Needed three ways over:
-  the mandated regen-slip cut compares VESC RPM against a wheel-derived RPM,
-  but with the MGU-K crank-mounted the VESC *is* the crank tach, so the
-  comparison has no second term without a wheel-side pickup; true vehicle
-  speed needs it; and so do the coast-down tests. Must be a hardware-pulse or
-  digital part per the no-ADC rule.
+- **Wheel speed — added 2026-08-11 (was a gap), part picked same day.** Needed
+  three ways over: the mandated regen-slip cut compares VESC RPM against a
+  wheel-derived RPM, but with the MGU-K crank-mounted the VESC *is* the crank
+  tach, so the comparison has no second term without a wheel-side pickup; true
+  vehicle speed needs it; and so do the coast-down tests.
+  - **Two sensors on different axles.** FRONT (undriven) = true ground speed,
+    the reference. REAR (driven) = driven speed. Crank RPM vs rear × ratio
+    gives CLUTCH slip (what firmware must cut regen on); rear vs front gives
+    TIRE slip. One sensor gives neither cleanly.
+  - **Part: bare A3144 / AH3144E unipolar Hall switch** — same family as the
+    engine RPM pickup, so one part to stock and one breadboard technique.
+    Hardware pulse, satisfies the no-ADC rule.
+  - **WIRING GOTCHA — power at 5 V, pull up to 3.3 V.** The A3144 needs 4.5 V
+    minimum so it cannot run at 3.3 V, but its output is OPEN-COLLECTOR, so a
+    pull-up to 3.3 V makes the output swing 0–3.3 V and no level shifter is
+    needed. Do NOT use a KY-003-style breakout at 5 V — its onboard pull-up
+    goes to its own VCC and would put 5 V on an ESP32 pin. Bare chip + own
+    10 kΩ pull-up is the clean build.
+  - **Magnets: 3 x 2 mm N52 neodymium discs** (~$8–10/50) — NOT the SmCo
+    magnets, which are specified and priced for the crank's heat. Four per
+    wheel, **all with the same pole facing out** (A3144 is unipolar and only
+    responds to one pole). ~220 pulses/s at 40 km/h on 63 mm tires; ~20 at
+    walking pace, still fast enough for slip detection.
+  - **Retention matters:** ~260 g of centrifugal acceleration at 3,400 rpm.
+    The load is small (~0.3 N) but oil-soaked CA glue fails in service —
+    pocket the magnets in the printed hub with a retaining lip and use epoxy.
 - Aero and dynamics sensing: pitot, ride height, load cells. (Pitot note
   2026-08-07: dynamic pressure at 35–40 km/h is only ~60–76 Pa — spec an
   SDP3x-class ±500 Pa digital differential-pressure sensor on I2C, per the
@@ -190,6 +210,30 @@ RPM-sensing constraints (established 2026-08-11 from the factory manuals):
   clutch, and any crank-mounted sensor target all compete for it. Draw that
   stack-up as ONE problem — do not solve it three times independently.
 
+### MCU: move to ESP32-S3 (decided 2026-08-11 — pin budget forced it)
+
+The full sensor set does not fit a WROOM-32. Budget: I2C 2, SPI bus 3, chip
+selects 3, VESC UART 2, SBUS in 1, pulse inputs 3 (engine RPM + 2 wheel),
+throttle servo + ignition kill 2, ToF XSHUT 2, HX711 load cells 5, status
+LED + buzzer 2 — **~25 pins, of which ~22 must be output-capable.** A WROOM-32
+offers roughly 20 output-capable GPIO once GPIO 6–11 (flash) and TX0/RX0 are
+removed and the strapping pins are treated carefully, plus 4 input-only
+(34/35/36/39). The shape is wrong, not just the count.
+
+- **Buy an ESP32-S3-DevKitC-1 (N16R8), ~$15 official / ~$8–12 clone.** ~36
+  usable GPIO, native USB for logging and debug, and 8 MB PSRAM that is
+  genuinely useful for log buffering. Note the octal-PSRAM variants consume
+  GPIO 35–37 — still far more headroom than the WROOM-32. The S3's different
+  ADC is irrelevant here because of the no-ADC rule.
+- **Buy two** — one is the vehicle board, one is the bench/spare. This is what
+  lets the whole sensor set go on breadboards at once when the magnets land.
+- Owned WROOM-32s stay useful as bench units and for single-sensor bring-up.
+- Regardless of MCU: put the three pulse inputs on input-only pins where the
+  part has one (they are inputs, and an open-collector Hall needs an external
+  pull-up anyway, so the missing internal pull-up costs nothing). If a build
+  ever gets tight again, an MCP23017 I2C expander (~$3) absorbs the slow
+  outputs — status LED, buzzer, ToF XSHUT — before any MCU change is needed.
+
 Architecture ground rules from the planning docs, still in force:
 
 - The ignition world and the electronics world never share power or wiring.
@@ -219,10 +263,28 @@ Driver-command architecture (adopted 2026-08-05, phased):
   idle/zero-assist; VESC command timeout set to 200–300 ms and proven by an
   unplug test; and post-CDI-conversion, an opto-isolated ignition-kill line on
   its own receiver channel as the ESP32-independent hard stop.
-- **Open decision — braking:** crank-side MGU-K + centrifugal clutch means no
-  regen braking below engagement speed. Either document coast-down-only braking
-  as an accepted v1 limitation, or fit a conventional servo-actuated disc brake
-  (standard nitro two-servo layout) as an ESP32-independent stopping path.
+- **Braking — DECIDED 2026-08-11: fit a mechanical disc brake on a DEDICATED
+  servo.** Crank-side MGU-K + centrifugal clutch means no regen braking below
+  engagement, so a friction brake is the only stopping authority at low speed.
+  - **NOT the standard nitro two-servo layout.** That layout puts throttle and
+    brake on ONE servo through a combined linkage — which in Phase B, when the
+    ESP32 takes the throttle servo, would hand it the brake as well. A firmware
+    fault would then cost throttle and braking together, the exact failure the
+    architecture exists to prevent.
+  - **Three servos: steering (RX-direct), throttle (RX-direct in Phase A, ESP32
+    in Phase B), brake (RX-direct permanently, its own receiver channel).** The
+    FS-R11P has 11 PWM ports, so channels are not a constraint. This makes the
+    brake a genuine ESP32-independent stopping path alongside steering.
+  - **Costs zero ESP32 pins.** The ESP32 already parses the SBUS stream, so it
+    reads brake demand for logging and for blending regen against friction
+    braking without a wire to the brake at all.
+  - **Architecture: one inboard disc on the driveline**, not per-wheel discs —
+    standard nitro practice, brakes both rear wheels through the diff, and far
+    simpler on a custom chassis. The disc/pad/cam hardware must be chosen
+    TOGETHER WITH the single-speed transmission, since they share a shaft.
+    Reference part class: HSP 02044 disc brake set (2 discs, 4 pads, screws,
+    ~$5–10) or the 02044-S metal variant — cheap and widely stocked, but do not
+    order until the transmission is picked.
 
 ## Deferred / stretch (decided 2026-08-05)
 
@@ -485,10 +547,13 @@ Check what's on hand / decide:
   No longer a question — it is a bench task: run the failsafe ritual.
 - ~~Target top speed~~ **decided 2026-08-07: 40 km/h** — see the Transmission
   bullet in Powertrain architecture; math trail in BUILD-LOG (2026-08-07).
-- **Brake:** accept coast-down-only braking as a documented v1 limitation, or
-  fit a servo-actuated disc as an ESP32-independent stopping path?
+- ~~Brake~~ **CLOSED 2026-08-11: active braking, dedicated servo, inboard
+  disc.** See the braking bullet under Driver-command architecture. Remaining
+  is design work, not a question: pick the disc/pad hardware alongside the
+  transmission, and size the brake servo.
 - **Bench rig location and guarding:** where do two coupled motors at speed
-  live, and behind what?
+  live, and behind what? **Now urgent — the surrogate and VESC are already
+  here and the MGU-K motor lands Friday 2026-08-14.**
 - Optional but useful: a comfort number for the combined bench-set order — it
   steers component tier (e.g. VESC-clone vs genuine).
 

@@ -899,4 +899,85 @@ magnet questions to the clutch desk).
 
 ---
 
+## 2026-08-11 (later still) — Brake decided, wheel-speed sensing specified, MCU upgraded
+
+Three decisions closed in one pass, all downstream of the day's recon.
+
+- **Delivery status:** surrogate motor/ESC and the Flipsky VESC are in hand;
+  the MGU-K motor lands **Friday 2026-08-14**. Adam will lay out and photograph
+  everything before assembly — the right call, and the only chance to catch a
+  short-shipped box before parts get mixed together (two buyers reported
+  short-shipped clutch kits, so the habit is warranted).
+
+### Braking — ACTIVE, on a dedicated servo
+
+- Adam's call: active braking in some form. Correct, and the friction brake is
+  the only stopping authority below clutch engagement.
+- **Caught a trap in the plan's own wording.** CLAUDE.md previously pointed at
+  the "standard nitro two-servo layout" — but that layout is steering on one
+  servo and **throttle AND brake on the other**, through a combined linkage.
+  In Phase B the ESP32 takes the throttle servo, which on that linkage means it
+  takes the brake too. A firmware fault would cost throttle and braking
+  together — precisely the failure the whole command architecture exists to
+  prevent.
+- **Resolved to three servos:** steering (RX-direct), throttle (RX-direct in
+  Phase A → ESP32 in Phase B), **brake (RX-direct permanently, own receiver
+  channel)**. The FS-R11P's 11 PWM ports make channel count a non-issue.
+- **Costs zero ESP32 pins** — the ESP32 already parses SBUS, so it reads brake
+  demand for logging and regen/friction blending without a wire to the brake.
+- **Architecture: one inboard disc on the driveline**, not per-wheel — standard
+  nitro practice, brakes both rear wheels through the diff, much simpler on a
+  custom chassis. Reference part class HSP 02044 (2 discs, 4 pads, screws,
+  ~$5–10) or 02044-S. **Deliberately NOT ordering yet:** the disc, pads and cam
+  share a shaft with the single-speed transmission, which is not picked, so
+  buying now risks a disc that fits nothing.
+
+### Wheel speed — two sensors, A3144, with a wiring gotcha worth recording
+
+- **Two sensors on different axles.** Front (undriven) = ground-speed
+  reference; rear (driven) = driven speed. Crank-vs-rear gives CLUTCH slip (the
+  regen-cut trigger); rear-vs-front gives TIRE slip. One sensor gives neither.
+- **A3144 / AH3144E bare unipolar Hall**, same family as the engine pickup —
+  one part to stock, one breadboard technique, hardware pulse, no-ADC rule
+  satisfied. Bare chips (~$8/20) beat KY-003 breakouts for the vehicle build.
+- **GOTCHA: power at 5 V, pull up to 3.3 V.** The A3144 needs 4.5 V minimum so
+  it cannot run at 3.3 V — but its output is open-collector, so pulling up to
+  3.3 V gives a 0–3.3 V swing with no level shifter. A KY-003 breakout run at
+  5 V would put 5 V on an ESP32 pin via its own onboard pull-up. Several web
+  sources say "you need a level shifter"; that is wrong for an open-collector
+  part correctly pulled up, and right for a breakout module. Recorded because
+  it is an easy way to kill a GPIO.
+- **Magnets: 3 x 2 mm N52 neodymium discs**, ~$8–10/50 — explicitly NOT the
+  SmCo units, which are specified and priced for crank heat. Four per wheel,
+  **same pole outward** (unipolar sensor). ~220 pulses/s at 40 km/h on 63 mm
+  tires, ~20 at walking pace.
+- **Retention:** ~260 g centrifugal at 3,400 rpm. The force is trivial (~0.3 N)
+  but oil-soaked CA fails in service — pocket the magnets in the printed hub
+  with a retaining lip and use epoxy.
+
+### MCU — moving to ESP32-S3, because the pin budget does not close
+
+- Adam asked whether we are running out of pins. We are. Full sensor set needs
+  **~25 pins, ~22 of them output-capable**; a WROOM-32 gives about 20
+  output-capable plus 4 input-only. The shape is wrong, not just the count.
+- **ESP32-S3-DevKitC-1 (N16R8), ~$15 official / ~$8–12 clone, buy two.** ~36
+  usable GPIO, native USB, 8 MB PSRAM useful for log buffering. Octal-PSRAM
+  variants consume GPIO 35–37; still far more headroom. The S3's different ADC
+  is irrelevant under the no-ADC rule.
+- Two boards is what allows the WHOLE sensor set on breadboards at once when
+  the SmCo magnets land, instead of bringing sensors up one at a time.
+- Owned WROOM-32s revert to bench/single-sensor duty. If a future build gets
+  tight again, an MCP23017 (~$3) absorbs slow outputs before any MCU change.
+
+### Sourcing caveat — no live stock check was possible this session
+
+The sourcing rule wants live verification, and it did not happen: Amazon does
+not render to the page fetcher and browser navigation to Amazon was denied.
+Every part above is a *class recommendation with a named example*, not a
+verified-in-stock pick. **Re-verify at order time.** Cost implication is minor
+either way — the whole list (2 x S3, Hall chips, magnets, brake set) is roughly
+$45–60, plus a brake servo still to be sized.
+
+---
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
