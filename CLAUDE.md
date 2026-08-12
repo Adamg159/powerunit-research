@@ -52,6 +52,14 @@ file, this file wins.
   - Precedent to copy: Toyan's own 12 V generator kit for this engine takes
     drive from a dedicated pulley added at the CRANK NOSE outboard of the
     flywheel, and does not tap the starter pulley.
+  - **The clutch kit's belt-pulley variants are NOT an MGU-K drive.** The
+    "with Single-V / Double-V Groove Belt Pulley" and "Synchronous Pulley
+    Clutch" bells put their pulley DOWNSTREAM of the shoes, so drive vanishes
+    the moment the clutch disengages — the MGU-K must be upstream, on the crank.
+    They look like a free fix for the crank-nose stack-up and are not one.
+    **Variant to buy is the plain Single-gear Clutch, $27.99** (standard 1/10
+    nitro bell-with-pinion, which is what the single-speed gear final drive
+    wants) — pending the bore and trigger-magnet answers.
   - **Packaging conflict to solve:** the centrifugal clutch also replaces the
     stock flywheel at the crank nose. Clutch and MGU-K drive want the same real
     estate. Mount design must resolve that stack-up (nose is only ~21 mm long).
@@ -567,7 +575,10 @@ the first two can cost machined parts:
   photo of the bare engine's underside would answer this completely." A 3D scan
   says rhombus, a printed mount and the official base photo say rectangle
   38 × 40 — unbroken tie.
-- **Clutch bore, to EngineDIY's clutch desk.** "What is the bore diameter of
+- **Clutch bore, to EngineDIY's clutch desk. ASKED 2026-08-11; they bounced it
+  asking which of the six bell variants we meant; RE-SENT 2026-08-12 naming the
+  Single-gear Clutch ($27.99) and re-framing both questions as flywheel-side
+  (i.e. presumably common to all six variants).** "What is the bore diameter of
   the clutch flywheel in the Clutch Assembly Kit for SEMTO ST-NF2, in mm? Your
   photos show a notch in that bore — is it a keyway, and what are the key width
   and depth?" Ask them to measure with calipers, not quote the listing: the
@@ -579,7 +590,10 @@ the first two can cost machined parts:
   sensor still have a magnet to trigger from?" Driven by the listings' line
   *"Without a magnet, the screws of the flywheel can be directly locked."* If
   the answer is no, the clutch and the CDI conversion are incompatible as
-  shipped and one of them needs rework.
+  shipped and one of them needs rework. **This is the question that decides
+  whether the part is buyable at all** — the bell's tooth count and gear module
+  (needed for the ratio math) were deliberately held back for a follow-up rather
+  than spent on this round.
 - **One-way bearing identification.** "Part 37, the Start belt pulley
   component: what is the designation and size (bore × OD × width) of the
   one-way bearing pressed into it?" Only matters if we ever want to defeat or

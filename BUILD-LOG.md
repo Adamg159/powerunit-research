@@ -1110,4 +1110,42 @@ Last open bench decision closed, two days before the MGU-K motor lands.
 
 ---
 
+## 2026-08-12 — EngineDIY bounced the clutch email; variant named, questions re-sent
+
+- **Their reply was a one-liner:** *"Please confirm which specific model you need
+  so we can answer your questions"* — with a screenshot of the product page and
+  its six-variant selector. No answer to either question. Reasonable from their
+  side: the original email asked them to recommend a bell variant, so from the
+  clutch desk's view the thread had no chosen SKU to answer about.
+- **Variant named: Single-gear Clutch, $27.99.** Standard 1/10 nitro layout —
+  clutch bell with an integral pinion driving a spur — which is what the
+  single-speed gear final drive wants. The alternative was to keep asking them
+  to choose, which had already stalled the thread once.
+- **The belt-pulley variants were considered and rejected, and the reason is
+  worth recording:** those pulleys sit on the *bell*, downstream of the shoes.
+  They looked briefly like a free solution to the crank-nose packaging conflict
+  (clutch and MGU-K drive competing for ~21 mm of shank), but a bell-side pulley
+  loses drive the moment the clutch disengages — the MGU-K must be upstream, on
+  the crank. Buying one would put a pulley in the wrong place and leave the
+  stack-up unsolved. **Do not re-propose the belt-pulley clutch variants as an
+  MGU-K drive.**
+- **Both questions re-framed as flywheel-side, not variant-specific** — bore
+  diameter, keyway-vs-round-pin, and the CDI trigger magnet all concern the part
+  that mounts to the crank, which is presumably common to all six versions. The
+  reply says so explicitly and asks them to correct it if the flywheel does
+  differ by bell. That is the change most likely to actually unstick the answer:
+  the bounce may simply have been "these look version-dependent, I can't answer
+  yet."
+- The bore question again refuses the listing's "8mm" figure and asks for a
+  caliper measurement, and flags the round-pin (BOM item 04, φ2 × 12) against
+  the notch visible in their studio photos.
+- **Reply SENT 2026-08-12.** Clutch purchase stays blocked pending the answer.
+- **Deliberately NOT asked: the bell's tooth count and gear module.** They are
+  needed for the R ≈ 4.9–5.0 ratio math, but Adam's call was to keep this round
+  to the two questions that decide whether the part is usable at all — no point
+  spending a round trip on gearing for a clutch that may be incompatible with
+  the CDI conversion. Ask it in the follow-up, once question 2 comes back clean.
+
+---
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
