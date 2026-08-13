@@ -1148,4 +1148,63 @@ Last open bench decision closed, two days before the MGU-K motor lands.
 
 ---
 
+## 2026-08-13 — EngineDIY answers round 2: keyway closed, magnet conflict got worse
+
+Their second reply was substantive. Three answers, of which one closed a real
+worry, one dodged, and one contradicted our own analysis.
+
+- **KEYWAY CONCERN CLOSED — a genuine gain.** EngineDIY: the notch in the bore
+  *"is not related to the clutch flywheel engagement with the engine
+  crankshaft. The flywheel is fixed through the shaft connection, not through
+  the keyway system."* The Q4 finding that four studio photos showed a keyway at
+  a consistent angular position, and the worry that it clashed with the crank's
+  round-pin drive (BOM item 04), is dead. That was one of the two things
+  blocking the clutch order and it is now off the list.
+- **MAGNET QUESTION: answered sideways, and the news is bad.** They said the
+  **stock flywheel carries no magnet at all** — the trigger magnet arrives on
+  the **CDI conversion kit's own LARGER flywheel**, which the CDI Hall sensor
+  reads. That is genuinely new and it decodes the machine-translated listing
+  line *"Without a magnet, the screws of the flywheel can be directly locked"*:
+  it describes the magnet-less stock case, not the clutch.
+  - **But it does not answer what was asked, and it sharpens the conflict.**
+    The question was whether the CLUTCH flywheel carries the magnet. Their
+    answer is "for CDI you must fit the magnet flywheel," with no mention of the
+    clutch. Before this reply there were two flywheels competing for the crank
+    nose (stock, clutch). There are now **three**: stock, CDI-with-magnet, and
+    clutch. Adam's initial read was that this sounded like compatibility was
+    fine; on the actual wording it is not confirmed either way.
+  - Re-asked directly: can the CDI magnet flywheel and the clutch assembly be
+    fitted together on one engine, and if not, does the clutch flywheel have a
+    pocket, hole or screw position that will take the trigger magnet?
+- **BORE: still not answered.** Two rounds in, no diameter in mm. They described
+  the fit — *"screwed onto the shaft and being pressed onto the crankshaft
+  through the assembly structure"* — without a number. Re-asked with an explicit
+  request for a caliper measurement on a kit in stock.
+  - **Their wording raised a new question worth more than the bore itself:**
+    what actually carries the torque? The M6 nut clamping the assembly, the two
+    set screws in the blue collar visible in the product photo, or the crank's
+    round pin? BUILD-LOG 2026-08-11 put an M6 friction clamp at roughly 3 N·m,
+    which is marginal for driving a car. Asked.
+- **BELL: they recommend the single V-groove, not the single-gear. Pushed
+  back.** No reasoning given with the recommendation. A V-belt is a friction
+  drive that slips under torque, and **driveline slip corrupts the
+  crank-RPM-vs-wheel-RPM comparison the regen slip-cut depends on** — belt slip
+  would present as clutch slip to the firmware. A gear bell into a spur is also
+  what the entire 1/10 nitro parts ecosystem assumes, including the HSP 02044
+  brake hardware already earmarked. Asked them for their reasoning rather than
+  simply overriding them: if the gear bell's pitch doesn't mate with common
+  1/10 spurs, that is a real reason and would change the pick.
+- **The gear spec question came off the shelf early.** The previous entry
+  deliberately held back the bell's tooth count and module for a later round.
+  The V-groove recommendation made it load-bearing for the variant choice, not
+  just the ratio math, so it went into this email after all.
+- **Follow-up SENT 2026-08-13.** Clutch purchase still blocked, now on the
+  magnet-coexistence answer alone plus the bore number. One of the two original
+  blockers (keyway) is cleared.
+- **Process note that keeps earning its keep:** the vendor answered the question
+  they found easiest to answer, not the one asked, in both rounds. Read vendor
+  replies against the original question text, not for general reassurance.
+
+---
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->

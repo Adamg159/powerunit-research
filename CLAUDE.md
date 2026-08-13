@@ -60,6 +60,15 @@ file, this file wins.
     **Variant to buy is the plain Single-gear Clutch, $27.99** (standard 1/10
     nitro bell-with-pinion, which is what the single-speed gear final drive
     wants) — pending the bore and trigger-magnet answers.
+  - **EngineDIY recommends the single V-groove bell instead (2026-08-13), and we
+    pushed back.** They gave no reasoning. A V-belt is a friction drive: it slips
+    under torque, and driveline slip corrupts the crank-RPM-vs-wheel-RPM
+    comparison the regen slip-cut depends on, since belt slip would read as
+    clutch slip. A gear bell into a spur is also what the whole 1/10 nitro parts
+    ecosystem is built around, including the HSP brake hardware. Asked them for
+    their reasoning, plus the single-gear bell's tooth count and module — if the
+    gear bell's pitch doesn't mate with common spurs, that would be a real
+    reason and would change the pick. Hold the order until they answer.
   - **Packaging conflict to solve:** the centrifugal clutch also replaces the
     stock flywheel at the crank nose. Clutch and MGU-K drive want the same real
     estate. Mount design must resolve that stack-up (nose is only ~21 mm long).
@@ -214,14 +223,20 @@ RPM-sensing constraints (established 2026-08-11 from the factory manuals):
   built. **The A3144 + SmCo path stays, but its job changes to the independent
   cross-check** — a hardware pulse on its own pin survives a firmware fault or
   a VESC/UART failure, which the VESC path cannot.
-- **The flywheel is three-way contested real estate:** the CDI conversion kit's
-  own ignition Hall wants a trigger magnet there, our RPM pickup wants the same
-  face, and the centrifugal clutch kit REPLACES the flywheel outright. Every
-  clutch listing repeats a machine-translated line — *"Without a magnet, the
-  screws of the flywheel can be directly locked"* — whose bad reading is that
-  the clutch flywheel carries no trigger magnet, which would break CDI ignition
-  timing. Unresolved; on the vendor question list. Do not order a clutch
-  variant or plan the CDI conversion around the flywheel until it is answered.
+- **THREE flywheels compete for one crank nose (sharpened 2026-08-13).** EngineDIY
+  confirmed that **the stock flywheel carries NO trigger magnet — the magnet
+  arrives on the CDI conversion kit's own LARGER flywheel**, which the CDI Hall
+  sensor reads for ignition timing. That explains the machine-translated listing
+  line *"Without a magnet, the screws of the flywheel can be directly locked"*
+  (it describes the magnet-less stock case), but it does NOT resolve the
+  conflict — it makes it worse. The crank nose can now be claimed by the stock
+  flywheel, the CDI kit's magnet flywheel, OR the clutch kit's flywheel, and
+  EngineDIY's answer ("if you convert to CDI you must fit the magnet flywheel")
+  simply does not mention the clutch. Our RPM pickup wants the same face.
+  **Still unresolved; re-asked 2026-08-13** — can the CDI magnet flywheel and
+  the clutch be fitted together, and if not, will the clutch flywheel accept the
+  trigger magnet? Do not order a clutch variant or plan the CDI conversion
+  around the flywheel until that comes back.
 - **Free reference geometry:** BadgerJed's CC-BY collection ([thing:6020386](https://www.thingiverse.com/thing:6020386))
   includes four Hall-effect sensor mount STLs for this exact engine, mounted
   with M3 slot-headed screws. Pull these before designing our own — they
@@ -575,15 +590,22 @@ the first two can cost machined parts:
   photo of the bare engine's underside would answer this completely." A 3D scan
   says rhombus, a printed mount and the official base photo say rectangle
   38 × 40 — unbroken tie.
-- **Clutch bore, to EngineDIY's clutch desk. ASKED 2026-08-11; they bounced it
-  asking which of the six bell variants we meant; RE-SENT 2026-08-12 naming the
-  Single-gear Clutch ($27.99) and re-framing both questions as flywheel-side
-  (i.e. presumably common to all six variants).** "What is the bore diameter of
-  the clutch flywheel in the Clutch Assembly Kit for SEMTO ST-NF2, in mm? Your
-  photos show a notch in that bore — is it a keyway, and what are the key width
-  and depth?" Ask them to measure with calipers, not quote the listing: the
-  listing's "8mm output shaft" describes the shaft the kit PROVIDES, not the
-  bore. Also flag the keyway-vs-round-pin mismatch against BOM item 04.
+- **Clutch bore. Asked 2026-08-11, bounced, re-sent 2026-08-12, ANSWERED ONLY IN
+  PART 2026-08-13, re-asked same day.**
+  - **KEYWAY CONCERN CLOSED.** EngineDIY: the notch visible in the product
+    photos *"is not related to the clutch flywheel engagement with the engine
+    crankshaft"* — the part is retained by a shaft/screw connection, not a key.
+    The keyway-vs-round-pin mismatch against BOM item 04 is a dead worry; stop
+    treating it as an order blocker.
+  - **BORE NUMBER STILL NOT GIVEN.** They described the fit ("screwed onto the
+    shaft and pressed onto the crankshaft") without ever stating a diameter.
+    Re-asked with an explicit request for a caliper measurement. Do NOT accept
+    the listing's "8mm output shaft" as the answer: it describes the shaft the
+    kit PROVIDES, not the bore that goes onto our crank.
+  - **New sub-question: what actually carries the torque** — the M6 nut clamping
+    it, the two set screws in the blue collar, or the crank's round pin? Asked
+    2026-08-13. Matters because a friction-only M6 clamp is worth only ~3 N·m
+    (see BUILD-LOG 2026-08-11), which is marginal for driving a car.
 - **Clutch vs CDI trigger magnet — same email, and it may matter more than the
   bore.** "Does the clutch flywheel carry the ignition trigger magnet? If I fit
   this clutch and also fit the gas/CDI conversion kit, will the CDI's Hall
@@ -591,9 +613,14 @@ the first two can cost machined parts:
   *"Without a magnet, the screws of the flywheel can be directly locked."* If
   the answer is no, the clutch and the CDI conversion are incompatible as
   shipped and one of them needs rework. **This is the question that decides
-  whether the part is buyable at all** — the bell's tooth count and gear module
-  (needed for the ratio math) were deliberately held back for a follow-up rather
-  than spent on this round.
+  whether the part is buyable at all.**
+  **STATUS 2026-08-13: answered sideways, still open.** EngineDIY replied that
+  the magnet lives on the CDI kit's own larger flywheel and that CDI conversion
+  requires fitting it — which answers where the magnet is, not whether the
+  clutch can coexist with it. Re-asked directly: can both be fitted, and if not,
+  does the clutch flywheel accept the magnet? The bell tooth count and module
+  were folded into this round after all, since EngineDIY's V-groove
+  recommendation made the gear spec load-bearing for the variant choice.
 - **One-way bearing identification.** "Part 37, the Start belt pulley
   component: what is the designation and size (bore × OD × width) of the
   one-way bearing pressed into it?" Only matters if we ever want to defeat or
