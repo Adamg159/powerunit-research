@@ -1325,5 +1325,9 @@ ourselves.
   thread pitch/hand and the mounting-hole topology. No more clutch questions
   needed. (Optional courtesy: nothing. The gear spec self-serves with
   calipers.)
+- **ORDERED same day: Single-gear Clutch, $25.20 total** (list $27.99; the
+  site's 10% code brought it down). On arrival: caliper the bore and the
+  pinion (OD + tooth count → module), then the spur order can follow the tire
+  pick and the bench-measured engagement RPM.
 
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
