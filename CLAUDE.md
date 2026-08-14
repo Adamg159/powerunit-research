@@ -223,20 +223,17 @@ RPM-sensing constraints (established 2026-08-11 from the factory manuals):
   built. **The A3144 + SmCo path stays, but its job changes to the independent
   cross-check** — a hardware pulse on its own pin survives a firmware fault or
   a VESC/UART failure, which the VESC path cannot.
-- **THREE flywheels compete for one crank nose (sharpened 2026-08-13).** EngineDIY
-  confirmed that **the stock flywheel carries NO trigger magnet — the magnet
-  arrives on the CDI conversion kit's own LARGER flywheel**, which the CDI Hall
-  sensor reads for ignition timing. That explains the machine-translated listing
-  line *"Without a magnet, the screws of the flywheel can be directly locked"*
-  (it describes the magnet-less stock case), but it does NOT resolve the
-  conflict — it makes it worse. The crank nose can now be claimed by the stock
-  flywheel, the CDI kit's magnet flywheel, OR the clutch kit's flywheel, and
-  EngineDIY's answer ("if you convert to CDI you must fit the magnet flywheel")
-  simply does not mention the clutch. Our RPM pickup wants the same face.
-  **Still unresolved; re-asked 2026-08-13** — can the CDI magnet flywheel and
-  the clutch be fitted together, and if not, will the clutch flywheel accept the
-  trigger magnet? Do not order a clutch variant or plan the CDI conversion
-  around the flywheel until that comes back.
+- **Flywheel conflict RESOLVED 2026-08-14 — EngineDIY answered by video.** The
+  clutch is BUILT ON the CDI magnet flywheel: magnet flywheel (rim magnet
+  visible, deep cup clearing the start pulley) mounts to the crank nose, a
+  backing disc and the blue shoe carrier index onto two drive pins on its face
+  (pin-driven, not friction-driven), and the bell rides a bearing on a central
+  stub, retained by a nose-end screw. One flywheel serves CDI trigger AND
+  clutch carrier; stock flywheel is simply removed. Demonstrated frame-by-frame
+  in the vendor video (BUILD-LOG 2026-08-14; video kept local as `111.mp4`).
+  The clutch stack lengthens the nose — the only crank-speed face left exposed
+  at the end is the small bell-retaining screw, which the MGU-K mount design
+  must work around.
 - **Free reference geometry:** BadgerJed's CC-BY collection ([thing:6020386](https://www.thingiverse.com/thing:6020386))
   includes four Hall-effect sensor mount STLs for this exact engine, mounted
   with M3 slot-headed screws. Pull these before designing our own — they
@@ -606,21 +603,13 @@ the first two can cost machined parts:
     it, the two set screws in the blue collar, or the crank's round pin? Asked
     2026-08-13. Matters because a friction-only M6 clamp is worth only ~3 N·m
     (see BUILD-LOG 2026-08-11), which is marginal for driving a car.
-- **Clutch vs CDI trigger magnet — same email, and it may matter more than the
-  bore.** "Does the clutch flywheel carry the ignition trigger magnet? If I fit
-  this clutch and also fit the gas/CDI conversion kit, will the CDI's Hall
-  sensor still have a magnet to trigger from?" Driven by the listings' line
-  *"Without a magnet, the screws of the flywheel can be directly locked."* If
-  the answer is no, the clutch and the CDI conversion are incompatible as
-  shipped and one of them needs rework. **This is the question that decides
-  whether the part is buyable at all.**
-  **STATUS 2026-08-13: answered sideways, still open.** EngineDIY replied that
-  the magnet lives on the CDI kit's own larger flywheel and that CDI conversion
-  requires fitting it — which answers where the magnet is, not whether the
-  clutch can coexist with it. Re-asked directly: can both be fitted, and if not,
-  does the clutch flywheel accept the magnet? The bell tooth count and module
-  were folded into this round after all, since EngineDIY's V-groove
-  recommendation made the gear spec load-bearing for the variant choice.
+- ~~Clutch vs CDI trigger magnet~~ **CLOSED 2026-08-14 — answered by vendor
+  video.** The clutch mounts ON the CDI magnet flywheel (pin-driven shoes off
+  the flywheel face, bell on a bearing); one flywheel does both jobs. See
+  BUILD-LOG 2026-08-14. Compatibility no longer blocks the clutch order.
+  **Still open from that round: the bell gear tooth count and module** — the
+  bell in the video shows no visible gear or V-groove, so also ask WHICH
+  variant was filmed.
 - **One-way bearing identification.** "Part 37, the Start belt pulley
   component: what is the designation and size (bore × OD × width) of the
   one-way bearing pressed into it?" Only matters if we ever want to defeat or

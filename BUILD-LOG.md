@@ -1207,4 +1207,56 @@ worry, one dodged, and one contradicted our own analysis.
 
 ---
 
+## 2026-08-14 — EngineDIY answers round 3 BY VIDEO: clutch + CDI magnet flywheel fit together (demonstrated)
+
+Instead of a text reply, EngineDIY sent a 76-second hands-on video (1080p60,
+kept out of the repo — it lives locally as `111.mp4`) of someone assembling the
+clutch onto an ST-NF2 with the gas/CDI parts on the bench. Reviewed
+frame-by-frame; Adam is watching it in full for the audio.
+
+- **THE BLOCKING QUESTION IS ANSWERED: yes, the clutch and the CDI magnet
+  flywheel coexist — the clutch is BUILT ON the magnet flywheel.** The
+  demonstrated stack, inboard to outboard:
+  1. Stock flywheel and M6 nut come off the crank nose (the crank's cross-pin
+     is briefly visible on the bare nose, ~0:08).
+  2. The **CDI magnet flywheel** goes on — the deep knurled cup with a
+     **pressed-in magnet clearly visible in the rim face** (~0:30). The cup
+     shape clears the start pulley and belt entirely. Set screws are tightened
+     with a hex key; the crank pin plus the nut do the axial/drive retention.
+  3. A **backing disc** drops over two **drive pins that protrude from the
+     flywheel face** (~0:44–0:48).
+  4. The **blue anodized shoe carrier with its garter spring** indexes onto
+     those pins (~0:58) — the shoes are **pin-driven off the flywheel face,
+     not friction-driven**. This also substantially answers the
+     what-carries-the-torque question at the clutch stage.
+  5. The **bell/drum rides a bearing on a central stub** and is retained by a
+     small screw at the nose end (~1:02–1:15). Bell spins free of the crank
+     below engagement, as it should.
+- **So one flywheel does both jobs**: trigger magnet for the CDI Hall sensor
+  AND clutch carrier. The three-flywheels-one-nose conflict collapses to a
+  supported, demonstrated configuration. The clutch is buyable as far as
+  compatibility goes.
+- **Still NOT answered by the video:**
+  - **Bore diameter in mm** — no caliper appears in the video. Still owed.
+  - **Bell tooth count / module** — worse, the demonstrated bell looks like a
+    **smooth drum with no gear pinion and no obvious V-groove** in any frame,
+    so which variant was filmed is unclear; possibly the pulley face bolts on
+    separately. The gear-spec question stands.
+  - M6 thread pitch/hand, mounting-hole topology, one-way bearing ID —
+    untouched, as expected for a clutch video.
+- **New packaging fact for the crank-nose stack-up (feeds the MGU-K mount
+  design):** the assembled clutch stack visibly LENGTHENS the nose — flywheel
+  cup + shoes + bell + retaining screw occupy everything outboard of the start
+  pulley. The MGU-K drive must couple to a crank-speed feature (flywheel body
+  or the central stub), and the only crank-speed face left exposed at the end
+  is that small retaining screw. Draw the stack from these frames before
+  designing the mount; extracted stills are worth keeping alongside the CAD.
+- **Process note:** after two rounds of answering the easiest question, a video
+  was their best answer yet — a demonstration can't dodge. Worth explicitly
+  inviting photos/video in future vendor questions ("a phone photo answers this
+  completely" phrasing already used for the mounting-pattern question).
+- **Next actions:** re-ask ONLY the two open clutch items (bore number, bell
+  gear spec / which variant was filmed); everything else on the clutch is
+  cleared. Order stays held on those two.
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
