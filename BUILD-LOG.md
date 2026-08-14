@@ -1212,7 +1212,11 @@ worry, one dodged, and one contradicted our own analysis.
 Instead of a text reply, EngineDIY sent a 76-second hands-on video (1080p60,
 kept out of the repo — it lives locally as `111.mp4`) of someone assembling the
 clutch onto an ST-NF2 with the gas/CDI parts on the bench. Reviewed
-frame-by-frame; Adam is watching it in full for the audio.
+frame-by-frame. **The audio contains no narration** — verified by Whisper
+transcription with VAD (empty transcript) and a speech-band level analysis
+(everything under −30 dB); the video is visual-only, so the frames are the
+whole message. (An unfiltered Whisper pass hallucinated "4.5mm/5.5mm" from
+parts-handling noise — those numbers are NOT real and must not be cited.)
 
 - **THE BLOCKING QUESTION IS ANSWERED: yes, the clutch and the CDI magnet
   flywheel coexist — the clutch is BUILT ON the magnet flywheel.** The
