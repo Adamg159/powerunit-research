@@ -1360,4 +1360,36 @@ the unblocked list). Working document: `docs/chassis-packaging.md`.
 - Expected wheelbase window ~280–330 mm, to be proven by the dummy block, not
   assumed.
 
+## 2026-08-14 (night) — Power-module micro-study: rim belt drive wins, rear module envelope frozen (pending arrival checks)
+
+Nose-rearward confirmed by Adam (performance + F1 mimicry). Full study in
+`docs/power-module-study.md`; highlights:
+
+- **Photogrammetry off the vendor video** (Ø50 flywheel as scale): clutch
+  stack protrudes **~45–50 mm** from the crankcase — longer than the earlier
+  30–40 mm guess. Bell Ø~35 × ~14 long; exposed knurled rim band ~15–18 mm —
+  the only wide crank-speed surface on the assembled engine.
+- **Coupling ratio must be 1:1** — the 2026-08-07 motor sizing (390–470 W at
+  16k) was computed at motor speed = crank speed; overdrive spends back-EMF
+  headroom (1.25× leaves ~1.3 V of forcing voltage on a sagged pack),
+  underdrive divides torque. Design torque through the coupling: 0.24 N·m at
+  the 54 A phase cap; drive designed to 0.5 N·m.
+- **DECISION: Concept 1 — HTD-3M 9 mm timing belt, 60T:60T, off a ring
+  clamped to the flywheel rim; MGU-K above the crankcase, inside the engine's
+  92 mm silhouette.** Timing belt (positive drive) for the same reason the
+  clutch bell had to be a gear: the VESC is the crank tach and the slip-cut
+  reference. Wins: zero rear overhang (axle sits at the bell plane), no
+  M6-thread dependency, clutch and starter stay serviceable, printed-PETG
+  prototype ring has 15× hoop-stress margin at 16k rpm (52 m/s rim speed).
+- **Concept 2 (coaxial stub through the bell) demoted to fallback:** ~119 mm
+  behind the crankcase with the motor 70 mm past the axle line, blocked on
+  the M6 pitch/hand unknown, and buries the clutch for service. Mechanically
+  purest, packaging-worst.
+- **Rear module envelope to chassis packaging: ~200 × 90 × 92 mm**, layshaft
+  offset ~29 mm from the crank axis in a direction the layout iteration
+  chooses (opposite the motor's high position).
+- **Two arrival measurements can overturn the decision** (rim axial exposure
+  ≥ belt + flanges; start-belt path clearance) — full checklist in the study
+  doc. Implied belt/pulley purchases (~$20–30) flagged, not yet ordered.
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->

@@ -142,7 +142,17 @@ mule wears its wheelbase honestly.
 
 ## 4. Work sequence
 
-### 4.1 Power-module micro-study (FIRST — it sizes the rear of the car)
+### 4.1 Power-module micro-study — DONE 2026-08-14, see `power-module-study.md`
+
+**Outcome:** nose rearward (Adam's call); MGU-K couples via a 1:1 HTD-3M
+timing belt off a ring clamped to the magnet flywheel's rim, motor above the
+crankcase inside the engine silhouette; Concept 2 (coaxial stub) demoted to
+fallback. Rear module envelope: ~200 mm long × ~90 wide × ~92 high, rear axle
+near the bell plane, near-zero rear overhang. Two arrival measurements can
+still overturn it (rim exposure, start-belt clearance). Original study brief
+kept below for context.
+
+### 4.1a Original brief (superseded)
 
 Resolve the crank-nose stack-up as ONE problem (CLAUDE.md rule). Two MGU-K
 coupling concepts to draw against the video's stack geometry:
