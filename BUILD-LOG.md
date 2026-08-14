@@ -1330,4 +1330,34 @@ ourselves.
   pinion (OD + tooth count → module), then the spur order can follow the tire
   pick and the bench-measured engagement RPM.
 
+## 2026-08-14 (evening) — Chassis packaging work opened: working doc, mass budget v0, layout pre-analysis
+
+With the clutch ordered, opened the chassis packaging task (the top item on
+the unblocked list). Working document: `docs/chassis-packaging.md`.
+
+- **Style decision (Adam): function-first mule.** Components dictate the
+  footprint; body style commits after the dummy-block layout. Scale stays 1/10
+  per doc 01, proportions follow the hardware.
+- **Consolidated every packaging constraint in one place** — engine envelope
+  and mounting recon, flywheel overhang cutout, nose keep-out for starter
+  access, clutch stack from the vendor video, sensor mounting faces (pitot,
+  ToF, wheel Halls, load-cell provision in the towers), and the
+  CDI-vs-electronics physical separation rule.
+- **Mass budget v0 totals ≈ 3.2 kg** — roughly double a 1/10 nitro touring
+  car. Consequence: the tire pick is a load-capacity decision first, diameter
+  second; and R ≈ 4.9–5.0 only survives if the 63–65 mm assumption does.
+- **Transverse crank is dead on geometry alone:** crank line (engine 112 +
+  clutch ~35 + coupling + MGU-K ~55–70) runs ~210–230 mm, vs ~150–160 mm
+  between the wheels. Longitudinal is forced; the open question is nose
+  rearward (working favorite — short drive path, rear traction bias, F1-style
+  MGU-K overhang) vs nose forward (standard middle-shaft nitro layout, kept
+  alive until properly killed).
+- **First actual task defined: the power-module micro-study** — resolve the
+  crank-nose stack as ONE problem via two MGU-K coupling concepts (flywheel
+  rim belt drive vs coaxial stub extension through the bell). Note: the stub
+  concept is the only packaging work exposed to the unknown M6 pitch/hand —
+  one more reason the vendor answer matters.
+- Expected wheelbase window ~280–330 mm, to be proven by the dummy block, not
+  assumed.
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
