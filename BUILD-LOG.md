@@ -1263,4 +1263,67 @@ parts-handling noise — those numbers are NOT real and must not be cited.)
   gear spec / which variant was filmed); everything else on the clutch is
   cleared. Order stays held on those two.
 
+## 2026-08-14 (later) — Clutch research pass: video variant identified, single-gear pick re-derived from our own requirements, order unblocked
+
+Adam asked two questions: does the missing bore number still block the
+purchase, and do we need the vendor at all for the variant choice, or can we
+conclude it ourselves? Did the listing-photo research. Answers: no, and
+ourselves.
+
+- **The variant in the video is the V-GROOVE BELT version — the one they
+  recommended.** The [ST-NF2 clutch kit listing](https://www.enginediy.com/collections/toyan-l200-accessories/products/clutch-assembly-kit-for-semto-st-nf2-engine-model)
+  (6 variants, $27.99–36.99) shows all variants share IDENTICAL internals —
+  flat two-pin flywheel disc, blue shoe carrier with garter spring, black hex
+  center adapter, two small bearings, retaining screw — and differ ONLY in the
+  bell: gear pinion, V-groove, double-V, synchronous (timing) pulley, or
+  marine collet-cup. The bell in the video has the stepped snout with
+  circumferential grooves of the V-groove bells (the ridges visible at ~1:15
+  are the V-channels — earlier read as "smooth drum, no gear" was wrong on
+  this detail). **Consequence: the compatibility demonstration transfers to
+  every variant**, since the flywheel/shoe architecture is common; only the
+  output interface changes.
+- **Bore number: officially demoted from order-blocker to
+  measure-on-arrival.** The worry was a machining mismatch with the 8 mm
+  pin-driven nose; a factory video of the kit hand-assembling onto a real
+  ST-NF2 retires that risk. Under the design-for-slop rule the caliper governs
+  on arrival anyway.
+- **Single-gear pick re-derived from OUR requirements (not their advice):**
+  1. **The regen slip-cut requires positive drive on the clutch output.** The
+     firmware detects clutch slip as VESC-RPM vs wheel-RPM divergence. A
+     V-belt is a friction drive that slips under torque transients — belt slip
+     is INDISTINGUISHABLE from clutch slip in that comparison, so the V-groove
+     variants would blind the exact protection they feed. (Note: this concern
+     is about the clutch BELL's belt interface, not the spur — a gear bell
+     into a spur is positive drive with no slip mode short of tooth failure.)
+  2. **Synchronous (timing) pulley is positive drive and technically
+     acceptable**, but loses on ecosystem: a ~5:1 reduction needs a large
+     mating timing pulley in an axle-compatible bore (scarce), adds belt
+     tension/center-distance constraints to a custom chassis, can skip teeth
+     under shock, and costs $7 more for no advantage over a gear.
+  3. **The gear bell mates with the entire 1/10 nitro ecosystem** — spurs in
+     every tooth count, and the planned HSP 02044 brake hardware mounts on
+     the same spur/topshaft layout. Pinion in the photos is ~15–16T.
+  4. **Their V-groove recommendation is rational FOR THEIR CUSTOMERS** —
+     these kits are marketed for model ships and generators, where a V-belt's
+     misalignment forgiveness and shock absorption are virtues and slip is
+     harmless. They don't know our regen control loop exists. Overriding
+     their advice is justified by analysis, not stubbornness.
+- **Gear module/tooth count: still unpublished anywhere** (listing, Stirlingkit
+  mirror, reviews). NOT worth a vendor round: the spur order is already gated
+  on the tire pick and the bench-measured engagement RPM, so the sequence is
+  order clutch → caliper the pinion on arrival (mod = OD/(N+2)) → buy the
+  matching spur. Worst-case exotic pitch → print a bench spur at the lab or
+  buy the kit ecosystem's own mating gear. A [Stirlingkit RTR crawler built on
+  this engine](https://www.stirlingkit.com/products/modified-toyan-fs-l200-1-10-2-4g-4ch-nitro-offroad-crawler-vehicle-rc-car-rtr)
+  proves the car conversion path exists but publishes no gear specs either.
+- **DECISION: order the plain Single-gear Clutch, $27.99** ([listing](https://www.enginediy.com/products/single-gear-clutch-assembly-rc-model-ship-upgrade-part-for-toyan-fs-l200-double-cylinder-4-stroke-methanol-engine-model),
+  in stock, 3 reviews, one photo-confirmed on a Toyan; current 10%-off code
+  "2026" on the site). Nothing blocking remains. It also unblocks the
+  engagement-RPM bench measurement on the surrogate rig, which the
+  transmission ratio and regen-window math wait on.
+- **Vendor thread narrows to the machining-critical unknowns only:** M6 nose
+  thread pitch/hand and the mounting-hole topology. No more clutch questions
+  needed. (Optional courtesy: nothing. The gear spec self-serves with
+  calipers.)
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->

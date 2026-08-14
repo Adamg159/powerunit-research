@@ -57,18 +57,21 @@ file, this file wins.
     Clutch" bells put their pulley DOWNSTREAM of the shoes, so drive vanishes
     the moment the clutch disengages — the MGU-K must be upstream, on the crank.
     They look like a free fix for the crank-nose stack-up and are not one.
-    **Variant to buy is the plain Single-gear Clutch, $27.99** (standard 1/10
-    nitro bell-with-pinion, which is what the single-speed gear final drive
-    wants) — pending the bore and trigger-magnet answers.
-  - **EngineDIY recommends the single V-groove bell instead (2026-08-13), and we
-    pushed back.** They gave no reasoning. A V-belt is a friction drive: it slips
-    under torque, and driveline slip corrupts the crank-RPM-vs-wheel-RPM
-    comparison the regen slip-cut depends on, since belt slip would read as
-    clutch slip. A gear bell into a spur is also what the whole 1/10 nitro parts
-    ecosystem is built around, including the HSP brake hardware. Asked them for
-    their reasoning, plus the single-gear bell's tooth count and module — if the
-    gear bell's pitch doesn't mate with common spurs, that would be a real
-    reason and would change the pick. Hold the order until they answer.
+    **DECIDED 2026-08-14: buy the plain Single-gear Clutch, $27.99 — order
+    unblocked, no further vendor answers needed.** All six kit variants share
+    identical internals (pin-disc flywheel, blue shoe carrier, hex adapter,
+    bearings) and differ only in the bell, so the video's compatibility demo
+    (which filmed the V-groove variant) transfers to the gear variant. The
+    V-groove recommendation from EngineDIY was re-derived and rejected on our
+    own requirements: a V-belt slips under torque and belt slip is
+    indistinguishable from clutch slip in the regen slip-cut's RPM comparison;
+    the vendor's advice fits their marine/generator customers, not a car with
+    a regen control loop. Gear pinion is ~15–16T, module unpublished —
+    self-serve with calipers on arrival (mod = OD/(N+2)) before ordering the
+    spur, which is gated on the tire pick and engagement RPM anyway. Bore
+    number likewise demoted to measure-on-arrival: the factory video shows the
+    kit hand-fitting the real engine. Full reasoning in BUILD-LOG 2026-08-14
+    (later).
   - **Packaging conflict to solve:** the centrifugal clutch also replaces the
     stock flywheel at the crank nose. Clutch and MGU-K drive want the same real
     estate. Mount design must resolve that stack-up (nose is only ~21 mm long).
@@ -587,22 +590,13 @@ the first two can cost machined parts:
   photo of the bare engine's underside would answer this completely." A 3D scan
   says rhombus, a printed mount and the official base photo say rectangle
   38 × 40 — unbroken tie.
-- **Clutch bore. Asked 2026-08-11, bounced, re-sent 2026-08-12, ANSWERED ONLY IN
-  PART 2026-08-13, re-asked same day.**
-  - **KEYWAY CONCERN CLOSED.** EngineDIY: the notch visible in the product
-    photos *"is not related to the clutch flywheel engagement with the engine
-    crankshaft"* — the part is retained by a shaft/screw connection, not a key.
-    The keyway-vs-round-pin mismatch against BOM item 04 is a dead worry; stop
-    treating it as an order blocker.
-  - **BORE NUMBER STILL NOT GIVEN.** They described the fit ("screwed onto the
-    shaft and pressed onto the crankshaft") without ever stating a diameter.
-    Re-asked with an explicit request for a caliper measurement. Do NOT accept
-    the listing's "8mm output shaft" as the answer: it describes the shaft the
-    kit PROVIDES, not the bore that goes onto our crank.
-  - **New sub-question: what actually carries the torque** — the M6 nut clamping
-    it, the two set screws in the blue collar, or the crank's round pin? Asked
-    2026-08-13. Matters because a friction-only M6 clamp is worth only ~3 N·m
-    (see BUILD-LOG 2026-08-11), which is marginal for driving a car.
+- ~~Clutch bore~~ **CLOSED as an order-blocker 2026-08-14.** Keyway concern
+  died 2026-08-13 (retention is shaft/screw, not key). The bore number was
+  never given, but the vendor video shows the kit hand-assembling onto a real
+  ST-NF2, which retires the mismatch risk; caliper on arrival governs
+  (design-for-slop). Torque path answered visually: pin-driven shoes off the
+  flywheel face, set-screwed + nut-clamped flywheel — not a friction-only M6
+  clamp. Nothing left to ask.
 - ~~Clutch vs CDI trigger magnet~~ **CLOSED 2026-08-14 — answered by vendor
   video.** The clutch mounts ON the CDI magnet flywheel (pin-driven shoes off
   the flywheel face, bell on a bearing); one flywheel does both jobs. See
