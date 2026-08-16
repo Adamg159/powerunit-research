@@ -12,6 +12,7 @@
 
 #include <cstdio>
 #include <cmath>
+#include <initializer_list>
 
 using namespace driveline;
 
@@ -38,11 +39,18 @@ static void checkNear(float got, float want, float tol, const char* what) {
 
 static void testErpmConversion() {
   printf("\n[ERPM conversion]\n");
-  // 16,000 rpm crank on a 4-pole motor is 32,000 ERPM off the wire.
-  checkNear(crankRpmFromErpm(32000.0f), 16000.0f, 0.01f, "32000 ERPM -> 16000 crank rpm");
-  checkNear(erpmFromCrankRpm(16000.0f), 32000.0f, 0.01f, "round-trips");
-  // The bug this exists to prevent: treating ERPM as mechanical RPM.
-  check(crankRpmFromErpm(32000.0f) != 32000.0f, "conversion is not the identity");
+  // QuicRun 3650SD G2 is a 2-POLE motor (manual spec table) = 1 pole pair,
+  // so ERPM == mechanical RPM on this motor.
+  checkNear(MOTOR_POLE_PAIRS, 1.0f, 0.001f, "2 poles => 1 pole pair");
+  checkNear(crankRpmFromErpm(16000.0f), 16000.0f, 0.01f, "16000 ERPM -> 16000 crank rpm");
+  checkNear(erpmFromCrankRpm(16000.0f), 16000.0f, 0.01f, "round-trips");
+
+  // Guard the general case so a future motor swap cannot silently break this:
+  // whatever the pole count, the two conversions must be exact inverses.
+  for (float rpm : {1000.0f, 7500.0f, 16000.0f}) {
+    checkNear(crankRpmFromErpm(erpmFromCrankRpm(rpm)), rpm, 0.01f,
+              "conversion round-trips exactly");
+  }
 }
 
 static void testSpeed() {

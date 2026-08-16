@@ -90,6 +90,21 @@ on this envelope. Full trail in BUILD-LOG (2026-08-07 entry).
   class in high-kv RC-car form, so 6S/4S have no motor to buy; 2S pushes ~61 A.
   Full-assist battery burst ~41 A. Never move this motor class to 4S — the
   2–3S rating is explicit and it unlocks nothing.
+- **Motor manual data (received 2026-08-16, PN 30404306):** 2170 kv, **2 POLES
+  (= 1 pole pair, so VESC ERPM equals mechanical RPM — see Driveline.h)**,
+  R = 0.0488 Ω, no-load 1.6 A, Ø36 × 52.8 mm, shaft Ø3.17 × 15 mm, **187 g**,
+  2–3S. **Motor can must never exceed 90 °C** — above that the magnets
+  demagnetise and the coils can melt, so the NTC foldback starts at 70–75 °C
+  and is fully cut by ~85 °C. Phase colours: **A = blue, B = yellow,
+  C = orange; wire A-A, B-B, C-C** — with a sensored ESC the phase order is
+  NOT free to swap. Bearing spare: R2ZZ 3.175 × 9.525 × 3.967.
+- **VESC manual data (same day):** hardware V4.20, 8–60 V, **3–13S — 3S is the
+  MINIMUM**, so the pack choice sits at the bottom edge of the window (this is
+  why 2S had no controller). BEC 5 V @ 1.5 A. 67 × 39 × 18.3 mm with heatsink,
+  **80 g**. Box contents confirm a VESC sensor wire is included.
+  SENSE port pinout: `GND | H3 | H2 | H1 | TMP | 5V` (5 V and GND at OPPOSITE
+  ENDS — a flipped cable swaps both rails). COMM port, for the ESP32 UART:
+  `5V | 3.3V | GND | ADC | TX | RX | ADC2`.
 - **Motor: Hobbywing QuicRun 3650SD G2 17.5T, 2170 kv, sensored, 3.175 mm
   shaft (~$50).** The 1900 kv alternative loses too much to back-EMF + I·R at
   the top of the band on a sagged pack (~180–280 W deliverable at 16k rpm);

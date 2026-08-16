@@ -94,11 +94,23 @@ motor end-bell → black 6-conductor ribbon → white 6-pin joint → coloured
 pigtail → VESC sensor port. The planned solder job is deleted, and so is the
 ~$9 pre-crimped JST-PH fallback kit (B08T89ZK2Q) — do not order it.
 
-**But mating is not the same as matching.** Identical housings hide different
-pin orders, and a reversed 5 V/GND kills the hall ICs instantly and silently.
-That risk is exactly what the splice plan existed to control, so the check
-survives even though the soldering doesn't. Before the motor side is ever
-connected:
+**VESC SENSE port pinout** (from the Flipsky wiring sheet, connector 2), in
+order along the header:
+
+```
+GND | H3 | H2 | H1 | TMP | 5V
+```
+
+**5 V and GND sit at opposite ends of the same 6-pin connector.** That is
+precisely the geometry where a flipped cable puts 5 V onto ground — one
+mis-orientation, both rails swapped, hall ICs dead. Note also that the same
+sheet gives the COMM port as `5V | 3.3V | GND | ADC | TX | RX | ADC2`, which is
+the ESP32 UART link for B4.
+
+**Mating is not the same as matching.** Identical housings hide different pin
+orders, and a reversed 5 V/GND kills the hall ICs instantly and silently. That
+risk is exactly what the splice plan existed to control, so the check survives
+even though the soldering doesn't. Before the motor side is ever connected:
 
 1. Unmate the pair; keep the motor out of it.
 2. Power the VESC from **USB only** — no pack on the bus.
@@ -198,9 +210,17 @@ them, so each one gets proven rather than typed.
 | Battery current max **regen** | **−10 A** | The no-BMS charge cap |
 | Motor current max | ~50–54 A phase | Burst duty only |
 | Battery cutoff start / end | **10.2 V / 9.9 V** | Soft foldback, then hard |
-| Motor temp foldback | enabled, via 4a temp wire | The duty argument depends on it |
+| Motor temp foldback | enabled, via 4a temp wire. **Hard ceiling 90 °C** | The duty argument depends on it |
 | MOSFET temp foldback | leave at defaults | Flipsky 4.20 has no margin to spare |
 | Control timeout | **200–300 ms** | Default is ~1000 ms — far too long |
+
+**Where 90 °C comes from:** the Hobbywing manual states outright that the motor
+can must never exceed 90 °C, because above that the magnets demagnetise and the
+coils can melt. That is a permanent-damage threshold, not a warning — so set
+foldback to *start* well below it (70–75 °C) and be fully cut by ~85 °C. The
+manual also prescribes the tuning method this project should copy for gearing:
+start with a small pinion, run, measure temperature, and only increase gearing
+while temperatures stay low.
 
 ### The gap worth knowing about: there is no graceful high-voltage regen limit
 

@@ -60,8 +60,8 @@ static void runSelfTest() {
   selfTestFailures = 0;
   Serial.println("\n=== Driveline self-test ===");
 
-  expect(fabsf(crankRpmFromErpm(32000.0f) - 16000.0f) < 0.01f,
-         "32000 ERPM -> 16000 crank rpm (pole pairs = 2)");
+  expect(fabsf(crankRpmFromErpm(16000.0f) - 16000.0f) < 0.01f,
+         "16000 ERPM -> 16000 crank rpm (2-pole motor = 1 pole pair)");
 
   SlipMonitor s;
   SlipInputs in;

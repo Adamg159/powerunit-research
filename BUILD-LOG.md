@@ -1645,4 +1645,72 @@ port, all visible in one frame. Solder job deleted, fallback purchase deleted.
   it print PASS, no wiring at all. B3 (two Halls, two pull-ups, magnets) is the
   one waiting on the magnet delivery next week.
 
+**Later same day — B2 PASSES on hardware, and the motor manual catches a bug in
+the firmware written this morning.**
+
+B2 done: flashed [slip-cut-test](firmware/slip-cut-test/slip-cut-test.ino) to
+S3 board #1, all five on-board checks PASS. Also drove the live path over
+serial, which demonstrated the fail-closed logic on real silicon rather than in
+a harness: crank 3000 with no wheel data reports `below-engagement` (correct —
+clutch open, nothing to harvest, not a fault), while crank 12000 with the same
+missing data reports `CUT no-data`. Same absent sensors, opposite verdicts,
+decided by whether the crank says the vehicle is moving. Floating inputs on
+GPIO 4/5 read a clean zero, so the sub-400 µs noise rejection is doing its job
+even before the real pull-ups go on.
+
+**Then the Hobbywing manual arrived and contradicted the firmware.** Its spec
+table gives **Pole = 2** for the whole 3650SD G2 family. RC 3650 inrunners use a
+2-pole rotor, which is **ONE pole pair, not two** — so on this motor ERPM and
+mechanical RPM are the same number. `Driveline.h` had `MOTOR_POLE_PAIRS = 2`.
+
+- **Consequence had it shipped:** the crank would have read half its true speed,
+  looked permanently behind the wheels, and latched `CutClutchSlip` forever —
+  **regen would never have engaged at all.** Safe in direction, useless in
+  function, and genuinely nasty to debug on a rig where the honest explanation
+  ("your tach is half-scale") looks identical to "the clutch is slipping".
+- **Fixed by changing units, not just the number.** The constant is now
+  `MOTOR_POLES = 2` with pole pairs derived from it, because *poles* is what the
+  Hobbywing manual prints and what VESC Tool asks for. Matching units across the
+  manual, the config field and the code removes the whole class of factor-of-two
+  mistake rather than fixing one instance of it.
+- `crankRpmFromErpm()` is now an identity on this motor and is **still called
+  everywhere** — the moment a 4-pole motor appears (v2), every call site is
+  already right. Tests gained a general round-trip property so a future pole
+  change can't silently break it. **33 desktop checks pass; the corrected
+  self-test re-verified on board #1.**
+- The old note said "verify on the bench, do not take this on faith." It was
+  the right instinct pointed at the right constant — the manual just got there
+  first. Bench task A8 stays anyway: the manual is not the motor.
+
+**Toolchain gotcha worth remembering:** `arduino-cli upload` does NOT compile.
+It flashed a stale cached binary and the board dutifully printed the OLD
+self-test text, which briefly looked like the fix hadn't taken. Always
+`compile` then `upload`.
+
+Other data captured from the two manuals (full details in CLAUDE.md):
+
+- **Motor:** 187 g, Ø36 × 52.8 mm, shaft Ø3.17 × 15 mm, R = 0.0488 Ω, no-load
+  1.6 A. **Can temperature must never exceed 90 °C** — magnets demagnetise and
+  coils melt above it, so foldback starts 70–75 °C, fully cut by ~85 °C. That
+  finally puts a real number on the thermal limit the burst-duty argument rests
+  on. Phase colours A = blue, B = yellow, C = orange, wired A-A/B-B/C-C — with a
+  sensored ESC the phase order is not free to swap.
+- **VESC:** 8–60 V, **3–13S, meaning 3S is the MINIMUM cell count.** The pack
+  sits at the very bottom edge of the controller's window — independent
+  confirmation of why 2S had no controller to buy. BEC 5 V @ 1.5 A. 80 g,
+  67 × 39 × 18.3 mm with heatsink (feeds the mass budget).
+- **SENSE pinout `GND | H3 | H2 | H1 | TMP | 5V`** — 5 V and GND at OPPOSITE
+  ENDS, so a flipped cable swaps both rails at once. Exactly the failure the A4
+  meter check exists to catch. **COMM pinout `5V | 3.3V | GND | ADC | TX | RX |
+  ADC2`** is the B4 UART link.
+
+**First 3S charge done at 2 A** (~0.4C — deliberately conservative, to prove the
+process at low current before ever charging faster). Result is a good pack:
+**3.992 / 3.987 / 3.986 V, Σ 11.97 V, Δ 6 mV.** A 6 mV spread across three cells
+straight out of the box is excellent, and it doubles as the baseline to compare
+against after the first regen cycles. Note the pack sits at ~3.99 V/cell, which
+already satisfies the "start regen sessions at ≤4.0 V/cell" rule — no headroom
+problem for the first harvest test. Charger plate reads 60 W AC / 200 W DC
+(CLAUDE.md previously said ~50 W AC).
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->

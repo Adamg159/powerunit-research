@@ -37,7 +37,7 @@ Detail in [bench-bringup.md](bench-bringup.md). Both safety gates closed
 | # | Step | Pieces needed | Status |
 |---|---|---|---|
 | B1 | ~~ERPM conversion + slip-cut module~~ **DONE 2026-08-16** — [Driveline.h](../firmware/libraries/Driveline/Driveline.h), 30 desktop checks passing | — | **DONE** |
-| B2 | Flash [slip-cut-test](../firmware/slip-cut-test/slip-cut-test.ino), confirm boot self-test PASSes on real hardware | A3 only — **no wiring, no magnets** | **READY** |
+| B2 | Flash [slip-cut-test](../firmware/slip-cut-test/slip-cut-test.ino), confirm boot self-test PASSes on real hardware | A3 only — **no wiring, no magnets** | **DONE** 08-16 |
 | B3 | Breadboard both wheel Hall pickups against B2's live mode; spin by hand, watch verdicts | A3, 2× A3144, 2× 10 k, magnets, breadboard | **READY** (uses on-hand stock first) |
 | B4 | VESC UART link: read RPM / phase current / battery V,I; replace the simulated crank RPM in B2 | A7, VescUart, ESP32-S3 | **READY** |
 | B5 | SBUS parse: driver demand, failsafe flag bits, sentinel channel, 100 ms frame timeout | A2, A3 | **READY** |

@@ -30,10 +30,26 @@ namespace driveline {
 // Vehicle constants — single source of truth. Update here, nowhere else.
 // ---------------------------------------------------------------------------
 
-// Hobbywing QuicRun 3650SD G2 is a 4-pole motor => 2 pole pairs.
-// VERIFY ON THE BENCH: spin the motor one known turn by hand and confirm the
-// reported ERPM change is 2x the mechanical change. Do not take this on faith.
-constexpr float MOTOR_POLE_PAIRS = 2.0f;
+// Motor POLES, not pole pairs — this is the number the Hobbywing manual prints
+// and the number VESC Tool asks for, so keeping the same units in both places
+// removes a whole class of factor-of-two mistake.
+//
+// QuicRun 3650SD G2 (PN 30404306, 17.5T): the manual's spec table gives
+// **Pole = 2** for every motor in the family. RC 3650 inrunners use a 2-pole
+// rotor, i.e. ONE pole pair. So ERPM and mechanical RPM are the SAME NUMBER
+// on this motor.
+//
+// This corrects an earlier assumption of 2 pole pairs (2026-08-16). It was
+// wrong in the harmless direction — the crank would have read half speed,
+// looked permanently behind the wheels, and latched the slip-cut so regen
+// never engaged — but wrong is wrong, and a permanently-cut regen would have
+// been maddening to debug on the rig.
+//
+// STILL VERIFY ON THE BENCH (task A8): turn the shaft one known revolution by
+// hand and confirm the reported ERPM change matches 1:1. Cheap, and the manual
+// is not the motor.
+constexpr float MOTOR_POLES = 2.0f;
+constexpr float MOTOR_POLE_PAIRS = MOTOR_POLES / 2.0f;
 
 // Crank revolutions per wheel revolution (target 40 km/h @ 16,000 rpm).
 // Provisional until the tire pick and the measured clutch engagement RPM land.
@@ -56,12 +72,16 @@ constexpr float TIRE_DIAMETER_M = 0.063f;
 // *is* the crank tachometer, and the slip-cut below compares that number
 // against a wheel-derived crank speed.
 //
-// A missing divide-by-2 makes the crank look twice as fast as it is, which
-// reads as a permanent, enormous positive slip — the slip-cut would then never
-// fire in the regen direction, and centrifugal clutch slip is self-reinforcing:
-// it does not announce itself, it just glazes the shoes.
+// On THIS motor the ratio happens to be 1:1 (2 poles), so the conversion is
+// currently an identity. Keep calling it anyway. The moment the motor changes
+// — a 4-pole outrunner for v2, say — every call site is already correct, and
+// the alternative is hunting for bare `erpm` uses under a machine that bites
+// silently: get the factor wrong high and the crank looks fast, which reads as
+// permanent positive slip and the cut never fires in the regen direction; get
+// it wrong low and regen never engages at all. Centrifugal clutch slip does
+// not announce itself, it just glazes the shoes.
 //
-// So: one function, one place, and nobody divides by 2 anywhere else.
+// So: one function, one place, and nobody scales ERPM anywhere else.
 
 inline float crankRpmFromErpm(float erpm) { return erpm / MOTOR_POLE_PAIRS; }
 inline float erpmFromCrankRpm(float rpm) { return rpm * MOTOR_POLE_PAIRS; }
