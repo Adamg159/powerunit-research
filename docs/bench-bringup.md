@@ -187,10 +187,25 @@ Practical:
   almost no thermal mass, so you dwell, and dwelling is what deforms the XT60
   housing. ~380–400 °C, flux both sides, tin the wire and flood the cup
   separately, then bring them together.
-- **Three joints, not two**, because the fuse is inline:
-  `VESC red → fuse tail`, `fuse tail → XT60 (+)`, `VESC black → XT60 (−)`. The
-  wire-to-wire pair is the hardest of the three — lap the strands, solder,
-  heat-shrink each individually.
+- **The XT60 came pre-leaded** (confirmed by photo 2026-08-16), so there is no
+  cup soldering and no plastic near any joint — the melted-housing risk is gone
+  and the chisel tip drops from near-required to merely preferable.
+- **Three joints, all wire-to-wire**, because the fuse is inline:
+  `VESC red → fuse tail`, `fuse tail → XT60 (+)`, `VESC black → XT60 (−)`.
+  Strip ~8 mm, tin both, lap the strands **side by side rather than butted** —
+  more contact area and it survives vibration — flow solder through, shrink.
+  Slide the heat-shrink on before soldering.
+- **Dry-fit the XT60 against the pack BEFORE soldering.** Wrong gender is
+  discovered cheaply now or expensively after three joints.
+- **Confirm the holder is MAXI, and check the printed fuse rating.** Standard
+  ATC blade fuses stop at 40 A — a 50 A ATC fuse does not exist; MAXI goes to
+  80 A. A 30/40 A fuse will nuisance-blow during ~41 A assist bursts, and that
+  fault presents as a controller cutout, which is miserable to diagnose.
+- **Check whether the fuse-holder tail is copper or CCA** (copper-clad
+  aluminium — common in cheap automotive wire, identifiable by silvery rather
+  than copper strands). CCA has materially higher resistance and solders poorly
+  because the cladding is thin. In the main positive lead at 40 A, replace it
+  with silicone copper wire if so.
 
 ## Stage 5 — VESC bring-up
 
