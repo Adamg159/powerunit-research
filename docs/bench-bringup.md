@@ -149,6 +149,39 @@ with wires attached.
 the desk.** Do this before any powered test, coupler or no coupler — Stage 5's
 motor detection spins the motor, and an unbolted 3650 on a benchtop walks.
 
+## Stage 4d — Pack connector and fuse (prerequisite for everything past A4)
+
+The VESC ships with bare tinned battery leads. **Solder the mating XT60 on, and
+put the 50 A MAXI blade fuse in the positive lead while it is open** — the
+holder and fuses arrived with the bench set, and they live in the same wire.
+
+```
+pack (+) → 50 A MAXI fuse holder → VESC red
+pack (−) →                          VESC black
+```
+
+**Why a temporary friction/taped joint is not acceptable past the A4 voltage
+check:** contact resistance is high and variable, so at the ~41 A of an assist
+burst it becomes a heater; and a joint that parts under vibration **opens a live
+inductive DC bus**, which is the load-dump failure mode the no-BMS decision was
+built around — a disconnect mid-regen spikes voltage into the controller. It
+also re-sparks the cap inrush every time it chatters. Separately, two bare leads
+near a 5200 mAh 80C pack is a short waiting to happen, and that pack will supply
+hundreds of amps into one.
+
+For a 30-second, milliamp-level voltage measurement with the joint watched and
+nothing conductive nearby, tape will survive. It must not survive to Stage 5.
+
+Practical:
+
+- **Verify polarity against the pack before heating anything.** Red = +,
+  black = −. Reversed polarity destroys a VESC instantly.
+- **One lead at a time, heat-shrink slid on first, insulated before starting the
+  second.** Two bare joints open simultaneously is how a pack gets shorted.
+- Needs a 60 W+ or temperature-controlled iron. A pencil iron melts the XT60
+  housing before 12 AWG and the connector cups flow. The heat gun and crimper in
+  the bench set do not cover this — **confirm a suitable iron is on hand.**
+
 ## Stage 5 — VESC bring-up
 
 First stage where something rotates. Motor detection spins the motor, so the
