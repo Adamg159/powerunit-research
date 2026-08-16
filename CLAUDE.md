@@ -145,17 +145,29 @@ on this envelope. Full trail in BUILD-LOG (2026-08-07 entry).
   1:1 coupling, powered by its OWN 2S pack — never the bench PSU (car-ESC
   braking back-feeds its supply) and never the traction pack. Commanded by a
   ~$10 servo tester until the radio-gear question resolves.
-- **Sensor path:** the motor's JST-ZH 6-pin hall harness and the VESC's
-  PH-style sensor port don't mate. Plan (decided 2026-08-07): splice an
-  adapter from the cables included in the motor and ESC boxes — map by
-  FUNCTION not position (5 V/GND/temp per both manuals, multimeter-verify
-  5 V and GND before the motor side connects; the three hall wires can land
-  in any order — VESC detection sorts them). Keep the temp wire: it feeds
-  the motor-NTC foldback. Fallback if the Flipsky box has no sensor pigtail:
-  ~$9 pre-crimped JST-PH 2.0 kit (Amazon B08T89ZK2Q) spliced to the motor
-  cable. Strain-relieve; shielded run + ferrite once the CDI engine is near.
-  The XT60→JST-RCY charge adapter is likewise soldered from owned pigtail
-  stock, not purchased.
+- **Sensor path — RESOLVED 2026-08-16: NO SPLICE NEEDED.** The premise of the
+  2026-08-07 plan (that the motor's hall harness and the VESC's sensor port
+  don't mate) was wrong: the Flipsky box shipped a sensor cable whose 6-pin
+  connector mates the Hobbywing ribbon directly — motor end-bell → black
+  6-conductor ribbon → white 6-pin joint → coloured pigtail → VESC sensor
+  port. Confirmed by photo. **Do not order the ~$9 pre-crimped JST-PH kit
+  (B08T89ZK2Q); do not solder an adapter.**
+  - **The verification survives even though the soldering doesn't.** Mating is
+    not matching: identical housings hide different pin orders, and reversed
+    5 V/GND kills the hall ICs instantly and silently. With the pair unmated
+    and the VESC on USB only, confirm one pigtail pin at ~5 V and one at 0 V,
+    then confirm the motor side puts Vcc/GND on those same positions. Hall
+    wires can land in any order — VESC detection sorts them.
+  - **Open question the photos raised: does the motor actually have an NTC?**
+    The 6th conductor is nominally the temp line, but sensored RC motors often
+    leave it unpopulated behind a fully-pinned connector. Measure temp-pin to
+    GND at the motor: ~10 kΩ at room temp = fitted, open = absent. If absent,
+    the motor-temp foldback needs a separate NTC epoxied to the can — and that
+    foldback is what makes burst-duty assist an enforced limit rather than an
+    intention, so it is not optional.
+  - Strain-relieve; shielded run + ferrite once the CDI engine is near.
+  - The XT60→JST-RCY charge adapter is still soldered from owned pigtail
+    stock, not purchased.
 
 ## Control and telemetry
 

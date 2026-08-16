@@ -21,7 +21,7 @@ Detail in [bench-bringup.md](bench-bringup.md). Both safety gates closed
 | A1 | Label the two packs 3S/2S; log resting cell voltages | Packs, paint pens, multimeter | **DONE** 08-16 |
 | A2 | Radio failsafe ritual + acceptance Tests A and B | FS-G7P+, FS-R11P, **AA batteries for the TX**, 1–2 servos, electronics rail, [radio-setup.md](radio-setup.md) | waiting on AAs |
 | A3 | Arrival-test all three ESP32-S3 boards; record eFuse MACs | 3× ESP32-S3, USB-C cable (**UART port, not native USB**), arduino-cli | **DONE** 08-16 — #1 and #3 PASS, **#2 defective → RMA** |
-| A4 | Splice JST-ZH → JST-PH sensor adapter; verify 5 V/GND before connecting motor | Motor + VESC pigtails, crimps/heat-shrink, multimeter | **READY** |
+| A4 | ~~Splice sensor adapter~~ **No splice needed** (cables mate). Instead: verify 5 V/GND by function before connecting motor, **and test whether the motor has an NTC** (temp pin to GND: ~10 kΩ = yes, open = no) | Motor, VESC, multimeter | **READY** |
 | A5 | Set motor end-bell timing to the zero mark | MGU-K, hex key | **READY** |
 | A6 | Bolt MGU-K to bracket; clamp bracket to bench | Motor, blue bracket, clamps | **READY** |
 | A7 | VESC bring-up: firmware **then** config, FOC + hall detection, verify smooth two-direction start | A4–A6, 3S pack (storage charge fine), VESC Tool, guard | **READY** |
@@ -37,7 +37,7 @@ Detail in [bench-bringup.md](bench-bringup.md). Both safety gates closed
 | # | Step | Pieces needed | Status |
 |---|---|---|---|
 | B1 | ~~ERPM conversion + slip-cut module~~ **DONE 2026-08-16** — [Driveline.h](../firmware/libraries/Driveline/Driveline.h), 30 desktop checks passing | — | **DONE** |
-| B2 | Flash [slip-cut-test](../firmware/slip-cut-test/slip-cut-test.ino), confirm boot self-test PASSes on real hardware | A3 | **READY** |
+| B2 | Flash [slip-cut-test](../firmware/slip-cut-test/slip-cut-test.ino), confirm boot self-test PASSes on real hardware | A3 only — **no wiring, no magnets** | **READY** |
 | B3 | Breadboard both wheel Hall pickups against B2's live mode; spin by hand, watch verdicts | A3, 2× A3144, 2× 10 k, magnets, breadboard | **READY** (uses on-hand stock first) |
 | B4 | VESC UART link: read RPM / phase current / battery V,I; replace the simulated crank RPM in B2 | A7, VescUart, ESP32-S3 | **READY** |
 | B5 | SBUS parse: driver demand, failsafe flag bits, sentinel channel, 100 ms frame timeout | A2, A3 | **READY** |

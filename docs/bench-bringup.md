@@ -86,21 +86,40 @@ Two changes from the WROOM-32 procedure documented there:
 Testing all three, not one, is the point of buying three: it distinguishes a
 bad board from a bad procedure while there's still a return window.
 
-## Stage 4 — Hall sensor adapter + motor timing (unblocked, the fiddly bit)
+## Stage 4 — Sensor cable check + motor timing
 
-**4a. Splice the JST-ZH 6-pin (motor) → JST-PH (VESC) sensor adapter.** Map by
-FUNCTION, not by position — the two connectors' pinouts are not a rotation of
-each other. Per both manuals: 5 V, GND, temp, and three hall lines.
+**4a. NO SPLICE NEEDED — confirmed 2026-08-16 by photo.** The Flipsky box
+included a sensor cable that mates the Hobbywing motor's ribbon directly:
+motor end-bell → black 6-conductor ribbon → white 6-pin joint → coloured
+pigtail → VESC sensor port. The planned solder job is deleted, and so is the
+~$9 pre-crimped JST-PH fallback kit (B08T89ZK2Q) — do not order it.
 
-- Multimeter-verify 5 V and GND on the VESC side **before the motor end is
-  ever connected**. Reversed 5 V/GND kills the hall ICs instantly and silently.
-- The three hall wires can land in any order — VESC detection sorts them.
-- **Keep the temp wire.** It carries the motor NTC that the thermal foldback
-  depends on; assist duty is built on it.
-- Strain-relieve both ends. Heat-shrink is in the box.
+**But mating is not the same as matching.** Identical housings hide different
+pin orders, and a reversed 5 V/GND kills the hall ICs instantly and silently.
+That risk is exactly what the splice plan existed to control, so the check
+survives even though the soldering doesn't. Before the motor side is ever
+connected:
 
-If the Flipsky box turned out to have no sensor pigtail, the fallback is the
-~$9 pre-crimped JST-PH kit (B08T89ZK2Q) — check the box before ordering.
+1. Unmate the pair; keep the motor out of it.
+2. Power the VESC from **USB only** — no pack on the bus.
+3. Probe each pigtail pin against battery-negative. Expect exactly one pin at
+   ~5.0 V (red) and one at 0 V (black).
+4. Confirm the motor-side connector puts its Vcc and ground on those same two
+   positions rather than crossed.
+
+The three hall wires can still land in any order — VESC detection sorts them.
+
+**While the meter is out: does the motor actually have a thermistor?** The 6th
+conductor is nominally the temp line, but plenty of sensored RC motors leave it
+unpopulated behind a fully-pinned connector. Measure resistance between the
+temp pin and ground at the *motor* connector:
+
+- **~10 kΩ at room temperature ⇒ NTC fitted.** Stage 6's foldback has a sensor.
+- **Open circuit ⇒ no NTC**, and motor-temp foldback cannot work as planned.
+  That is not cosmetic: burst assist runs far above this motor class's
+  continuous rating, and the foldback is what makes "burst duty" an enforced
+  limit rather than an intention. Fallback is a separate NTC epoxied to the can
+  and read on the same VESC temp pin. **Find this out now, not at Stage 6.**
 
 **4b. Set the motor end-bell timing to the zero mark.** Non-negotiable before
 any four-quadrant or regen use: a 17.5T with advanced timing behaves

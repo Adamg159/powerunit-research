@@ -1616,4 +1616,33 @@ USB-C ports are distinguishable by USB VID — UART port is `1A86:55D3` (WCH
 CH343), native USB is `303A:1001` (Espressif). Full notes in
 [firmware/README.md](firmware/README.md).
 
+**Later same day — the sensor-cable splice is cancelled; a new question takes
+its place.** Adam photographed the motor, VESC and the cables that came with
+them (5 shots). The 2026-08-07 plan assumed the motor's hall harness and the
+VESC's sensor port don't mate and budgeted a function-mapped splice, with a $9
+pre-crimped JST-PH kit as fallback. **The premise was wrong.** The Flipsky box
+shipped a sensor cable that mates the Hobbywing ribbon directly: motor end-bell
+→ black 6-conductor ribbon → white 6-pin joint → coloured pigtail → VESC sensor
+port, all visible in one frame. Solder job deleted, fallback purchase deleted.
+
+- **The verification survives even though the soldering doesn't.** Mating is
+  not matching — identical housings hide different pin orders, and reversed
+  5 V/GND kills the hall ICs instantly and silently. Procedure kept in the
+  bring-up doc: unmate, VESC on USB only, confirm one pigtail pin at ~5 V and
+  one at 0 V, then confirm the motor side agrees. Hall wires can still land in
+  any order.
+- **New open question the photos raised: does this motor actually have a
+  thermistor?** The 6th conductor is nominally the temp line, but sensored RC
+  motors frequently leave it unpopulated behind a fully-pinned connector. Test
+  is one meter reading at the motor connector — temp pin to GND, ~10 kΩ at
+  room temperature means fitted, open means absent. **This is load-bearing:**
+  burst assist runs far above the 17.5T's continuous rating, and the motor-NTC
+  foldback is the thing that makes "burst duty" an enforced limit rather than
+  an intention. If there's no NTC, a separate one gets epoxied to the can.
+  Better to learn this now than at Stage 6 with limits half-configured.
+- Sequencing correction: **B2 was put on the backlog for the magnets, but B2
+  doesn't need them.** It is the boot self-test — flash to a good board, watch
+  it print PASS, no wiring at all. B3 (two Halls, two pull-ups, magnets) is the
+  one waiting on the magnet delivery next week.
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
