@@ -1769,4 +1769,63 @@ problem for the first harvest test. Charger plate reads 60 W AC / 200 W DC
 Setpoints now fixed by the manual's hard limit: **foldback starts 70–75 °C,
 fully cut by ~85 °C, never reach 90 °C.**
 
+**Later same day — A5 closes as NOT APPLICABLE: the motor has fixed timing.**
+
+The plan has carried "set the end-bell timing to the zero mark before any
+four-quadrant use" since the motor was selected on 2026-08-07. Going to do it,
+the screws and scale described weren't there — because they don't exist on this
+motor. Three independent confirmations:
+
+- **Inspection (six photos, filed below).** No timing scale, no graduations, no
+  rotatable ring, no clamp screws on the can or either end bell. The only
+  fasteners are the three long M2.5 × 47.8 mm through-screws that hold the
+  motor together. Those are not an adjustment and must be left alone.
+- **The manual's own wording**, which had been read past twice: the gear-ratio
+  table applies *"when setting the ESC to the Zero Timing Mode."* Timing is a
+  CONTROLLER setting on this motor, not a mechanical one.
+- **The exploded maintenance view** enumerates every part and contains no
+  timing hardware.
+
+Adjustable end bells are a racing-line feature (Xerun/V10 class); QuicRun is
+the sport line. The assumption came from generic sensored-motor practice and
+was never checked against this specific motor.
+
+**This costs nothing, and the reasoning is worth keeping.** The original worry —
+that timing advance helps one direction of rotation and hurts the other, which
+would make drive and regen behave differently — is true for **trapezoidal/BLDC**
+controllers, which commutate on fixed hall transitions. This build runs a
+**VESC in FOC with hall detection**, which measures where the sensors actually
+sit and builds a table of true rotor angles, so a static mechanical offset is
+compensated in **both** directions. The symmetry regen depends on comes out of
+the Stage 5 calibration we were going to run regardless. One prerequisite drops
+off the path to Stage 5.
+
+Also read off the photos: motor serial **SN251500069**, and the phase bullets
+are labelled **A / B / C on the end bell** — the manual requires A-A, B-B, C-C
+(blue/yellow/orange), and with a sensored ESC the phase order is NOT free to
+swap the way it is sensorless.
+
+**Photos filed today** (all in `photos/`, dated 2026-08-16):
+
+| File | Shows |
+|---|---|
+| `sensor-path-motor-endbell` | Motor sensor port + A/B/C bullets |
+| `sensor-path-motor-ribbon-connector` | Motor's black 6-conductor ribbon and its connector |
+| `vesc-ports-and-sensor-pigtail` | FSESC4.20 with CAN/SENSE/COMM/SWD ports populated |
+| `sensor-cable-mated-joint` | The white 6-pin joint proving ribbon and pigtail mate — the evidence that killed the splice task |
+| `sensor-path-full-chain` | Whole chain motor → ribbon → joint → pigtail → VESC |
+| `vesc-wiring-diagram` | Flipsky sheet: **SENSE = GND, H3, H2, H1, TMP, 5V** (5 V and GND at opposite ends) and **COMM = 5V, 3.3V, GND, ADC, TX, RX, ADC2** — the COMM pinout is what the ESP32 UART link (B4) needs |
+| `motor-manual-specs` | Hobbywing spec table: the **Pole = 2** row that corrected the ERPM constant, plus R = 0.0488 Ω, 2–3S, 187 g, Ø36 × 52.8 mm, shaft 3.17 × 15 mm, bearing R2ZZ |
+| `first-3s-charge` | First 3S charge: 3.992 / 3.987 / 3.986, Σ 11.97 V, **Δ 6 mV** |
+| `power-path-pre-solder` | XT60 pigtail, fuse holder, VESC leads before joining |
+| `fuse-holder-wire-crosssection` | Cut face of the fuse tail — the silvery strands that prompted the CCA question |
+| `motor-side-shaft-end` · `motor-side-sensor-end` · `motor-front-mounting-face` · `motor-endbell-abc-labels` · `motor-can-label-and-bullets` · `motor-can-serial` | Six views establishing there is no timing adjustment anywhere on this motor |
+
+**First 3S charge also logged:** pack arrived at ~3.6 V/cell, charged at a
+deliberately conservative 2 A (~0.4C) to prove the process at low current, and
+**stopped at ~3.99 V/cell rather than the 4.15 ceiling** — applying the
+regen-headroom rule set earlier the same day (never start a regen session on a
+full pack, because the VESC has no graceful high-voltage taper). Δ 6 mV across
+cells is a good balance result for a new pack.
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->

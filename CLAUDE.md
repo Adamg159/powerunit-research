@@ -108,8 +108,14 @@ on this envelope. Full trail in BUILD-LOG (2026-08-07 entry).
 - **Motor: Hobbywing QuicRun 3650SD G2 17.5T, 2170 kv, sensored, 3.175 mm
   shaft (~$50).** The 1900 kv alternative loses too much to back-EMF + I·R at
   the top of the band on a sagged pack (~180–280 W deliverable at 16k rpm);
-  the 17.5T delivers ~390–470 W there. Its end-bell timing must be set to the
-  zero mark before any four-quadrant/regen use. 450 W bursts are far above
+  the 17.5T delivers ~390–470 W there. **The end-bell timing task is CLOSED as
+  N/A (2026-08-16): this motor has FIXED timing** — inspection found no scale,
+  no rotatable ring and no clamp screws, only the three M2.5 × 47.8 mm
+  through-screws, and the manual sets timing in the ESC ("Zero Timing Mode"),
+  not the motor. Harmless: VESC FOC hall detection measures the real sensor
+  angles and compensates a static offset in BOTH directions of rotation. The
+  drive/brake asymmetry argument applies to trapezoidal ESCs, not FOC.
+  **Do not re-propose adjusting it.** 450 W bursts are far above
   this class's continuous rating — assist is strictly burst-duty, with a
   firmware duty timer and motor-NTC temp foldback via the VESC.
 - **Controller — DECIDED and ORDERED 2026-08-07: Flipsky Mini FSESC4.20 50A,
@@ -426,9 +432,10 @@ slot the engine in on arrival.
   waits.
 - **MGU-K electrical: sized 2026-08-07, bench set ORDERED and DELIVERED Aug 10**
   (see "MGU-K electrical system" above). Remaining is bench work, not
-  decisions: splice the JST-ZH → JST-PH hall adapter, set the motor end-bell
-  timing to the zero mark, wire per the EMI ground rules, set and unplug-test
-  every VESC limit BEFORE the first regen event.
+  decisions — and two of them evaporated on 2026-08-16: the hall adapter needs
+  NO splice (the shipped cable mates directly) and the end-bell timing is N/A
+  (fixed-timing motor). What remains: wire per the EMI ground rules, and set
+  and unplug-test every VESC limit BEFORE the first regen event.
 - **Firmware:** telemetry, logging pipeline, assist/regen state machine (Phase A
   command architecture)
 - **Transmission:** single-speed ratio math off the 4,000–16,000 rpm band and

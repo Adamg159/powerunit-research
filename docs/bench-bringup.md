@@ -191,11 +191,35 @@ already tested — a good use for one before the engine needs them.
 Setpoints either way, from the manual's hard limit: **foldback starts
 70–75 °C, fully cut by ~85 °C, never reach 90 °C.**
 
-**4b. Set the motor end-bell timing to the zero mark.** Non-negotiable before
-any four-quadrant or regen use: a 17.5T with advanced timing behaves
-asymmetrically between drive and brake, and the regen half is the half this
-project is about. Do it now, with the motor unpowered on the bench, not later
-with wires attached.
+**4b. End-bell timing — NOT APPLICABLE. This motor has fixed timing.**
+(Resolved 2026-08-16 by inspection; six photos filed under `photos/`.)
+
+The plan carried "set the end-bell timing to the zero mark" from the day the
+motor was chosen. It turns out to be a racing-class feature this motor does not
+have. Evidence, in order of strength:
+
+- **Inspection.** No timing scale, no graduations, no rotatable ring, and no
+  clamp screws anywhere on the can or either end bell. The only fasteners are
+  the **three long M2.5 × 47.8 mm through-screws** that hold the motor
+  together — those are not a timing adjustment and must be left alone.
+- **The manual's own wording.** The gear-ratio table's ratios apply *"when
+  setting the ESC to the Zero Timing Mode"* — timing is configured in the
+  CONTROLLER, not on the motor.
+- **The exploded maintenance view** lists every part (outer shell with front
+  end bell, rotor, dirt-proof silicone ring, back end bell, three screws). No
+  timing hardware.
+
+**Why this is fine, and not a compromise.** The original concern was real but
+belongs to trapezoidal/BLDC controllers, which commutate on fixed hall
+transitions: there, mechanical advance helps one direction of rotation and
+hurts the other, which would have made drive and regen behave differently. This
+build runs a **VESC in FOC with hall detection**, which measures where the hall
+sensors actually sit and builds a table of true rotor angles. A static
+mechanical offset is recorded and compensated in **both** directions. The
+symmetry regen needs comes out of the Stage 5 calibration, not out of a zero
+mark.
+
+**Net effect: one prerequisite removed from the path to Stage 5.**
 
 **4c. Bolt the MGU-K to the blue aluminium bracket and clamp the bracket to
 the desk.** Do this before any powered test, coupler or no coupler — Stage 5's
