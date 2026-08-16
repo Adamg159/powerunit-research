@@ -16,6 +16,39 @@ Module" — that's the dual-antenna variant). The CP210x driver assigns a COM nu
 USB port, so the port changes with which port the board is in — check Tools → Port rather
 than assuming (COM4 and COM8 have both been seen).
 
+### ESP32-S3 (Hosyond N16R8) — the vehicle MCU
+
+**Working FQBN** (established 2026-08-16):
+
+```
+esp32:esp32:esp32s3:PSRAM=opi,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB
+```
+
+- `PSRAM=opi` is mandatory. The octal PSRAM is invisible without it, and a good
+  N16R8 then reports 0 bytes — **check this flag before concluding a board is bad.**
+- `FlashSize=16M` alone is not enough: the default partition scheme is a 4 MB layout,
+  which strands 12 MB. Set the partition scheme too.
+- Toolchain: `arduino-cli` 1.5.1 + esp32 core 3.3.11.
+
+**Telling the two USB-C ports apart without silkscreen** — check the USB VID:
+
+| Port | Enumerates as | VID:PID |
+|---|---|---|
+| **UART** (use this one) | `USB-Enhanced-SERIAL CH343` | `1A86:55D3` (WCH) |
+| Native USB | `USB JTAG/serial debug unit` | `303A:1001` (Espressif) |
+
+Flash and debug via the **UART** port — native USB costs GPIO 19/20, which the pin
+budget has already spent. Serial output over native USB additionally needs
+`USBMode=hwcdc,CDCOnBoot=cdc`.
+
+**Board identities (eFuse MAC), tested 2026-08-16:**
+
+| Board | MAC | Result |
+|---|---|---|
+| S3 #1 | `AC:27:6E:AA:C3:88` | **PASS** — 16 MB flash, 8 MB PSRAM, radio, LED |
+| S3 #2 | `AC:27:6E:AA:C1:C4` | **FAIL — defective, RMA.** Bootloader reads `0xffff` at the partition table offset on every build config, mode and speed tried; chip, eFuses and flash contents all verify good over the programmer. See BUILD-LOG 2026-08-16. |
+| S3 #3 | `AC:27:6E:AA:C8:B8` | **PASS** — 16 MB flash, 8 MB PSRAM, radio, LED |
+
 | Sketch | Verifies | Needs soldering first? |
 |---|---|---|
 | [arrival-test](arrival-test/arrival-test.ino) | ESP32 board: flash, LED, WiFi, eFuse MAC | no |

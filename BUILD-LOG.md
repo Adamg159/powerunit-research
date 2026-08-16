@@ -1559,4 +1559,61 @@ behind.** The tire pick is READY today and needs nothing but bench time; the
 engagement RPM is engine-gated. So chassis packaging runs alongside the bench
 work rather than after it.
 
+**Later same day — A3 done: 2 of 3 ESP32-S3 boards pass, 1 is defective.**
+A1 complete; A2 waiting on AA batteries for the transmitter, so the board
+bring-up moved up the queue.
+
+Built the toolchain from nothing on this machine: `arduino-cli` 1.5.1 + esp32
+core 3.3.11. **Working FQBN, worth keeping:**
+`esp32:esp32:esp32s3:PSRAM=opi,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB`.
+Two traps in that string — `PSRAM=opi` is mandatory or a good N16R8 reports
+zero PSRAM, and `FlashSize=16M` without a matching partition scheme silently
+strands 12 MB behind a 4 MB layout.
+
+Rewrote [arrival-test](firmware/arrival-test/arrival-test.ino) target-aware
+first, because the WROOM-32 version would have misled us twice on an S3: it
+blinked GPIO 2 (the S3 boards use an addressable RGB, so a good board looks
+dead), and it never checked memory — which is the *only* part of this test that
+can catch the thing these boards were chosen for. It now asserts 16 MB flash
+and 8 MB PSRAM and prints PASS/FAIL, since a relabelled clone module fails
+silently: it blinks, it scans WiFi, and it has 4 MB and no PSRAM.
+
+Results — **#1 and #3 PASS** (16 MB flash, 8 MB PSRAM, radio, LED all good):
+
+| Board | MAC | Result |
+|---|---|---|
+| S3 #1 | `AC:27:6E:AA:C3:88` | PASS |
+| S3 #2 | `AC:27:6E:AA:C1:C4` | **DEFECTIVE** |
+| S3 #3 | `AC:27:6E:AA:C8:B8` | PASS |
+
+**Board #2 fails in an unusually specific way.** The second-stage bootloader —
+itself read from flash at `0x0` without trouble — reads `0xffff` at `0x8000` and
+boot-loops on `invalid magic number`. Everything else checks out: chip is a
+genuine S3 rev v0.2, eFuses report 8 MB AP_3v3 PSRAM and 16 MB quad flash at
+3.3 V, flash encryption and secure boot both off, writes verify by hash, and the
+partition table reads back correctly over the programmer **and persists across
+power cycles**. So the bytes are on the chip; the bootloader just can't see them.
+
+Ruled out one flash-and-boot cycle at a time: PSRAM `opi`/`disabled`; 16 M+16 M
+scheme vs stock 4 M defaults; flash mode QIO/DIO/DOUT; flash frequency
+80/40/20 MHz (`clock div` 1/2/4); full `erase_flash` then re-upload; and — Adam's
+suggestion — the entire native-USB path with `USBMode=hwcdc,CDCOnBoot=cdc`,
+which is a different silicon block with the CH343 bridge out of the loop
+altogether. Identical failure every time. The programmer reads the region fine
+while the bootloader reads all-ones, which points at the cache/MMU read path
+rather than the flash cells, but the mechanism is a guess; what is certain is
+that no build setting reaches it.
+
+**The three-board decision paid off on day one.** With one board there would
+have been no way to separate a bad board from a bad procedure — #1 and #3
+passing on the byte-identical command is what makes the diagnosis clean. Board
+#2 becomes the RMA rather than the spare, which means the project is back to
+"vehicle + bench, no spare" until it's replaced. **Start the return while the
+window is open.**
+
+Also captured, since there is no silkscreen on the top of these boards: the two
+USB-C ports are distinguishable by USB VID — UART port is `1A86:55D3` (WCH
+CH343), native USB is `303A:1001` (Espressif). Full notes in
+[firmware/README.md](firmware/README.md).
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
