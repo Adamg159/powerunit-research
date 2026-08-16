@@ -23,5 +23,23 @@ than assuming (COM4 and COM8 have both been seen).
 | [max31855-test](max31855-test/max31855-test.ino) | MAX31855: cold-junction temp + fault bits (OC expected with no probe) — **PASS 07-26** | yes — headers |
 | [sd-test](sd-test/sd-test.ino) | SD module + card: mount, write, append, read-back (VCC = 5 V!) — **PASS 07-26, mounts at 10 MHz** | no (jumpers ok) |
 | [hall-test](hall-test/hall-test.ino) | A3144 Hall: detect + pulse count; also finds each magnet's working face | no (breadboard) |
+| [slip-cut-test](slip-cut-test/slip-cut-test.ino) | Regen slip-cut logic: boot self-test (**no hardware needed**) then live two-wheel tach + verdict readout | no (breadboard) |
+
+## Shared code
+
+[`libraries/Driveline/Driveline.h`](libraries/Driveline/Driveline.h) — header-only, Arduino-free. Holds the
+**single** ERPM → mechanical-RPM conversion (the VESC reports ERPM; pole pairs = 2), the Hall `PulseTach`,
+and the regen `SlipMonitor`. Sketches that use it need the library path passed explicitly:
+
+```bash
+arduino-cli compile --fqbn esp32:esp32:esp32s3 --library firmware/libraries/Driveline firmware/slip-cut-test
+```
+
+Because it takes time as an argument rather than calling `millis()`, the whole module runs as a desktop test
+with no board attached — **30 checks, all passing as of 2026-08-16**:
+
+```bash
+g++ -std=c++17 -Wall -Wextra -o test_driveline firmware/libraries/Driveline/test/test_driveline.cpp && ./test_driveline
+```
 
 Board identities (eFuse MAC): #1 `58:2A:BD:7D:A7:D8` · #2 `58:2A:BD:7C:AA:E8` · #3 `58:2A:BD:7E:33:EC`

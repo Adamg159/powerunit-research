@@ -3,7 +3,11 @@ Thumbs.db
 desktop.ini
 *.tmp
 
-# Uncomment when firmware development starts (Phase 1-2 ESP32 work)
-# build/
+# Firmware build output
+build/
+*.exe
 # .pio/
 # *.bin.tmp
+
+# Vendor video, kept local (large binary, not ours to redistribute)
+111.mp4

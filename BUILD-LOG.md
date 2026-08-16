@@ -1510,4 +1510,53 @@ wipes config), and sanity-check the motor NTC reading at room temperature
 before trusting thermal foldback — a foldback configured against a misread
 sensor is worse than none, because it gets trusted.
 
+**Later same day — first real firmware: the slip-cut exists, and it is tested.**
+[`firmware/libraries/Driveline/Driveline.h`](firmware/libraries/Driveline/Driveline.h)
+— header-only, Arduino-free, takes time as an argument rather than calling
+`millis()`. That one choice is what makes the module testable with no board and
+no clock, which matters because its failure mode is silent: glazed clutch shoes.
+
+- **The ERPM divide-by-2 now lives in exactly one function** and nowhere else.
+- **Sign convention is the substance of the thing.** Under engine drive the
+  crank LEADS the wheels — normal, often by thousands of rpm. Under regen the
+  MGU-K brakes the crank, so a slipping clutch makes the crank LAG. A
+  magnitude-only slip test would therefore fire constantly under acceleration
+  and is useless. The cut is on *signed* slip: crank lagging past 8 % of
+  expected (floored at 300 rpm).
+- **Cut immediately, recover slowly.** No persistence filter on the cut: one
+  bad sample cuts. Re-allow needs 500 ms cooldown AND 300 ms continuously clean
+  AND slip back inside 3 %. Cutting a cycle early costs a few joules of
+  harvest; cutting a cycle late costs a teardown.
+- **Fail closed.** A stale wheel tach while the crank is spinning = CUT, not
+  unguarded regen — without the wheel-side term the crank-mounted VESC has
+  nothing to compare against, and the comparison *is* the safety case. The
+  same missing data at standstill reports "below engagement", not a fault, so
+  parking doesn't cry wolf.
+- **PulseTach decays rather than holding.** If pulses stop, the reading falls
+  toward zero instead of reporting the last interval forever. A stale high
+  rear-wheel reading during a lock-up is exactly the reading that would hide a
+  slip event. It also rejects sub-400 µs intervals as EMI, which matters with a
+  CDI a few centimetres away.
+- **A real gap surfaced while writing it:** the tire-slip case (rear axle
+  locking, crank following the rear so clutch slip reads clean) is invisible to
+  the clutch comparison alone. That is the concrete justification for the
+  two-sensors-on-different-axles decision — it now has a passing test rather
+  than a paragraph.
+
+Installed a MinGW g++ toolchain (WinLibs UCRT 14.2.0) so the module could be
+compile-verified rather than eyeballed. **30 desktop checks, 0 failures, clean
+under `-Wall -Wextra`.** [slip-cut-test](firmware/slip-cut-test/slip-cut-test.ino)
+runs the critical subset on the ESP32 at boot with nothing attached, then drops
+into a live mode: two wheel Hall pickups plus a serial-typed crank RPM standing
+in for the VESC, printing the verdict at 4 Hz. Spin a wheel by hand and watch
+it decide.
+
+Also wrote [docs/next-steps.md](docs/next-steps.md): every open thread on the
+project in dependency order, each labelled with the pieces it needs. Writing it
+made the critical path obvious — **the wheel/tire pick and the measured clutch
+engagement RPM are the two numbers most of the remaining work is queued
+behind.** The tire pick is READY today and needs nothing but bench time; the
+engagement RPM is engine-gated. So chassis packaging runs alongside the bench
+work rather than after it.
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
