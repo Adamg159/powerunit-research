@@ -241,15 +241,34 @@ whatever angle is convenient.
   fighting it**. Rigid beats pretty; the requirement is only that it cannot
   move during detection.
 
-**Stage 7 dependency surfaced here: there is only ONE bracket.** The 1:1
-coupled rig needs the surrogate mounted too, with both shaft axes collinear in
-height and angle — a rigid jaw coupler at ~30,000 rpm punishes misalignment
-with vibration and bearing load, which is exactly the runout the bench rules
-worry about walking the rig. Options, neither urgent but both with lead time:
+**Stage 7 mounting — RESOLVED 2026-08-16, no purchase needed.** A second
+identical bracket is already on hand. **Plan (Adam's): screw both brackets to a
+common 2×4 (or plywood) base, then mount the motors.** Identical brackets on a
+shared flat face give matched shaft height by construction, which is the hard
+half of the alignment problem. The motors do not go on the brackets now — this
+is a Stage 7 task with a known method.
 
-- **A second identical 3650 bracket (~$5–8)** — same part means matched shaft
-  height by construction, which removes most of the alignment problem.
-- A printed cradle holding both, designable alongside the chassis work.
+Refinements to apply when building it:
+
+- **Verify the base is flat before trusting it.** Dimensional lumber is
+  routinely cupped or twisted, and the whole matched-height argument assumes a
+  common plane. Straightedge it; ¾″ plywood or MDF is flatter than a 2×4 and
+  just as rigid at this scale.
+- **Use the coupler as the alignment gauge, not a ruler.** Mount both brackets
+  loose, fit both motors, slip the coupler on, let it pull the shafts into
+  agreement, *then* tighten.
+- **Slot or oversize one bracket's holes** — design-for-slop applied to the
+  rig. Without somewhere to move, whatever misalignment exists is the
+  misalignment you keep.
+- **Identify the coupler type, because it sets how fussy this is.** A jaw
+  coupler with an elastomer spider absorbs roughly a degree of angular and some
+  parallel offset by design; a rigid clamp coupler transmits everything into
+  the bearings.
+- **Through-bolt with washers and nylock nuts** where possible — wood screws
+  back out under sustained vibration. **Clamp the base to the bench**, or the
+  well-aligned assembly simply walks as a unit.
+- Bonus: the base is the natural place to anchor cables clear of the shaft line
+  and to locate the guard, both required by the bench rules anyway.
 
 ## Stage 4d — Pack connector and fuse (prerequisite for everything past A4)
 

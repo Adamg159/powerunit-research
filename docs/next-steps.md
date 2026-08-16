@@ -72,7 +72,7 @@ Detail in [bench-bringup.md](bench-bringup.md). Both safety gates closed
 | D1 | ~~ABC extinguisher~~ Kidde FA110G | $24.97 | A11 | **DELIVERED** |
 | D2 | Sand tub + non-combustible charging surface | $5–10 | A11 | available at bench |
 | D3 | Magnets — 3×2 mm N52 discs, only if on-hand stock fails the bench test | $8–10 | B3 | test first |
-| D3b | **Second 3650 motor bracket** — only one was delivered; the surrogate needs a mount at matched shaft height for the 1:1 coupled rig | $5–8 | A11 (Stage 7) | not ordered |
+| ~~D3b~~ | ~~Second 3650 motor bracket~~ **Already on hand.** Plan: both brackets on a common 2×4/plywood base, coupler used as the alignment gauge, one bracket's holes slotted | $0 | A11 (Stage 7) | **CLOSED** 08-16 |
 | D4 | Spur gear | ~$10 | C5 | gated on C3/C4 |
 | D5 | Brake disc/pad set | $5–10 | C6 | gated on C3 |
 | D6 | Belt + pulleys for the rear power module | $20–30 | power-module build | flagged, not ordered |
