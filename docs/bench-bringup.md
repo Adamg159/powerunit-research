@@ -481,23 +481,21 @@ Two rules carried from the 2026-08-07 purchase entry:
   the screw backing out under vibration. It does **not** bond the sleeve to the
   shaft and does not make anything permanent — the sleeves are meant to come
   off. **Never red (271)**: that needs ~250 °C to release.
-- **Filing flats — DEFERRED, deliberately** (revised 2026-08-16 from the
-  blanket "file flats" rule of 2026-08-07). Two reasons:
-  1. **The torque does not demand it.** Design torque through the coupling is
-     ~0.24 N·m; a properly tightened grub screw on a round 3.175 mm shaft
-     carries that on friction alone.
-  2. **The MGU-K shaft has a future job.** The power-module study puts a 1:1
-     rim belt drive on the vehicle, meaning a **pulley** on this same shaft at
-     a position not yet determined. Filing now commits a feature to a location
-     chosen for a temporary bench coupler; a groove in the wrong place is worse
-     than a round shaft.
-- **Detect slip instead of pre-empting it.** Paint-pen a witness mark spanning
-  the sleeve/shaft joint. Out of register ⇒ it moved ⇒ *then* file a flat,
-  knowing it is needed.
-- **If filing does become necessary, the hazard is the swarf, not the filing.**
-  Steel filings plus open vents plus a strong rotor magnet is a one-way trip.
-  Wrap the can, shaft pointing down, clean up with tape rather than blowing it
-  around.
+- **Filing flats — NOT NEEDED AT ALL. Both shafts ship with a factory D-flat**
+  (confirmed on the parts 2026-08-16). This retires the "file flats where the
+  grub screws land" rule of 2026-08-07 outright, and also retires the concern
+  that filing would commit a feature to a bench-chosen location: the
+  manufacturer already cut it at the conventional position, so the vehicle's
+  1:1 rim-belt pulley will use the same flat. **Nothing to machine, now or
+  later — do not file these shafts.**
+- **Seat every grub screw ON the flat.** Rotate the sleeve until the screw
+  lines up before tightening.
+- **Check the flat's length against the sleeve position.** The D-cut typically
+  runs only ~5–8 mm from the shaft end. A sleeve positioned so its screw sits
+  past the flat is back on round shaft without it being obvious — slide the
+  sleeve rather than forcing the position.
+- **Witness-mark the joint anyway.** A paint-pen line spanning sleeve and shaft
+  costs one stroke and turns "did it slip?" from a guess into an observation.
 
 Free-spinning, the surrogate is the fast one: ~32,000 rpm no-load on a fresh
 2S. Coupled, that's a rigid coupler at ~30,000 rpm at arm's length. Guard down.
