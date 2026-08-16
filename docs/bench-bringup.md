@@ -178,9 +178,19 @@ Practical:
   black = −. Reversed polarity destroys a VESC instantly.
 - **One lead at a time, heat-shrink slid on first, insulated before starting the
   second.** Two bare joints open simultaneously is how a pack gets shorted.
-- Needs a 60 W+ or temperature-controlled iron. A pencil iron melts the XT60
-  housing before 12 AWG and the connector cups flow. The heat gun and crimper in
-  the bench set do not cover this — **confirm a suitable iron is on hand.**
+- **Iron: the owned Miniware TS101 + 65 W PD supply is adequate** (bought
+  2026-07-22, verified genuine 07-23). Two conditions: it must be on the 65 W
+  supply with a 3 A-rated cable, since the TS101 only reaches full power at
+  20 V — a thin charge cable that caps at 5 V gives a 15 W iron with no warning;
+  and **use a chisel/bevel tip (TS-D24 / TS-C4 class, ~$8–12)**, not the stock
+  fine conical. Tip geometry matters more than wattage here: a fine tip has
+  almost no thermal mass, so you dwell, and dwelling is what deforms the XT60
+  housing. ~380–400 °C, flux both sides, tin the wire and flood the cup
+  separately, then bring them together.
+- **Three joints, not two**, because the fuse is inline:
+  `VESC red → fuse tail`, `fuse tail → XT60 (+)`, `VESC black → XT60 (−)`. The
+  wire-to-wire pair is the hardest of the three — lap the strands, solder,
+  heat-shrink each individually.
 
 ## Stage 5 — VESC bring-up
 
