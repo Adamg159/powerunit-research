@@ -132,12 +132,37 @@ conductor is nominally the temp line, but plenty of sensored RC motors leave it
 unpopulated behind a fully-pinned connector. Measure resistance between the
 temp pin and ground at the *motor* connector:
 
-- **~10 kΩ at room temperature ⇒ NTC fitted.** Stage 6's foldback has a sensor.
-- **Open circuit ⇒ no NTC**, and motor-temp foldback cannot work as planned.
-  That is not cosmetic: burst assist runs far above this motor class's
-  continuous rating, and the foldback is what makes "burst duty" an enforced
-  limit rather than an intention. Fallback is a separate NTC epoxied to the can
-  and read on the same VESC temp pin. **Find this out now, not at Stage 6.**
+**RESULT 2026-08-16: ~10 kΩ — the NTC is fitted.** Motor-temp foldback is
+viable, so the manual's 90 °C ceiling becomes something the controller enforces
+rather than something to respect by hand. No separate sensor needed, and the
+burst-duty argument now has a mechanism behind it.
+
+**Still to pin down: the beta coefficient.** 10 kΩ gives nominal resistance,
+not how steeply it falls with temperature. VESC Tool's common 10 K options
+(beta 3380 and 3435 in most versions) agree at 25 °C by definition and diverge
+at the top of the range — roughly 10 °C apart where the foldback actually
+operates. In a motor where 90 °C permanently demagnetises the magnets, that is
+the wrong place to carry a blind error.
+
+Two-point method, ten minutes:
+
+```
+beta = ln(R1/R2) / (1/T1 - 1/T2)      T in kelvin
+```
+
+Point one is room temperature — **measure the actual room temperature, do not
+assume 25 °C.** For point two, warm the can (hair dryer, or sealed in a bag in
+hot water) and read resistance and can temperature at the same moment. Aim for
+50 °C+: the wider the spread, the less a temperature error matters. Then pick
+the closest VESC option.
+
+Pragmatic alternative: set the default 10 K option, then during the first
+sustained runs tape one of the owned **MAX31855 thermocouples** to the can and
+compare it against the VESC's reported motor temperature. Two are on hand and
+already tested — a good use for one before the engine needs them.
+
+Setpoints either way, from the manual's hard limit: **foldback starts
+70–75 °C, fully cut by ~85 °C, never reach 90 °C.**
 
 **4b. Set the motor end-bell timing to the zero mark.** Non-negotiable before
 any four-quadrant or regen use: a 17.5T with advanced timing behaves
@@ -197,10 +222,11 @@ Practical:
   Slide the heat-shrink on before soldering.
 - **Dry-fit the XT60 against the pack BEFORE soldering.** Wrong gender is
   discovered cheaply now or expensively after three joints.
-- **Confirm the holder is MAXI, and check the printed fuse rating.** Standard
-  ATC blade fuses stop at 40 A — a 50 A ATC fuse does not exist; MAXI goes to
-  80 A. A 30/40 A fuse will nuisance-blow during ~41 A assist bursts, and that
-  fault presents as a controller cutout, which is miserable to diagnose.
+- **Fuse CONFIRMED 2026-08-16: MAXI, 50 A, 32 V** — printed on the fuse body.
+  Correct on all three counts: MAXI (standard ATC stops at 40 A, so a 50 A ATC
+  fuse does not exist), 50 A as specified, and 32 V is comfortably above a 3S
+  bus. Nothing to change. A 30/40 A fuse would have nuisance-blown during ~41 A
+  assist bursts and presented as a controller cutout — miserable to diagnose.
 - **Check whether the fuse-holder tail is copper or CCA** (copper-clad
   aluminium — common in cheap automotive wire, identifiable by silvery rather
   than copper strands). CCA has materially higher resistance and solders poorly

@@ -21,7 +21,8 @@ Detail in [bench-bringup.md](bench-bringup.md). Both safety gates closed
 | A1 | Label the two packs 3S/2S; log resting cell voltages | Packs, paint pens, multimeter | **DONE** 08-16 |
 | A2 | Radio failsafe ritual + acceptance Tests A and B | FS-G7P+, FS-R11P, **AA batteries for the TX**, 1–2 servos, electronics rail, [radio-setup.md](radio-setup.md) | waiting on AAs |
 | A3 | Arrival-test all three ESP32-S3 boards; record eFuse MACs | 3× ESP32-S3, USB-C cable (**UART port, not native USB**), arduino-cli | **DONE** 08-16 — #1 and #3 PASS, **#2 defective → RMA** |
-| A4 | ~~Splice sensor adapter~~ **No splice needed** (cables mate). Instead: verify 5 V/GND by function before connecting motor, **and test whether the motor has an NTC** (temp pin to GND: ~10 kΩ = yes, open = no) | Motor, VESC, multimeter | **READY** |
+| A4 | ~~Splice sensor adapter~~ Not needed (cables mate, and are keyed). **NTC test DONE 08-16: ~10 kΩ, thermistor present** — foldback is viable | Motor, VESC, multimeter | **DONE** 08-16 (5 V confirm optional, connectors keyed) |
+| A4b | Determine NTC **beta** (two-point R/T measurement) so foldback fires where intended — 3380 vs 3435 is ~10 °C apart at the setpoint | Motor, multimeter, thermometer or MAX31855 | **READY** |
 | A5 | Set motor end-bell timing to the zero mark | MGU-K, hex key | **READY** |
 | A6 | Bolt MGU-K to bracket; clamp bracket to bench | Motor, blue bracket, clamps | **READY** |
 | A7 | VESC bring-up: firmware **then** config, FOC + hall detection, verify smooth two-direction start | A4–A6, 3S pack (storage charge fine), VESC Tool, guard | **READY** |

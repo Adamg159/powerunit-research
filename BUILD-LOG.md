@@ -1733,4 +1733,40 @@ problem for the first harvest test. Charger plate reads 60 W AC / 200 W DC
   harvest test has somewhere to put the energy. Worth noting the rule was
   written hours earlier and got applied before anyone asked for it.
 
+**Later same day — A4 answered, and both answers were the good ones.**
+
+- **The motor HAS a thermistor: ~10 kΩ at the temp pin.** This was the open
+  question that mattered most today. It means the manual's 90 °C ceiling is
+  something the VESC can *enforce* rather than something to respect by hand,
+  and the burst-duty assist argument — 450 W bursts on a motor rated far below
+  that continuously — finally has a mechanism behind it instead of an
+  intention. No separate NTC needs epoxying to the can.
+- **New follow-up (A4b): the beta coefficient is still unknown.** 10 kΩ is the
+  nominal resistance; beta is how steeply it falls with temperature. VESC
+  Tool's common 10 K options (3380 and 3435) agree at 25 °C *by definition* and
+  diverge by roughly 10 °C where the foldback actually operates. Carrying a
+  blind 10 °C error into a limit whose failure mode is permanent magnet
+  demagnetisation is not acceptable, so: two-point measurement,
+  `beta = ln(R1/R2) / (1/T1 − 1/T2)`, measuring the *actual* room temperature
+  rather than assuming 25 °C. Pragmatic cross-check afterwards: tape one of the
+  owned MAX31855 thermocouples to the can during the first sustained runs and
+  compare against the VESC's reported motor temperature — a good use for a part
+  bought for the engine, months before the engine needs it.
+- **Fuse confirmed correct: MAXI, 50 A, 32 V** printed on the body. Right on
+  all three counts — MAXI rather than ATC (standard ATC stops at 40 A, so the
+  specified 50 A fuse could not have existed in that format), 50 A as planned,
+  and 32 V comfortably above a 3S bus. Had it been a 40 A ATC it would have
+  nuisance-blown during ~41 A assist bursts and presented as a controller
+  cutout.
+- Also from the pre-solder photo: **the XT60 came pre-leaded**, so there is no
+  cup soldering — all three joints are wire-to-wire, well away from plastic.
+  The melted-housing risk is gone and the chisel-tip upgrade drops from
+  near-required to preferable. Remaining checks before the iron: dry-fit the
+  XT60 gender against the pack, and see whether the fuse-holder tail is copper
+  or CCA (silvery strands = copper-clad aluminium: higher resistance, poor
+  solder joints, worth replacing in a 40 A positive lead).
+
+Setpoints now fixed by the manual's hard limit: **foldback starts 70–75 °C,
+fully cut by ~85 °C, never reach 90 °C.**
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
