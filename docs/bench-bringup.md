@@ -254,11 +254,32 @@ Practical:
   fuse does not exist), 50 A as specified, and 32 V is comfortably above a 3S
   bus. Nothing to change. A 30/40 A fuse would have nuisance-blown during ~41 A
   assist bursts and presented as a controller cutout — miserable to diagnose.
-- **Check whether the fuse-holder tail is copper or CCA** (copper-clad
-  aluminium — common in cheap automotive wire, identifiable by silvery rather
-  than copper strands). CCA has materially higher resistance and solders poorly
-  because the cladding is thin. In the main positive lead at 40 A, replace it
-  with silicone copper wire if so.
+- **Fuse-holder tail: CLOSED 2026-08-16, no action needed.** Conductor bundle
+  measured **~2.6–3 mm ⇒ roughly 10–12 AWG equivalent**, larger than the pack's
+  own 12 AWG leads. The copper-vs-CCA question became immaterial at that
+  cross-section: even with CCA's ~1.6× resistance penalty there is more
+  copper-equivalent here than in the leads feeding it, ~1 mΩ over the ~20 cm of
+  tail. It cannot be the weak point.
+  - Note for the record that **colour cannot identify CCA**: bare CCA looks
+    like copper (the cladding *is* copper), while tinned copper and tinned CCA
+    both look silvery. Only a cross-section scrape or a bend-fatigue test
+    discriminates — and on strands this fine neither was practical.
+- **Wire this fat changes the soldering.** ~10 AWG has serious thermal mass and
+  the failure mode is a **cold joint** — solder flowed around the strands from
+  the iron's heat without the wire ever bonding. It looks plausible and fails
+  later under vibration.
+  - TS101 at **380–400 °C**, not the 320–330 °C used for electronics.
+  - **The chisel tip matters again at this gauge** (it had been downgraded to
+    "preferable" when the joints were assumed small). A conical tip contacts on
+    a point and cannot deliver heat fast enough here.
+  - Flux generously; **heat the wire, not the solder** — let the solder melt on
+    the wire. 5–10 s per side on this gauge is normal, not excessive.
+  - Tin each end separately, then join. Heating both fat ends at once is where
+    people settle for a bad joint.
+  - **Check heat-shrink diameter** — shrink sized for 14 AWG will not pass over
+    a 3 mm bundle plus a lapped joint.
+  - Good joint: shiny, slightly concave, strand outlines faintly visible. Dull
+    and blobby means it never wet — reheat rather than adding solder.
 
 ## Stage 5 — VESC bring-up
 
