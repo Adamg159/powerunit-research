@@ -1429,4 +1429,11 @@ No work done with any of it yet — bench bring-up starts tomorrow.
 non-combustible surface for charging.** Open since July; per the bench rules
 these come before the first full charge of a 5200 mAh pack.
 
+**Later same day — extinguisher ORDERED:** Kidde Basic 110 (FA110G), 2.5 lb
+ABC dry chemical, 1-A:10-B:C, **$24.97** Amazon, arriving ~Aug 17. Sized to
+the actual job (stop a venting pack from igniting the desk, not extinguish
+the cell). Remaining safety buys are department-store items: non-combustible
+charging surface (ceramic tile or steel tray) + tub of sand, planned for
+tomorrow's errand.
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
