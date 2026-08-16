@@ -1392,4 +1392,41 @@ Nose-rearward confirmed by Adam (performance + F1 mimicry). Full study in
   ≥ belt + flanges; start-belt path clearance) — full checklist in the study
   doc. Implied belt/pulley purchases (~$20–30) flagged, not yet ordered.
 
+## 2026-08-15 — Full bench set delivered; unboxing photos filed before any work
+
+Everything from the combined bench-set order has now physically landed.
+Photos taken before touching anything, filed in `photos/` with today's date
+(the group shot is cropped to the parts table for the public repo):
+
+- `2026-08-15-bench-set-all-items.jpg` — everything in one frame
+- `2026-08-15-mgu-k-motor-and-vesc.jpg` — Hobbywing QuicRun 3650SD G2 17.5T
+  (sensored) + Flipsky Mini FSESC4.20. VESC label confirms 8–60 V input, so
+  the 3S floor is fine as planned.
+- `2026-08-15-lipo-packs-2s-and-3s.jpg` — two 5200 mAh 80C hard-case packs:
+  **CM5202 3S 11.1 V (traction)** and **CM5201 2S 7.4 V (surrogate)**.
+  Delivered brand is **EMEPOVGY**, not the Zeee named in the plan —
+  same spec class, but note it for warranty/paperwork. As warned in the
+  plan, the two packs look near-identical and share connectors: **label
+  them 3S/2S before anything else** (the white Sharpie paint pens arrived
+  in the same box for exactly this).
+- `2026-08-15-charger-and-surrogate-combo.jpg` — SkyRC B6ACneo charger +
+  GoolRC 3650 3900KV sensorless motor with 60 A waterproof brake-capable ESC
+- `2026-08-15-radio-fs-g7p-and-receiver.jpg` — Flysky FS-G7P+ with FS-R11P
+- `2026-08-15-lipo-safety-bags.jpg` — Zeee LiPo Guard bags (large tote +
+  single-pack sleeve)
+- `2026-08-15-esp32s3-bucks-fuse-coupler-pinions.jpg` — ESP32-S3 N16R8
+  dual-Type-C board(s), MP1584 bucks (anti-static bags), MAXI fuse holder
+  with blade fuses, aluminium jaw coupler, pinion/set-screw hardware
+- `2026-08-15-heatshrink-bracket-testers-buzzers.jpg` — heat-shrink kit, blue
+  aluminium 3650 motor mount bracket, two servo testers, two 1-8S balance-lead
+  low-voltage buzzers
+- `2026-08-15-heat-gun-stripper-tools.jpg` — RoMech mini heat gun, wire
+  stripper/crimper, paint pens, tape, heat-shrink assortment
+
+No work done with any of it yet — bench bring-up starts tomorrow.
+
+**Still missing from the safety list: the ABC extinguisher + sand tub, and a
+non-combustible surface for charging.** Open since July; per the bench rules
+these come before the first full charge of a 5200 mAh pack.
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
