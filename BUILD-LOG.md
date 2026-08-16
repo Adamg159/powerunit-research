@@ -1436,4 +1436,44 @@ the cell). Remaining safety buys are department-store items: non-combustible
 charging surface (ceramic tile or steel tray) + tub of sand, planned for
 tomorrow's errand.
 
+## 2026-08-16 — Bench bring-up sequenced; a second safety gate found (the guard)
+
+Wrote [docs/bench-bringup.md](docs/bench-bringup.md), an ordered procedure for
+turning the delivered bench set into a working surrogate rig. Sequencing it on
+paper first surfaced a problem that improvising at the bench would not have:
+
+- **There are TWO open safety gates, not one, and they block different work.**
+  The known one is the fire kit (G1: extinguisher arriving ~Aug 17, sand and
+  non-combustible surface unbought), which gates *charging*. The one that had
+  gone unnoticed is **G2: no guard exists.** The bench rules require an
+  anchored, reach-blocking guard — the inverted clear tote — and it was never
+  on a purchase list precisely *because* the rules describe it as free and
+  improvised. It therefore quietly failed to exist. **Added the tote to the
+  same errand as the tile and sand (~$8).**
+- **G2 bites earlier than expected: VESC motor detection spins the motor.**
+  The instinct is to treat "no coupler attached" as "nothing dangerous
+  rotating," but the bench rules' actual hazard is entanglement, not
+  fragments — a bare 3650 at detection speed with a probe lead draped nearby
+  is the hazard, coupler or not. So VESC bring-up (Stage 5) is gated on the
+  guard, not just the surrogate rig.
+- **Neither gate blocks most of today.** Stages 1–4 are unblocked and are
+  where all the fiddly work lives: label the packs (EMEPOVGY CM5202 3S vs
+  CM5201 2S — near-identical, shared XT60, the exact trap the plan warned
+  about) and record resting cell voltages; run the radio failsafe ritual and
+  both acceptance tests already written in `docs/radio-setup.md`; arrival-test
+  all three ESP32-S3 boards; splice the JST-ZH → JST-PH sensor adapter and set
+  the motor end-bell timing to zero.
+- **Two S3-specific notes captured** for the arrival test: FQBN is
+  `esp32:esp32:esp32s3` (IDE board "ESP32S3 Dev Module"), and flashing goes
+  through the **UART** Type-C port, not the native-USB one — native USB costs
+  GPIO 19/20, which the pin budget already spent.
+- Stage 8 lists the numbers worth capturing while the rig is up, chiefly the
+  coupled spin-down inertia (sets the ~10–20 % effective-mass adder) and
+  deliverable assist power on a sagged 3S pack (checks the 17.5T pick against
+  the ~390–470 W it was chosen on).
+
+Repo housekeeping: pulled the two commits from the laptop (delivery photos +
+extinguisher order). `git pull` hangs in this environment — the pager/prompt
+never returns; `git fetch` then `git merge --ff-only` is the working form.
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
