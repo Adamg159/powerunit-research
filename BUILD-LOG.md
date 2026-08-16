@@ -1476,4 +1476,38 @@ Repo housekeeping: pulled the two commits from the laptop (delivery photos +
 extinguisher order). `git pull` hangs in this environment — the pager/prompt
 never returns; `git fetch` then `git merge --ff-only` is the working form.
 
+**Later same day — BOTH SAFETY GATES CLOSED.** Extinguisher delivered, and
+work moved to an acquaintance's workbench which has guarding, sand and a tile
+charging surface on hand. Every bench stage is now unblocked. Two notes
+recorded against the venue change, since the original bench rules were written
+against the wall-anchored desk at home: (i) the "rigid, so coupler runout won't
+walk the rig" argument does not transfer automatically — press-test this bench
+and clamp the motor bracket rather than trusting mass; (ii) charging a 5200 mAh
+pack is now someone else's property risk, so the owner gets told what is
+charging, where, and on what surface before the first charge.
+
+Expanded Stages 5–6 of the bring-up doc into a usable bench procedure. Two
+findings from writing it out:
+
+- **The VESC reports ERPM, not mechanical RPM — pole pairs = 2 on a 3650.**
+  With the MGU-K crank-mounted the VESC *is* the crank tachometer, and the
+  mandated regen slip-cut compares it against a wheel-derived RPM. A missing
+  divide-by-2 is a **2× error in the comparison that gates regen on clutch
+  slip** — the one failure the slip-cut exists to catch, and self-reinforcing
+  once it starts. Conversion goes in exactly one named place in firmware.
+- **There is no graceful high-voltage regen limit, and the plan implicitly
+  assumed one.** The 4.15 V/cell ceiling is a *charger-side* number. The VESC's
+  maximum-input-voltage setting is a fault threshold: it trips rather than
+  tapers, and tripping mid-regen dumps an inductive bus — precisely the failure
+  the no-BMS decision was built to avoid. **Mitigation is procedural, not
+  firmware: never start a regen session on a full pack. Begin at ≤4.0 V/cell
+  (≤12.0 V) so there is headroom for harvested charge.** At the −10 A cap into
+  5200 mAh this costs nothing in practice; it is a session-start check, now on
+  the pre-run list.
+
+Also captured for Stage 5: firmware update BEFORE configuration (updating
+wipes config), and sanity-check the motor NTC reading at room temperature
+before trusting thermal foldback — a foldback configured against a misread
+sensor is worse than none, because it gets trusted.
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->

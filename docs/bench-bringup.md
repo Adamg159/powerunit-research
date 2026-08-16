@@ -10,20 +10,30 @@ actually need.
 Log every step's result in BUILD-LOG as it happens — the failures are the
 portfolio content.
 
-## The two open gates
+## Safety gates — BOTH CLOSED 2026-08-16
 
-| Gate | Blocks | Clears when |
+| Gate | Blocked | Status |
 |---|---|---|
-| **G1 — fire kit.** Kidde FA110G ordered $24.97, arriving ~Aug 17. Sand tub and non-combustible surface (ceramic tile / steel tray, ~$5–10) still unbought. | **Charging any pack**, and leaving a pack at rest anywhere but a non-combustible surface. | Extinguisher in hand AND tile/tray + sand on the desk. |
-| **G2 — guard.** No anchored, reach-blocking guard exists yet. A clear storage tote inverted over the rig, notched for wiring, satisfies both bench rules at ~$8. | **Anything that spins** — including VESC motor detection, which spins the motor. | Tote on the desk, notched, sitting over the rig under its own weight. |
+| **G1 — fire kit** | Charging any pack; pack rest | **CLOSED.** Kidde FA110G delivered. Sand and non-combustible charging surface available at the work location. |
+| **G2 — guard** | Anything that spins, incl. VESC motor detection | **CLOSED.** Guarding available at the work location. |
 
-**Add the clear tote to the same errand as the tile and sand.** It was never
-on a purchase list because the bench rules describe it as free/improvised, so
-it can quietly fail to exist. It is the single item standing between today and
-a spinning rig.
+Work is happening at **an acquaintance's workbench**, not the wall-anchored
+desk the original bench rules were written against. Two consequences, neither
+blocking:
 
-Neither gate blocks Stages 1–4 below. Do those first; they are most of the
-day's work and all of the fiddly soldering.
+- **Re-check the rigidity assumption before Stage 7.** The "wall-anchored, so
+  coupler runout won't walk the rig" argument was about *that* desk. Press
+  down on a corner of this one: if it rocks or shuffles, clamp the motor
+  bracket to it rather than trusting mass, and keep the guard weighted.
+  Runout imbalance at ~30,000 rpm is what walks a rig, and a bench that walks
+  puts the coupler somewhere you didn't plan for.
+- **Charging a 5200 mAh pack is someone else's property risk.** Tell the owner
+  what's charging, where, and on what surface, before the first charge — not
+  as ceremony, but because they should be able to say no, and because they
+  need to know what the tub of sand is for if they walk in on it.
+
+All stages are now unblocked. Stages 1–4 still come first: they are the fiddly
+soldering, they need no rotation, and Stage 4c is a prerequisite for Stage 5.
 
 ## Stage 1 — Label the packs (5 minutes, do it before anything else)
 
@@ -102,41 +112,101 @@ with wires attached.
 the desk.** Do this before any powered test, coupler or no coupler — Stage 5's
 motor detection spins the motor, and an unbolted 3650 on a benchtop walks.
 
-## Stage 5 — VESC bring-up (gated on G2: guard)
+## Stage 5 — VESC bring-up
 
-Requires the tote. Motor detection spins the motor, and the bench rules'
-entanglement hazard is live the moment anything rotates.
+First stage where something rotates. Motor detection spins the motor, so the
+full pre-spin ritual applies even though the coupler is off.
 
-Before spin-up, and in this order:
+### 5.0 Pre-spin ritual (every session, not just the first)
 
-1. Guard positioned. **Decide where the multimeter probe leads live**, and
-   anchor every cable off the shaft line. Nothing draped.
-2. XT60 disconnect sited **to the side**, reachable without crossing the
-   rotating parts.
-3. Traction pack at storage charge is fine for detection — this stage needs
-   no charging, so G1 stays clear.
+1. Guard positioned and weighted.
+2. **Decide where the multimeter probe leads live** and anchor every cable off
+   the shaft line. Nothing draped. Entanglement is the hazard, not fragments.
+3. XT60 disconnect sited **to the side** — reachable without reaching across
+   the motor.
+4. Sleeves, lanyards, cable tails accounted for.
 
-Then: VESC Tool over USB, firmware check, motor detection (sensorless params
-first, then hall detection), and confirm the sensored startup is smooth from
-standstill in both directions.
+Traction pack at storage charge is correct for this stage. Nothing here needs
+a charged pack, and a partly-empty pack is the safer one to make mistakes on.
+
+### 5.1 Firmware first, config second
+
+Connect over USB, read the firmware version, and **do any firmware update
+before touching configuration** — updating wipes the config, so a careful
+setup done first is a setup done twice.
+
+USB alone powers the logic side; motor detection needs the pack connected.
+
+### 5.2 Detection order
+
+1. **Set the battery parameters before detection**: LiPo, 3S, so the cutoffs
+   land somewhere sane while detection is drawing current. Stage 6 tightens
+   them.
+2. **FOC detection** — resistance and inductance (no rotation), then flux
+   linkage (spins the motor).
+3. **Hall sensor detection** — separate step, spins slowly, writes the hall
+   table. Wire order doesn't matter; this is the step that sorts it.
+4. Set sensor mode to hall, with sensorless handover above the crossover ERPM.
+
+**Pole pairs = 2** on a 3650 (4-pole). This matters far beyond the config
+field: **the VESC reports ERPM, not mechanical RPM.** Mechanical RPM =
+ERPM / 2. Since the MGU-K is crank-mounted, the VESC *is* the crank
+tachometer, and the regen slip-cut compares that number against a
+wheel-derived RPM. **A missing divide-by-2 there is a 2× error in the
+comparison that gates regen on a self-reinforcing clutch slip.** Put the
+conversion in one place in firmware and name it clearly.
+
+### 5.3 Verify before moving on
+
+- Smooth startup from standstill in **both** directions at low duty — that is
+  what the sensored path was bought for; if it cogs, the hall table is wrong.
+- **Sanity-check the motor temperature reading at room temperature.** The NTC
+  arrives via the temp wire from 4a and needs the right sensor type selected.
+  A plausible-looking foldback configured against a misread sensor is worse
+  than no foldback, because it will be trusted. Warm the motor can with a hand
+  and watch the number move the right way.
 
 **Coupler stays OFF through this entire stage.** One motor at a time.
 
-## Stage 6 — Set and prove every limit (gated on G2, before any regen)
+## Stage 6 — Set and prove every limit (before the first regen event)
 
-The limits are the no-BMS decision's entire safety argument, so they get
-proven, not merely typed in:
+These limits *are* the no-BMS safety argument. There is no second layer behind
+them, so each one gets proven rather than typed.
 
-- Regen/charge current cap **−10 A**
-- Battery cutoff start/end **10.2 V soft / 9.9 V hard**
-- Charge ceiling **4.15 V/cell** (charger-side)
-- Motor NTC temp foldback enabled, using the temp wire from 4a
-- Command timeout **200–300 ms**
+| Setting | Value | Why |
+|---|---|---|
+| Battery current max | ~41 A | Full-assist burst from the sizing study |
+| Battery current max **regen** | **−10 A** | The no-BMS charge cap |
+| Motor current max | ~50–54 A phase | Burst duty only |
+| Battery cutoff start / end | **10.2 V / 9.9 V** | Soft foldback, then hard |
+| Motor temp foldback | enabled, via 4a temp wire | The duty argument depends on it |
+| MOSFET temp foldback | leave at defaults | Flipsky 4.20 has no margin to spare |
+| Control timeout | **200–300 ms** | Default is ~1000 ms — far too long |
 
-**Unplug-test the timeout**: command a steady output, pull the control link,
-and confirm the output stops inside the window. A limit that has only been
-typed into a config field is not a limit. All of this happens **before the
-first regen event**, per the plan.
+### The gap worth knowing about: there is no graceful high-voltage regen limit
+
+The plan's 4.15 V/cell ceiling is a **charger-side** number. The VESC has no
+equivalent "taper regen as cells approach 4.15 V" control — its maximum input
+voltage is a *fault* threshold, which trips rather than tapers, and tripping
+mid-regen dumps an inductive bus, which is the exact failure mode the no-BMS
+decision was designed to avoid.
+
+**So the mitigation is procedural: never begin a regen session on a full
+pack.** Start at ≤4.0 V/cell (≤12.0 V pack) so there is real headroom for
+harvested charge. At −10 A into 5200 mAh this is not a constraint in
+practice — it is simply a session-start check. Add it to the pre-run
+checklist, not to firmware.
+
+### The unplug test
+
+Command a steady output, **pull the control link**, and confirm the output
+stops inside the timeout window. Then repeat holding the ESP32 in reset.
+
+A limit that has only been typed into a config field has not been tested; it
+has been *hoped for*. This is the test that turns the config into a safety
+argument, and it happens **before the first regen event**.
+
+Log the measured stop time in BUILD-LOG. That number is portfolio content.
 
 ## Stage 7 — Surrogate rig (gated on G2, and this is where the fire kit starts to matter)
 
