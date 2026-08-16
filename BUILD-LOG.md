@@ -1414,9 +1414,12 @@ Photos taken before touching anything, filed in `photos/` with today's date
 - `2026-08-15-radio-fs-g7p-and-receiver.jpg` — Flysky FS-G7P+ with FS-R11P
 - `2026-08-15-lipo-safety-bags.jpg` — Zeee LiPo Guard bags (large tote +
   single-pack sleeve)
-- `2026-08-15-esp32s3-bucks-fuse-coupler-pinions.jpg` — ESP32-S3 N16R8
+- `2026-08-15-esp32s3-bucks-fuse-coupler-sleeves.jpg` — ESP32-S3 N16R8
   dual-Type-C board(s), MP1584 bucks (anti-static bags), MAXI fuse holder
-  with blade fuses, aluminium jaw coupler, pinion/set-screw hardware
+  with blade fuses, aluminium jaw coupler, **3.175→5 mm shaft sleeves**
+  (originally captioned "pinion/set-screw hardware" from the photo alone —
+  corrected 2026-08-16 against the purchase list, which contains sleeves and
+  no pinions; confirmed by inspection, the parts have no teeth)
 - `2026-08-15-heatshrink-bracket-testers-buzzers.jpg` — heat-shrink kit, blue
   aluminium 3650 motor mount bracket, two servo testers, two 1-8S balance-lead
   low-voltage buzzers

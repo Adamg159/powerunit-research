@@ -460,6 +460,28 @@ Couple the GoolRC 3900 kv surrogate 1:1 to the MGU-K with the aluminium jaw
 coupler. The surrogate runs on **its own 2S pack** — never the bench PSU, never
 the traction pack.
 
+**The coupling stack (clarified 2026-08-16 — no pinions involved):**
+
+```
+motor shaft (3.175 mm) → sleeve (3.175 ID / 5.0 OD) → 5x5 jaw coupler
+                                                    → sleeve → surrogate shaft
+```
+
+The coupler is bored **5 mm both sides**; both motor shafts are 3.175 mm, so
+the sleeves are what bridge the gap. **Pinions have nothing to do with this** —
+they are gear-drive parts belonging to the transmission (still blocked on the
+tire pick and the measured clutch engagement RPM). A jaw coupler joins two
+shafts end-to-end at 1:1, which is what the sizing assumed.
+
+Two rules carried from the 2026-08-07 purchase entry:
+
+- **Caliper BOTH shafts before assembly.** The sleeves assume 3.175 mm on each
+  side. The motor manual confirms 3.17 mm for the MGU-K; the GoolRC surrogate
+  is still unverified.
+- **File flats where the grub screws land, and use threadlocker.** A grub screw
+  biting on a round shaft eventually spins or walks, and a coupler walking
+  along a shaft at ~30,000 rpm is a bad failure mode.
+
 Free-spinning, the surrogate is the fast one: ~32,000 rpm no-load on a fresh
 2S. Coupled, that's a rigid coupler at ~30,000 rpm at arm's length. Guard down.
 
