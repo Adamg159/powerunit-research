@@ -475,12 +475,29 @@ shafts end-to-end at 1:1, which is what the sizing assumed.
 
 Two rules carried from the 2026-08-07 purchase entry:
 
-- **Caliper BOTH shafts before assembly.** The sleeves assume 3.175 mm on each
-  side. The motor manual confirms 3.17 mm for the MGU-K; the GoolRC surrogate
-  is still unverified.
-- **File flats where the grub screws land, and use threadlocker.** A grub screw
-  biting on a round shaft eventually spins or walks, and a coupler walking
-  along a shaft at ~30,000 rpm is a bad failure mode.
+- **Shaft sizes VERIFIED 2026-08-16: MGU-K and surrogate shafts are identical.**
+  The sleeves work as bought on both ends; Stage 7 has no outstanding parts.
+- **Threadlocker: BLUE (Loctite 242/243) on the grub screw THREADS.** It stops
+  the screw backing out under vibration. It does **not** bond the sleeve to the
+  shaft and does not make anything permanent — the sleeves are meant to come
+  off. **Never red (271)**: that needs ~250 °C to release.
+- **Filing flats — DEFERRED, deliberately** (revised 2026-08-16 from the
+  blanket "file flats" rule of 2026-08-07). Two reasons:
+  1. **The torque does not demand it.** Design torque through the coupling is
+     ~0.24 N·m; a properly tightened grub screw on a round 3.175 mm shaft
+     carries that on friction alone.
+  2. **The MGU-K shaft has a future job.** The power-module study puts a 1:1
+     rim belt drive on the vehicle, meaning a **pulley** on this same shaft at
+     a position not yet determined. Filing now commits a feature to a location
+     chosen for a temporary bench coupler; a groove in the wrong place is worse
+     than a round shaft.
+- **Detect slip instead of pre-empting it.** Paint-pen a witness mark spanning
+  the sleeve/shaft joint. Out of register ⇒ it moved ⇒ *then* file a flat,
+  knowing it is needed.
+- **If filing does become necessary, the hazard is the swarf, not the filing.**
+  Steel filings plus open vents plus a strong rotor magnet is a one-way trip.
+  Wrap the can, shaft pointing down, clean up with tape rather than blowing it
+  around.
 
 Free-spinning, the surrogate is the fast one: ~32,000 rpm no-load on a fresh
 2S. Coupled, that's a rigid coupler at ~30,000 rpm at arm's length. Guard down.
