@@ -151,10 +151,37 @@ beta = ln(R1/R2) / (1/T1 - 1/T2)      T in kelvin
 ```
 
 Point one is room temperature — **measure the actual room temperature, do not
-assume 25 °C.** For point two, warm the can (hair dryer, or sealed in a bag in
-hot water) and read resistance and can temperature at the same moment. Aim for
-50 °C+: the wider the spread, the less a temperature error matters. Then pick
-the closest VESC option.
+assume 25 °C.**
+
+**Point two: use a water bath, not the heat gun.** Seal the motor in a ziplock
+with the sensor cable led out and taped at the seal, submerge in hot water at a
+measured temperature, wait ~5 minutes, then read resistance at the connector
+outside the bag.
+
+Why the bath wins, and it is an accuracy argument rather than a safety one —
+nothing here is hot enough to hurt the motor:
+
+- **The NTC is inside the motor, not on the can.** A heat gun drives the
+  surface well ahead of the sensor, so you would pair a surface temperature
+  with a resistance from somewhere cooler. Beta is computed from exactly that
+  pairing, so the error lands directly in the answer.
+- **A bath is uniform**; a heat gun makes one side hot and leaves "the motor's
+  temperature" undefined.
+- **The water temperature IS the motor temperature once equilibrated**, so a
+  kitchen thermometer in the water is the only instrument needed — no IR gun,
+  no MAX31855 wiring.
+- It physically cannot overshoot the water temperature. 50–60 °C is plenty and
+  nowhere near the 90 °C limit.
+
+Room temp and a ~55 °C bath are ~30 °C apart, wide enough that a degree or two
+of error barely moves beta. Then pick the closest VESC option.
+
+Heat-gun fallback if the bath is impractical: warm gently from a distance,
+**turn the gun off and let it soak 2–3 minutes** so the interior catches up
+before reading anything.
+
+**Kit needed:** ziplock, tape, kitchen/candy thermometer, hot water. Pending as
+of 2026-08-16.
 
 Pragmatic alternative: set the default 10 K option, then during the first
 sustained runs tape one of the owned **MAX31855 thermocouples** to the can and
