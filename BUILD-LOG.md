@@ -1713,4 +1713,24 @@ already satisfies the "start regen sessions at ≤4.0 V/cell" rule — no headro
 problem for the first harvest test. Charger plate reads 60 W AC / 200 W DC
 (CLAUDE.md previously said ~50 W AC).
 
+**Two clarifications from Adam, same day:**
+
+- **The sensor connectors are keyed** — they cannot physically be mated
+  backwards or upside down, so the hand-error route to 5 V on ground does not
+  exist on this hardware. The A4 meter check is downgraded from a gate to a
+  30-second confirmation. It is not dropped entirely: keying fixes
+  *orientation*, not *pin mapping*, and Flipsky's cable and Hobbywing's motor
+  are independently designed — a keyed connector will present a wrong mapping
+  quite happily in the single orientation it permits. Residual risk is low
+  (both follow the standard RC sensored layout), so this is now cheap insurance
+  rather than a blocker.
+- **The 3S pack arrived at ~3.6 V/cell** — a little below the usual 3.8 V
+  storage charge, not a defect, and now the recorded arrival baseline. Adam
+  **deliberately stopped the first charge at ~4.0 V/cell rather than the 4.15
+  ceiling**, applying the regen-headroom rule from this morning: since the VESC
+  has no graceful high-voltage regen taper (only a fault threshold), a regen
+  session must not start on a full pack. Stopping at 4.0 means the first
+  harvest test has somewhere to put the energy. Worth noting the rule was
+  written hours earlier and got applied before anyone asked for it.
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->

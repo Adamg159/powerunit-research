@@ -107,10 +107,16 @@ mis-orientation, both rails swapped, hall ICs dead. Note also that the same
 sheet gives the COMM port as `5V | 3.3V | GND | ADC | TX | RX | ADC2`, which is
 the ESP32 UART link for B4.
 
-**Mating is not the same as matching.** Identical housings hide different pin
-orders, and a reversed 5 V/GND kills the hall ICs instantly and silently. That
-risk is exactly what the splice plan existed to control, so the check survives
-even though the soldering doesn't. Before the motor side is ever connected:
+**Reversal risk is retired: the connectors are keyed** (confirmed on the parts
+2026-08-16). They physically cannot be mated backwards or upside down, so the
+hand-error path to 5 V on ground doesn't exist here.
+
+What keying does *not* guarantee is that the two vendors agree on pin order
+behind those keyed housings — Flipsky's cable and Hobbywing's motor are
+independently designed, and a keyed connector will happily present a wrong
+mapping in the one orientation it allows. The residual risk is low (both follow
+the standard RC sensored layout, and Flipsky ships this cable for exactly this
+motor class), so this is now **a 30-second confirmation, not a gate**:
 
 1. Unmate the pair; keep the motor out of it.
 2. Power the VESC from **USB only** — no pack on the bus.
