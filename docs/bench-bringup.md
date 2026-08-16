@@ -225,6 +225,32 @@ mark.
 the desk.** Do this before any powered test, coupler or no coupler — Stage 5's
 motor detection spins the motor, and an unbolted 3650 on a benchtop walks.
 
+**Clocking angle does not matter (asked and answered 2026-08-16).** Rotating
+the motor about its own shaft axis is invisible to calibration: hall sensors,
+rotor and stator all rotate together, and VESC hall detection measures that
+internal relationship, not the motor's orientation in the world. Bolt it at
+whatever angle is convenient.
+
+- Choose the angle so the **phase bullets and sensor connector are reachable
+  and the cables aren't strained or fouling the shaft**. That is the only
+  criterion.
+- The two arc-shaped slots in the bracket are **gear-mesh/backlash
+  adjustment**, not an alignment feature. On the bench they just give free
+  choice of clocking.
+- If the bracket foot does not sit flat, **shim or clamp it rather than
+  fighting it**. Rigid beats pretty; the requirement is only that it cannot
+  move during detection.
+
+**Stage 7 dependency surfaced here: there is only ONE bracket.** The 1:1
+coupled rig needs the surrogate mounted too, with both shaft axes collinear in
+height and angle — a rigid jaw coupler at ~30,000 rpm punishes misalignment
+with vibration and bearing load, which is exactly the runout the bench rules
+worry about walking the rig. Options, neither urgent but both with lead time:
+
+- **A second identical 3650 bracket (~$5–8)** — same part means matched shaft
+  height by construction, which removes most of the alignment problem.
+- A printed cradle holding both, designable alongside the chassis work.
+
 ## Stage 4d — Pack connector and fuse (prerequisite for everything past A4)
 
 The VESC ships with bare tinned battery leads. **Solder the mating XT60 on, and
