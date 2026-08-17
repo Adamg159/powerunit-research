@@ -1891,10 +1891,11 @@ consequences worth recording:
   identical to two working boards and its identifying MAC is only readable on a
   board that boots, so an unmarked dud re-entering the parts pool is a
   debugging trap.
-- **The project is now vehicle + bench with NO SPARE.** The three-board buy
-  existed to provide one, and it paid for itself immediately by making today's
-  diagnosis unambiguous — #1 and #3 passing on the byte-identical command is
-  what separated "bad board" from "bad procedure". Not urgent, but a board
-  failing mid-build no longer has a swap waiting.
+- **The project is now vehicle + bench with no spare — and that is fine.**
+  Replacements are stocked on Amazon with next-day shipping, so the exposure is
+  a day of downtime, not a purchasing decision. Noting it for accuracy rather
+  than as a risk. The three-board buy still paid for itself immediately: #1 and
+  #3 passing on the byte-identical command is exactly what separated "bad
+  board" from "bad procedure", which one board could never have done.
 
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
