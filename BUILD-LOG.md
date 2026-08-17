@@ -1898,4 +1898,19 @@ consequences worth recording:
   #3 passing on the byte-identical command is exactly what separated "bad
   board" from "bad procedure", which one board could never have done.
 
+**End of day — both remaining bottlenecks ordered, $17.98 total** (Amazon order
+112-6772745-3157813, placed 2026-08-16, arriving Aug 17):
+
+- **Amazon Basics 20-pack AA alkaline, $9.99** — transmitter power. Unblocks
+  **A2**, the radio failsafe ritual and acceptance Tests A/B.
+- **Amazon Basics 2-pack USB-A to micro-USB, $7.99** — unblocks **Stage 5**,
+  VESC configuration. Today's stall was a charge-only micro-USB cable: Windows
+  enumerated nothing at all, no device and no error, which is exactly what a
+  cable with no data conductors looks like. Buying a 2-pack deliberately, so a
+  second suspect cable never costs another session.
+
+Nothing else on the critical path is waiting on a purchase. Remaining blockers
+are the magnets (~next week, for B3) and gathering the water-bath kit for A4b —
+a ziplock, tape and a kitchen thermometer.
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->
