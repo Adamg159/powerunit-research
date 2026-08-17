@@ -1883,7 +1883,18 @@ all of Stage 5), a kitchen thermometer and ziplock (A4b beta measurement), and
 the magnets next week (B3). Unblocked and ready without anything new: the three
 solder joints, after dry-fitting the XT60 against the pack.
 
-**Still outstanding: the RMA on ESP32-S3 board #2.** Diagnosis is complete and
-written up; nothing has been filed with the seller yet.
+**Board #2 RMA: dropped, deliberately.** Adam's call — the return costs more in
+time than the board is worth. Written off rather than returned. Two
+consequences worth recording:
+
+- **Mark the dead board physically before it leaves the bench.** It is visually
+  identical to two working boards and its identifying MAC is only readable on a
+  board that boots, so an unmarked dud re-entering the parts pool is a
+  debugging trap.
+- **The project is now vehicle + bench with NO SPARE.** The three-board buy
+  existed to provide one, and it paid for itself immediately by making today's
+  diagnosis unambiguous — #1 and #3 passing on the byte-identical command is
+  what separated "bad board" from "bad procedure". Not urgent, but a board
+  failing mid-build no longer has a swap waiting.
 
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->

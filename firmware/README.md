@@ -46,7 +46,7 @@ budget has already spent. Serial output over native USB additionally needs
 | Board | MAC | Result |
 |---|---|---|
 | S3 #1 | `AC:27:6E:AA:C3:88` | **PASS** — 16 MB flash, 8 MB PSRAM, radio, LED |
-| S3 #2 | `AC:27:6E:AA:C1:C4` | **FAIL — defective, RMA.** Bootloader reads `0xffff` at the partition table offset on every build config, mode and speed tried; chip, eFuses and flash contents all verify good over the programmer. See BUILD-LOG 2026-08-16. |
+| S3 #2 | `AC:27:6E:AA:C1:C4` | **FAIL — defective, written off** (RMA judged not worth the time, 2026-08-16). Bootloader reads `0xffff` at the partition table offset on every build config, mode and speed tried; chip, eFuses and flash contents all verify good over the programmer. See BUILD-LOG 2026-08-16. **Mark it physically before it leaves the bench** — a dud that looks identical to two good boards is a debugging trap, and its identifying MAC is only readable on a board that boots. |
 | S3 #3 | `AC:27:6E:AA:C8:B8` | **PASS** — 16 MB flash, 8 MB PSRAM, radio, LED |
 
 | Sketch | Verifies | Needs soldering first? |
