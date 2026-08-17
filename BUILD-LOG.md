@@ -1831,4 +1831,59 @@ regen-headroom rule set earlier the same day (never start a regen session on a
 full pack, because the VESC has no graceful high-voltage taper). Δ 6 mV across
 cells is a good balance result for a new pack.
 
+**End of day — A6 and the coupling settled; four plan items dissolved on contact
+with the hardware.**
+
+- **A6: clocking angle is irrelevant to calibration.** Rotating the motor about
+  its own axis is invisible to VESC hall detection — sensors, rotor and stator
+  turn together, and detection measures that internal relationship, not the
+  motor's orientation in the world. Clocking only decides where the bullets and
+  sensor connector point, so choose for cable access. The bracket's arc slots
+  are gear-mesh/backlash adjustment, not an alignment feature.
+- **Stage 7 mounting resolved, nothing to buy.** A second identical bracket was
+  already on hand. Plan: both brackets on a common 2×4/plywood base, motors
+  fitted after. Identical brackets on a shared flat face give matched shaft
+  height by construction. Refinements recorded so they aren't re-derived:
+  verify the base is genuinely flat, use the coupler itself as the alignment
+  gauge rather than a ruler, slot one bracket's holes so the alignment step has
+  somewhere to go, through-bolt rather than wood-screw, and clamp the base or
+  the well-aligned assembly walks as one.
+- **Coupling stack clarified after a mislabel.** The Aug 15 delivery photo was
+  captioned from the photo rather than the packing list and called the small
+  parts "pinion/set-screw hardware". The purchase list has **3.175→5 mm shaft
+  sleeves and no pinions**; inspection confirms no teeth. Photo renamed and
+  caption corrected. The stack is shaft (3.175) → sleeve → **5×5 jaw coupler**
+  → sleeve → shaft, 1:1 as the motor sizing assumed. Pinions belong to the
+  transmission, still blocked on the tire pick and engagement RPM.
+- **Shafts verified identical**, so the sleeves work as bought on both ends.
+- **The "file flats" rule (2026-08-07) is retired outright: both shafts ship
+  with a factory D-flat**, running most of the exposed length
+  (`2026-08-16-both-shafts-d-flats.jpg`). This also retired the intermediate
+  position reached earlier the same day — defer filing, because the MGU-K shaft
+  will later carry the rim-belt pulley and a bench-chosen groove could land in
+  the wrong place. Moot: the manufacturer cut it at the conventional spot, so
+  the pulley uses the same flat. **Do not file these shafts.** What replaces
+  the rule: seat each grub screw on the flat, blue threadlocker (242/243) on
+  the screw threads — never red, which needs ~250 °C — and a paint-pen witness
+  mark across the joint so slip is observed rather than guessed at.
+
+**Pattern worth naming, because it repeated four times today.** The pole count,
+the sensor splice, the end-bell timing and the shaft flats were all reasonable
+inferences from general RC practice, and all four were wrong about these
+specific parts. Two would have cost bench time; one would have made regen
+silently impossible. Standing lesson, alongside the existing "search for the
+manual under every brand name": **read the part and its manual before following
+the plan, and treat plan items written before the hardware arrived as
+hypotheses.** Apply this deliberately on the day the clutch and the engine land.
+
+**Tomorrow's list.** Blocked only on parts, not decisions: AA batteries for the
+transmitter (A2 — the radio failsafe ritual is fully written and waiting), a
+data-capable micro-USB cable (the one real bottleneck, gating VESC config and
+all of Stage 5), a kitchen thermometer and ziplock (A4b beta measurement), and
+the magnets next week (B3). Unblocked and ready without anything new: the three
+solder joints, after dry-fitting the XT60 against the pack.
+
+**Still outstanding: the RMA on ESP32-S3 board #2.** Diagnosis is complete and
+written up; nothing has been filed with the seller yet.
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->

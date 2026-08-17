@@ -490,10 +490,11 @@ Two rules carried from the 2026-08-07 purchase entry:
   later — do not file these shafts.**
 - **Seat every grub screw ON the flat.** Rotate the sleeve until the screw
   lines up before tightening.
-- **Check the flat's length against the sleeve position.** The D-cut typically
-  runs only ~5–8 mm from the shaft end. A sleeve positioned so its screw sits
-  past the flat is back on round shaft without it being obvious — slide the
-  sleeve rather than forcing the position.
+- ~~Check the flat's length against the sleeve position~~ **Non-issue: both
+  flats run most of the exposed shaft** (`photos/2026-08-16-both-shafts-d-flats.jpg`),
+  so there is landing area wherever the sleeves end up. The usual worry — a
+  short ~5–8 mm D-cut leaving the grub screw on round shaft without it being
+  obvious — does not apply to these parts.
 - **Witness-mark the joint anyway.** A paint-pen line spanning sleeve and shaft
   costs one stroke and turns "did it slip?" from a guess into an observation.
 
