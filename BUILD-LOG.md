@@ -1913,4 +1913,45 @@ Nothing else on the critical path is waiting on a purchase. Remaining blockers
 are the magnets (~next week, for B3) and gathering the water-bath kit for A4b —
 a ziplock, tape and a kitchen thermometer.
 
+**A2 started — receiver port map read off the hardware, and a servo gap
+closed with the ESP32.**
+
+- **The acceptance tests assumed servos we do not own.** Servo purchase was
+  deliberately deferred, and nothing servo-shaped arrived in the bench order,
+  so "watch the throttle servo drive to idle" had no instrument behind it.
+  Wrote [rx-pwm-test](firmware/rx-pwm-test/rx-pwm-test.ino) instead: four
+  interrupt-timed PWM channels printed in microseconds, with a failsafe report
+  giving each channel's commanded value, where it went, and **how long after
+  the last good frame**. That last number is the point — the FS-R11P judgment
+  time is ~300 ms by spec and a servo twitching cannot measure it. Compiles
+  clean; 9 % of flash.
+  - Build note for anyone reading the sketch: the four ISRs are plain
+    functions, not a template. The Arduino `.ino` preprocessor emits prototypes
+    ahead of definitions and cannot parse a templated ISR — it fails pointing
+    at a *comment line*, which is a genuinely misleading error.
+- **The FS-R11P manual is only available as a corrupted PDF scan**, so the port
+  map was read off the unit's own silkscreen and photographed
+  (`2026-08-16-fs-r11p-*.jpg`). Full map now in
+  [radio-setup.md](docs/radio-setup.md). Key facts: `3.5-9V/DC` on the case;
+  **pin order legend `Ⓢ ⊕ ⊖` printed on the case**, so every port is
+  Signal/Positive/Negative; two banks — `SERVO, SENS, 11..7` and
+  `VCC, BVD, BIND, 6..1/P`.
+  - **`VCC` is the power input; `BVD` next to it is battery-voltage DETECTION,
+    not a supply.** Adjacent labels, completely different jobs — an easy and
+    expensive confusion.
+  - Physical red BIND button, so no bind jumper needed.
+- **Polarity gets confirmed two independent ways before power.** A printed
+  legend still has to be mapped to the right physical column, and reversed
+  polarity kills receivers. Unpowered continuity settles it without trusting
+  the legend at all: the ⊕ and ⊖ columns are common across every port, the Ⓢ
+  column is not.
+- Bench supply is the ESP32's 5 V pin into VCC, which also makes the grounds
+  common — required for the pulse timing to mean anything. Consequence:
+  **5 V PWM outputs into a 3.3 V part, so all four signal lines get a 1k/2k
+  divider.**
+
+Standing lesson reinforced: **when the manual is unavailable or unreadable, the
+part itself is the primary source.** Same pattern as the ST-NF2 manuals and the
+motor pole count — every real answer today came from reading hardware.
+
 <!-- Append new entries at the bottom, newest last: ## date — headline, then bullets for progress / problems / resolutions. -->

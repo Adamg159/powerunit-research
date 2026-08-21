@@ -119,7 +119,9 @@ the standard RC sensored layout, and Flipsky ships this cable for exactly this
 motor class), so this is now **a 30-second confirmation, not a gate**:
 
 1. Unmate the pair; keep the motor out of it.
-2. Power the VESC from **USB only** — no pack on the bus.
+2. **Power the VESC from the 3S pack, phase wires disconnected.** USB does NOT
+   power this board — see the note in 5.1. The sensor 5 V comes from the
+   battery-fed buck, so with USB alone there is no rail to measure.
 3. Probe each pigtail pin against battery-negative. Expect exactly one pin at
    ~5.0 V (red) and one at 0 V (black).
 4. Confirm the motor-side connector puts its Vcc and ground on those same two
@@ -373,7 +375,17 @@ Connect over USB, read the firmware version, and **do any firmware update
 before touching configuration** — updating wipes the config, so a careful
 setup done first is a setup done twice.
 
-USB alone powers the logic side; motor detection needs the pack connected.
+**THE PACK MUST BE CONNECTED TO TALK TO THE VESC AT ALL** (established the hard
+way 2026-08-16). On VESC 4.x the 5 V rail comes from a buck fed by the *battery*
+input; USB VBUS only reaches the STM32's VBUS-sense pin. With no pack, the
+processor is not running, so the board enumerates nothing — no COM port, no
+unknown device, no error. That is indistinguishable from a dead board or a
+charge-only cable, which is exactly the rabbit hole it sent us down: a
+charge-only cable was suspected first, replaced, and the symptom did not change,
+because the cable had never been the problem.
+
+So: **pack first, then USB.** Phase wires stay disconnected for everything in
+5.1–5.3; the pack is powering logic, not driving anything.
 
 ### 5.2 Detection order
 

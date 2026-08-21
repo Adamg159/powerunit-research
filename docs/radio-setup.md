@@ -28,6 +28,43 @@ day-one failsafe ritual.
   SBUS) but failsafe-flag behavior is undocumented, the serial out eats a
   channel, and the gyro must be verified OFF (green-only LED) every session.
 
+## FS-R11P physical port map (read off the unit, 2026-08-16)
+
+Confirmed from the receiver's own silkscreen rather than the manual, which is
+only available as a corrupted PDF scan.
+
+- **`3.5-9V/DC`** printed on the top face — the supply window.
+- **Pin order legend `Ⓢ ⊕ ⊖` is printed on the case** (end face, and again
+  beside the LED). Every 3-pin port is **Signal / Positive / Negative** in that
+  column order.
+- **Two port banks**, labelled along their outer edges:
+
+| Bank | Rows, in silkscreen order |
+|---|---|
+| A | `SERVO`, `SENS`, `11`, `10`, `9`, `8`, `7` |
+| B | `VCC`, `BVD`, `BIND`, `6`, `5`, `4`, `3`, `2`, `1/P` |
+
+- **`VCC` is the power input.** `BVD` beside it is battery-voltage *detection*
+  for telemetry, not a second supply — do not feed the pack into it expecting
+  the RX to run.
+- There is a physical red **BIND button**, so binding does not need a jumper in
+  the BIND port.
+- Bench supply: **ESP32 5 V pin → VCC ⊕, ESP32 GND → VCC ⊖.** The signal pin on
+  that row is unused. This also makes the grounds common, which the pulse
+  measurements require.
+
+**Confirm polarity before applying power** — reversed polarity kills receivers,
+and a printed legend still has to be mapped to the right physical column.
+Unpowered continuity check, which settles it independently of the legend: the
+**⊕ and ⊖ columns are common across every port**, so probing the same column
+position on two different rows shows continuity; the **Ⓢ column is not common**,
+each signal being its own net. That identifies the signal column outright, and
+the legend then separates ⊕ from ⊖.
+
+**Consequence for the ESP32:** powered at 5 V, the PWM outputs are 5 V logic
+into a 3.3 V part. Every signal line needs a divider — 1 k from RX signal to the
+GPIO, 2 k from that node to GND.
+
 ## Wiring map
 
 | Consumer | RX port | Notes |
